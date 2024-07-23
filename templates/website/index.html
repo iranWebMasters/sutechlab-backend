@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 
 <html dir="rtl" lang="fa">
 
@@ -17,15 +18,15 @@
     <meta name="developer" content="Architects of Communication Age Company" />
     <meta name="theme-name" content="sutech" />
 
-    <link href="../static/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="../static/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="../static/css/animate.min.css" rel="stylesheet" media="all" />
-    <link href="../static/css/bootstrap-rtl.min.css" rel="stylesheet" />
-    <link href="../static/css/font-awesome-rtl.css" rel="stylesheet" />
-    <link href="../static/css/yamm.css" rel="stylesheet" />
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/animate.min.css' %}" rel="stylesheet" media="all" />
+    <link href="{% static 'css/bootstrap-rtl.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/font-awesome-rtl.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/yamm.css' %}" rel="stylesheet" />
 
-    <!-- <link rel="stylesheet" href="../static/css/sutech_header.css" /> -->
-    <link rel="stylesheet" href="../static/css/sutech_header_purged.css">
+    <!-- <link rel="stylesheet" href="{% static 'css/sutech_header.css' %}" /> -->
+    <link rel="stylesheet" href="{% static 'css/sutech_header_purged.css' %}">
 </head>
 
 <body class="home-page-body">
@@ -36,7 +37,7 @@
                     <div class="row menu-middle__row">
                         <div class="col-sm-12 col-md-5 logo-box">
                             <a class="hidden-print" href="http://sutech.ac.ir/fa"><img class="site-logo img-responsive"
-                                    src="../static/img/1674383299-logo-header.png" width="251" height="85"
+                                    src="{% static 'img/1674383299-logo-header.png' %}" width="251" height="85"
                                     alt="دانشگاه صنعتی شیراز" /></a>
                         </div>
                         <div class="col-sm-12 col-md-7 menu-middle__1">
@@ -524,11 +525,11 @@
         </header>
     </section>
 
-    <script src="../static/js/jquery.min.js"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
 
-    <script src="../static/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
 
-    <script src="../static/js/bootstrap-hover-dropdown.js" async="async"></script>
+    <script src="{% static 'js/bootstrap-hover-dropdown.js' %}" async="async"></script>
 </body>
 
 </html>
