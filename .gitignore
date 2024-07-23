@@ -297,3 +297,6 @@ cython_debug/
 
 test.py
 media/
+
+
+frontend-resources/
