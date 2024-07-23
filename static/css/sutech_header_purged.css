@@ -25,7 +25,7 @@ body {
 }
 
 a {
-  color: #001f56
+  color: #09cc7f
 }
 
 a:hover,
@@ -60,7 +60,7 @@ h4,
 .widget .title,
 .title {
   margin: 0;
-  color: #001f56;
+  color: #09cc7f;
   padding: 7px 0;
   white-space: nowrap;
   overflow: hidden;
@@ -116,7 +116,7 @@ h4,
 header {
   z-index: 100;
   width: 100%;
-  background-color: #001f56
+  background-color: #09cc7f
 }
 
 header .logo-box img {
@@ -212,7 +212,7 @@ header .navbar-toggle .sr-only {
 }
 
 header .navbar-toggle .icon-bar {
-  background-color: #001f56
+  background-color: #09cc7f
 }
 
 header .yamm .yamm-content {
@@ -313,8 +313,8 @@ header nav.navbar .navbar-nav.nav .dropdown-menu {
 
 header nav.navbar .navbar-nav.nav .dropdown-menu h4 {
   font-size: 14px;
-  border-bottom: 1px solid #001f56;
-  color: #001f56;
+  border-bottom: 1px solid #09cc7f;
+  color: #09cc7f;
   padding: 5px 0
 }
 
@@ -427,7 +427,7 @@ header nav.navbar .navbar-collapse>.nav {
   header .navbar-nav li a {
     padding-top: 10px;
     padding-bottom: 10px;
-    color: #001f56
+    color: #09cc7f
   }
 
   header .collapse.in {
@@ -443,7 +443,7 @@ header .inner-top .date-line {
   position: absolute;
   left: 37px;
   top: -10px;
-  color: #001f56;
+  color: #09cc7f;
   z-index: 90
 }
 
@@ -549,7 +549,7 @@ header .row {
 }
 
 .e-services-wrapper ul.dropdown li a {
-  color: #001f56
+  color: #09cc7f
 }
 
 .e-services-wrapper .e-services-toggle {
@@ -620,8 +620,8 @@ header .row {
 }
 
 .search-bar-wrapper .search-bar form .btn {
-  color: #001f56;
-  border-color: #001f56;
+  color: #09cc7f;
+  border-color: #09cc7f;
   background-color: #fff;
   padding: 1px 6px !important;
   margin-left: 0;

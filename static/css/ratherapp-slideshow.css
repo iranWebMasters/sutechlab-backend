@@ -69,7 +69,7 @@ h1 a {
 }
 
 h1 a:hover {
-    color: #6689ff;
+    color: #60bc0f;
 }
 
 h1 {
@@ -108,7 +108,7 @@ a:hover {
 a,
 a:focus,
 a:active {
-    color: #6689ff;
+    color: #60bc0f;
 }
 
 a:hover {
@@ -206,8 +206,8 @@ img {
 .button-primary,
 .button-primary:focus {
     color: #ffffff;
-    background-color: #6689ff;
-    border-color: #6689ff;
+    background-color: #60bc0f;
+    border-color: #60bc0f;
 }
 
 .button-primary:hover,
@@ -234,7 +234,7 @@ img {
     left: 0;
     width: 101%;
     height: 101%;
-    background: #6689ff;
+    background: #60bc0f;
     z-index: -1;
     opacity: 0;
     transform: scale3d(0.7, 1, 1);
@@ -879,7 +879,7 @@ html:not(.lt-ie10) .not-animated {
     }
 
     55% {
-        background-color: #6689ff;
+        background-color: #60bc0f;
     }
 
     100% {
@@ -895,7 +895,7 @@ html:not(.lt-ie10) .not-animated {
     }
 
     55% {
-        background-color: #6689ff;
+        background-color: #60bc0f;
     }
 
     100% {
@@ -917,7 +917,7 @@ html:not(.lt-ie10) .not-animated {
     font-size: 20px;
     line-height: 38px;
     color: #ffffff;
-    background: #6689ff;
+    background: #60bc0f;
     overflow: hidden;
     text-align: center;
     text-decoration: none;
@@ -986,7 +986,7 @@ html:not(.lt-ie10) .not-animated {
 
     50% {
         width: 50%;
-        background: #6689ff;
+        background: #60bc0f;
     }
 
     100% {
@@ -1001,7 +1001,7 @@ html:not(.lt-ie10) .not-animated {
 
     50% {
         width: 50%;
-        background: #6689ff;
+        background: #60bc0f;
     }
 
     100% {
@@ -1106,11 +1106,11 @@ html:not(.lt-ie10) .not-animated {
 
 .swiper-pagination-bullet:hover,
 .swiper-pagination-bullet:focus {
-    background: #6689ff;
+    background: #60bc0f;
 }
 
 .swiper-pagination-bullet-active {
-    background: #6689ff;
+    background: #60bc0f;
 }
 
 .swiper-container-vertical>.swiper-pagination {
@@ -1198,7 +1198,7 @@ html:not(.lt-ie10) .not-animated {
 .swiper-slider-classic .swiper-pagination-bullet::after {
     transform: translateX(-100%);
     animation: pagOutX .3s;
-    background: #6689ff;
+    background: #60bc0f;
 }
 
 .swiper-slider-classic .swiper-pagination-bullet:hover,
@@ -1294,7 +1294,7 @@ html:not(.lt-ie10) .not-animated {
 }
 
 .swiper-pagination__fraction-index {
-    color: #6689ff;
+    color: #60bc0f;
 }
 
 .swiper-pagination__divider {
