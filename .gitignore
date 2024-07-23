@@ -6,8 +6,6 @@ __pycache__/
 
 db.sqlite3
 /node_modules
-*.jpg
-*.png
 *.webp
 *.gif
 # C extensions
