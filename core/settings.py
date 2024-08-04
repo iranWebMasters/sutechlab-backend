@@ -30,7 +30,14 @@ INSTALLED_APPS = [
     'website',
     'blog',
     'services',
+    
     'rest_framework',
+    
+    'django.contrib.humanize',
+    'taggit',
+    'django_jalali',
+    'ckeditor',
+    'ckeditor_uploader',
 ]
 
 MIDDLEWARE = [
@@ -119,6 +126,9 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 STATICFILES_DIRS = [
     BASE_DIR / "statics",
 ]
+
+CKEDITOR_UPLOAD_PATH='uploads/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
