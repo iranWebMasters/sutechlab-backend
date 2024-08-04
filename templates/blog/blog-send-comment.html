@@ -1,0 +1,25 @@
+{% load static %}
+<div class="bd-form details-text-area bg-f9faff" id="bd-form">
+    <h3>نظر دهید</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ comment_form.errors }}
+    <div class="row">
+    <div class="col-md-6">
+    <input type="text" class="form-control" name="name" placeholder="نام" required>
+    </div>
+    <div class="col-md-6">
+    <input type="email" class="form-control" name="email"  placeholder="ایمیل" required>
+    </div>
+    <div class="col-md-6">
+    <input type="text" class="form-control" name="phone_number" placeholder="تلفن" required>
+    </div>
+    <div class="col-md-12">
+    <textarea rows="5" class="form-control" name="message" placeholder="پیام شما" required></textarea>
+    </div>
+    <div class="col-md-12">
+    <button class="default-button" type="submit"><span>ارسال</span></button>
+    </div>
+    </div>
+    </form>
+    </div>

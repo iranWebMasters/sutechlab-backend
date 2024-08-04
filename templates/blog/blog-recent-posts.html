@@ -1,0 +1,12 @@
+{% load static %}
+<div class="sidebar-card recent-news">
+    <h3>پست های اخیر</h3>
+    {% for post in posts %}
+    <div class="recent-news-card">
+    <img src="{{ post.image.url }}" alt="{{ post.title }}">
+    <h5><a href="{% url 'blog:single' pk=post.id %}">{{ post.title }}</a></h5>
+    <p>{{post.published_date|date:"D M Y"}}</p>
+    </div>
+    {% endfor %}
+
+    </div>

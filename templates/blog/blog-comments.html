@@ -1,0 +1,15 @@
+{% load static %}
+{% load humanize %}
+
+<div class="bd-comments details-text-area">
+    <h3>نظرات</h3>
+    {% for comment in comments %}
+    <div class="comment-card">
+    <img src="{% static 'assets/images/testimonial/tc1.jpg' %}" alt="image">
+    <h5>{{ comment.name }}</h5>
+    <p>{{ comment.message }}</p>
+    <span class="date">{{ comment.created_date|naturalday }}</span>
+    <!-- <a href="#bd-form">پاسخ</a> -->
+    </div>
+    {% endfor %}
+    </div>
