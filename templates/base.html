@@ -1,0 +1,237 @@
+{% load static %}
+{% load main_tags %}
+
+{% get_single_contact as contact %}
+{% home_page_data as home %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="theme-light">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="دوستان تهویه" >
+<meta name="description" content="دوستان تهویه">
+<meta name="author" content="Barat Hadian">
+
+<link rel="stylesheet" href="{% static 'assets/css/animate.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/bootstrap.rtl.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/fontawsome.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/fonts/font/flaticon.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/meanmenu.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/owl.carousel.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/nice-select.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/barfiller.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/odometer-theme-default.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/dark-mode.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/rtl.css' %}">
+<title>دوستان تهویه</title>
+<link rel="icon" type="image/png" href="{% static 'assets/images/fav-icon.png' %}">
+</head>
+<body>
+<div class="theme-switcher">
+<label id="switch" class="switch">
+<input type="checkbox" onchange="toggleTheme()" id="slider">
+<span class="slider round"></span>
+</label>
+</div>
+
+<div class="topbar">
+<div class="container">
+<div class="row">
+<div class="col-lg-9">
+<div class="topbar-left-side">
+<ul>
+<li><i class="fas fa-phone-alt"></i> <a href="tel:{{ contact.landline_phone }}">{{ contact.landline_phone }}</a></li>
+<li><i class="fas fa-phone-alt"></i> <a href="tel:{{ contact.mobile_phone }}">{{ contact.mobile_phone }}</a></li>
+<li><i class="fas fa-clock"></i> {{ contact.workingHour }}</li>
+<li><i class="fas fa-map-marker-alt"></i> <a href="https://goo.gl/maps/LFFvE4dNnyq67gGeA">{{ contact.address }}</a></li>
+</ul>
+</div>
+</div>
+<!-- <div class="col-lg-3">
+<div class="topbar-right-side">
+<div class="account">
+<a href="profile-authentication.html"><i class="fas fa-user"></i> ورود</a>
+</div>
+</div>
+</div> -->
+</div>
+</div>
+</div>
+
+
+<div class="header-area">
+<div class="navbar-area">
+
+<div class="main-responsive-nav">
+<div class="container">
+<div class="mobile-nav">
+<a href="{% url 'website:index' %}" class="logo">
+<!-- <img class="black-logo" src="{% static 'assets/images/logo.png' %}" alt="logo" /> -->
+<!-- <img class="white-logo" src="{% static 'assets/images/white-logo.png' %}" alt="logo" /> -->
+</a>
+<ul class="menu-sidebar menu-small-device">
+<li><button class="popup-button"><i class="fas fa-search"></i></button></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="main-nav">
+<div class="container">
+<nav class="navbar navbar-expand-md navbar-light">
+<!-- <a class="navbar-brand" href="{% url 'website:index' %}">
+<img class="black-logo" src="{% static 'assets/images/logo.png' %}" alt="logo" />
+<img class="white-logo" src="{% static 'assets/images/white-logo.png' %}" alt="logo" />
+</a> -->
+<div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
+<ul class="navbar-nav">
+<li class="nav-item plus-icon">
+<a href="{% url 'website:index' %}" class="nav-link dropdown-toggle active">خانه <i class=""></i></a>
+</li>
+<li class="nav-item">
+<a href="{% url 'services:index' %}" class="nav-link dropdown-toggle">خدمات <i></i></a>    
+</li>
+<li class="nav-item">
+<a href="{% url 'website:about' %}" >درباره ما</a>
+</li>
+<li class="nav-item">
+<a href="{% url 'blog:index' %}" class="nav-link dropdown-toggle">وبلاگ <i class=""></i></a>
+</li>
+<li class="nav-item"><a href="{% url 'website:contact' %}" class="nav-link">تماس با ما</a></li>
+</ul>
+<div class="menu-sidebar menu-sidebar-1">
+<ul>
+<li><button class="popup-button"><i class="fas fa-search"></i></button></li>
+<li><a class="default-button default-button-3" href="{% url 'website:contact' %}"><span>شروع کنید</span></a></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+</div>
+</div>
+<!-- ------------------------------------ -->
+{% include 'website/messages.html' %}
+
+<!-- ------------------------------------ -->
+{% block content %}
+{% endblock content %}
+<!-- ------------------------------------ -->
+<!-- ------------------------------------ -->
+<div class="footer footer-2 ptb-100 bg-000000">
+<div class="container">
+<div class="row">
+<div class="col-lg-3 col-md-6 col-sm-6 col-12">
+<div class="footer-logo-area">
+<!-- <a href="{% url 'website:index' %}"><img src="{% static 'assets/images/white-logo.png' %}" alt="image"></a> -->
+<p>{{home.bottom_text}}</p>
+<div class="footer-social-icons">
+<span>مارا دنبال کنید : </span>
+<ul>
+<!-- <li><a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+<li><a href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+<li><a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a></li> -->
+<li><a href="https://www.instagram.com/{{ contact.instagram }}" target="_blank"><i class="fab fa-instagram"></i></a></li>
+<li><a href="tel:{{ contact.landline_phone }}" target="_blank"><i class="fab fa-whatsapp"></i></a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-lg-3 col-md-6 col-sm-6 col-12">
+<div class="footer-links footer-contact-list">
+<h3>اطلاعات تماس</h3>
+<div class="footer-content-card">
+<i class="fas fa-map-marker-alt"></i>
+<h5>موقعیت:</h5>
+<p><a href="">{{ contact.address }}</a></p>
+</div>
+<div class="footer-content-card">
+<i class="fas fa-envelope"></i>
+<h5>ایمیل:</h5>
+<p><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></p>
+</div>
+<div class="footer-content-card">
+<i class="fas fa-mobile-alt"></i>
+<h5>تلفن:</h5>
+<p><a href="tel:{{ contact.landline_phone }}">{{ contact.landline_phone }}</a></p>
+</div>
+</div>
+</div>
+<div class="col-lg-3 col-md-6 col-sm-6 col-12">
+<div class="footer-links footer-quick-links">
+<h3>لینک های سریع</h3>
+<ul>
+<li><a href="{% url 'website:about' %}" target="_blank"><i class="fas fa-angle-left"></i> <span>درباره ما</span></a></li>
+<li><a href="{% url 'services:index' %}" target="_blank"><i class="fas fa-angle-left"></i> <span>خدمات ما</span></a></li>
+<li><a href="{% url 'blog:index' %}" target="_blank"><i class="fas fa-angle-left"></i> <span>وبلاگ ما</span></a></li>
+<li><a href="{% url 'website:contact' %}" target="_blank"><i class="fas fa-angle-left"></i> <span>تماس با ما</span></a></li>
+</ul>
+</div>
+</div>
+<div class="col-lg-3 col-md-6 col-sm-6 col-12">
+<div class="footer-links footer-newsletter">
+<h3>خبرنامه</h3>
+<p>برای دریافت اخبار به روز ما در خبرنامه ما مشترک شوید!</p>
+<form action="{% url 'website:newsletter' %}" method="post" >
+    {% csrf_token %} 
+<input name="email" type="text" class="form-control" placeholder="ایمیل شما">
+<button class="default-button" type="submit"><span>ارسال</span></button>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div class="popup">
+<div class="popup-content">
+<button class="close-btn" id="popup-close"><i class="fas fa-times"></i></button>
+<form action="{% url 'website:search' %}">
+<div class="input-group search-box">
+<input type="text" class="form-control" name="s" placeholder="جستجو">
+<button class="btn" type="submit"><i class="fas fa-search"></i></button>
+</div>
+</form>
+</div>
+</div>
+<div class="go-top"><img src="{% static 'assets/images/png/002-top.png' %}" alt=""></div>
+<!-- __________________________-goftino_______________________________________ -->
+<script type="text/javascript">
+    !function(){var i="MNBED2",a=window,d=document;function g(){var g=d.createElement("script"),s="https://www.goftino.com/widget/"+i,l=localStorage.getItem("goftino_"+i);g.async=!0,g.src=l?s+"?o="+l:s;d.getElementsByTagName("head")[0].appendChild(g);}"complete"===d.readyState?g():a.attachEvent?a.attachEvent("onload",g):a.addEventListener("load",g,!1);}();
+</script>
+<!-- __________________________-goftino_______________________________________ -->
+
+<script src="{% static 'assets/js/snippets.js' %}"></script>
+
+<script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+
+<script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+
+<script src="{% static 'assets/js/meanmenu.js' %}"></script>
+
+<script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
+
+<script src="{% static 'assets/js/jquery.magnific-popup.min.js' %}"></script>
+
+<script src="{% static 'assets/js/jquery.nice-select.min.js' %}"></script>
+
+<script src="{% static 'assets/js/form-validator.min.js' %}"></script>
+<script src="{% static 'assets/js/contact-form-script.js' %}"></script>
+
+<script src="{% static 'assets/js/appear.min.js' %}"></script>
+
+<script src="{% static 'assets/js/TweenMax.js' %}"></script>
+
+<script src="{% static 'assets/js/odometer.min.js' %}"></script>
+
+<script src="{% static 'assets/js/jquery.barfiller.js' %}"></script>
+
+<script src="{% static 'assets/js/custom.js' %}"></script>
+</body>
+</html>

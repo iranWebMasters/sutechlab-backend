@@ -1,0 +1,324 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<!-- ----------------------------------------------------------------------------------------- -->
+
+<div class="uni-banner">
+<div class="container">
+<div class="uni-banner-text">
+<h1>درباره ما</h1>
+<ul>
+<li><a href="{% url 'website:index' %}">خانه</a></li>
+<li>درباره ما</li>
+</ul>
+</div>
+</div>
+</div>
+
+{% for aboutus in about %}
+<div class="about about-1 ptb-100">
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
+<div class="about-img-area">
+<div class="about-img-1">
+<img src="{{ aboutus.aboutuspage_image.url }}" alt="image">
+</div>
+<!-- <div class="about-img-2">
+<img src="{% static 'assets/images/about/a1-2.jpg' %}" alt="image">
+<a class="video-popup" href="https://www.youtube.com/watch?v=0qNsC-NLuhM"><i class="flaticon-play-button"></i></a>
+</div> -->
+</div>
+</div>
+<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
+<div class="about-text-area">
+<div class="default-section-title">
+<h6>درباره ما</h6>
+<h3>{{ aboutus.title}}</h3>
+</div>
+<p>{{ aboutus.content|safe}}</p>
+</ul>
+</div>
+<!-- <a class="default-button" href="about.html"><span>اطلاعات بیشتر</span></a> -->
+<!-- <div class="fun-facts-area">
+<div class="row justify-content-center">
+<div class="col-lg-4 col-md-4 col-sm-4 col-6">
+<div class="fun-facts-card">
+<i class="flaticon-support"></i>
+<h2><span class="odometer" data-count="300">00</span><sup>+</sup></h2>
+<p>رضایت مشتریان</p>
+</div>
+</div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-6">
+<div class="fun-facts-card">
+<i class="flaticon-project-plan"></i>
+<h2><span class="odometer" data-count="700">00</span><sup>+</sup></h2>
+<p>پروژه تکمیل شده</p>
+</div>
+</div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-6">
+<div class="fun-facts-card">
+<i class="flaticon-badge"></i>
+<h2><span class="odometer" data-count="30">00</span><sup>+</sup></h2>
+<p>برنده جوایز</p>
+</div>
+</div>
+</div>
+</div> -->
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endfor %}
+
+
+<!-- <div class="features features-bg features-bg-4 pt-100">
+<div class="container">
+<div class="row">
+<div class="col-xxl-4 col-xl-12 col-lg-12 col-md-12 col-12">
+<div class="default-section-title">
+<h6>ویژگی های خدمات</h6>
+<h3>ما بهترین ویژگی ها را برای تمیز کردن خانه و محل کار شما ارائه می دهیم</h3>
+<p>لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد.</p>
+</div>
+</div>
+<div class="col-xxl-8 col-xl-12 col-lg-12 col-md-12 col-12">
+<div class="features-card-area">
+<div class="row">
+<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+<div class="features-card fmt-0">
+<div class="features-icon-area">
+<div class="features-card-icons">
+<img class="shape1" src="{% static 'assets/images/shape/shape-1.png' %}" alt="image">
+<img class="shape2" src="{% static 'assets/images/shape/shape-1-1.jpg' %}" alt="image">
+<i class="flaticon-customer-support"></i>
+</div>
+</div>
+<div class="features-card-text">
+<h4>ارسال یک پیام</h4>
+<p>لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم استاندارد صنعت بوده است.</p>
+</div>
+</div>
+</div>
+<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+<div class="features-card fmt-0">
+<div class="features-icon-area">
+<div class="features-card-icons">
+<img class="shape1" src="{% static 'assets/images/shape/shape-1.png' %}" alt="image">
+<img class="shape2" src="{% static 'assets/images/shape/shape-1-1.jpg' %}" alt="image">
+<i class="flaticon-appointment"></i>
+</div>
+</div>
+<div class="features-card-text">
+<h4>برنامه نظافت</h4>
+<p>لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم استاندارد صنعت بوده است.</p>
+</div>
+</div>
+</div>
+<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+<div class="features-card">
+<div class="features-icon-area">
+<div class="features-card-icons">
+<img class="shape1" src="{% static 'assets/images/shape/shape-1.png' %}" alt="image">
+<img class="shape2" src="{% static 'assets/images/shape/shape-1-1.jpg' %}" alt="image">
+<i class="flaticon-support-1"></i>
+</div>
+</div>
+ <div class="features-card-text">
+<h4>ارائه خدمات</h4>
+<p>لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم استاندارد صنعت بوده است.</p>
+</div>
+</div>
+</div>
+<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+<div class="features-card">
+<div class="features-icon-area">
+<div class="features-card-icons">
+<img class="shape1" src="{% static 'assets/images/shape/shape-1.png' %}" alt="image">
+<img class="shape2" src="{% static 'assets/images/shape/shape-1-1.jpg' %}" alt="image">
+<i class="flaticon-bag"></i>
+</div>
+</div>
+<div class="features-card-text">
+<h4>پشتیبانی 24/7</h4>
+<p>لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم استاندارد صنعت بوده است.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div> -->
+
+
+<!-- <div class="team about-team ptb-100">
+<div class="container">
+<div class="default-section-title default-section-title-middle">
+<h6>تیم ما</h6>
+<h3>تیم با تجربه ما</h3>
+</div>
+<div class="section-content">
+<div class="row">
+<div class="col-lg-3 col-md-6 col-sm-6 col-12">
+<div class="team-card">
+<img src="{% static 'assets/images/team/t1.jpg' %}" alt="image">
+<div class="team-text-area">
+<h4>جان اسمیت</h4>
+<p>مسئول امور مالی</p>
+<div class="team-social-icons">
+<ul>
+<li><a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+<li><a href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+<li><a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a></li>
+<li><a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="col-lg-3 col-md-6 col-sm-6 col-12">
+<div class="team-card">
+<img src="{% static 'assets/images/team/t2.jpg' %}" alt="image">
+<div class="team-text-area">
+<h4>میشل گری</h4>
+<p>بازاریاب</p>
+<div class="team-social-icons">
+<ul>
+<li><a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+<li><a href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+<li><a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a></li>
+<li><a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="col-lg-3 col-md-6 col-sm-6 col-12">
+<div class="team-card">
+<img src="{% static 'assets/images/team/t3.jpg' %}" alt="image">
+<div class="team-text-area">
+<h4>پری هنری</h4>
+<p>طراح وب</p>
+<div class="team-social-icons">
+<ul>
+<li><a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+<li><a href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+ <li><a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a></li>
+<li><a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="col-lg-3 col-md-6 col-sm-6 col-12">
+<div class="team-card">
+<img src="{% static 'assets/images/team/t4.jpg' %}" alt="image">
+<div class="team-text-area">
+<h4>ادوارد تیلور</h4>
+<p>مدیر عامل</p>
+<div class="team-social-icons">
+<ul>
+<li><a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+<li><a href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+<li><a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a></li>
+<li><a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div> -->
+
+
+<!-- <div class="testimonial ptb-100">
+<div class="container">
+<div class="default-section-title default-section-title-middle">
+<h6>بازخورد مشتریان</h6>
+<h3>مشتریان درباره ما چه می گویند</h3>
+</div>
+<div class="section-content">
+<div class="row justify-content-center">
+<div class="col-lg-4 col-md-6 col-sm-12 col-12">
+<div class="testimonial-card">
+<i class="flaticon-right-quote"></i>
+<div class="stars">
+<ul>
+<li><i class="fas fa-star"></i></li>
+<li><i class="fas fa-star"></i></li>
+<li><i class="fas fa-star"></i></li>
+<li><i class="fas fa-star"></i></li>
+<li><i class="far fa-star"></i></li>
+<li><span>4.0</span></li>
+</ul>
+</div>
+<p>لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم استاندارد صنعت بوده است.</p>
+<div class="testimonial-footer">
+<img src="{% static 'assets/images/testimonial/tc1.jpg' %}" alt="image">
+<div class="testimonial-footer-intro">
+<h4>جان اسمیت</h4>
+<p>طراح وب</p>
+</div>
+</div>
+</div>
+</div>
+<div class="col-lg-4 col-md-6 col-sm-12 col-12">
+<div class="testimonial-card">
+<i class="flaticon-right-quote"></i>
+<div class="stars">
+<ul>
+<li><i class="fas fa-star"></i></li>
+<li><i class="fas fa-star"></i></li>
+<li><i class="fas fa-star"></i></li>
+<li><i class="fas fa-star"></i></li>
+<li><i class="fas fa-star"></i></li>
+<li><span>5.0</span></li>
+</ul>
+</div>
+<p>لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم استاندارد صنعت بوده است.</p>
+<div class="testimonial-footer">
+<img src="{% static 'assets/images/testimonial/tc2.jpg' %}" alt="image">
+<div class="testimonial-footer-intro">
+<h4>سن واتسون</h4>
+<p>طراح وب</p>
+</div>
+</div>
+</div>
+</div>
+<div class="col-lg-4 col-md-6 col-sm-12 col-12">
+<div class="testimonial-card">
+<i class="flaticon-right-quote"></i>
+<div class="stars">
+<ul>
+<li><i class="fas fa-star"></i></li>
+<li><i class="fas fa-star"></i></li>
+<li><i class="fas fa-star"></i></li>
+<li><i class="fas fa-star"></i></li>
+<li><i class="far fa-star"></i></li>
+<li><span>4.0</span></li>
+</ul>
+</div>
+<p>لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم استاندارد صنعت بوده است.</p>
+<div class="testimonial-footer">
+<img src="{% static 'assets/images/testimonial/tc3.jpg' %}" alt="image">
+<div class="testimonial-footer-intro">
+<h4>الکس آلینا</h4>
+<p>طراح وب</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div> -->
+
+<!-- ----------------------------------------------------------------------------------------- -->
+{% endblock content %}

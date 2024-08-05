@@ -1,0 +1,26 @@
+/*================================================
+Default CSS
+=================================================*/
+
+
+[type="email"], [type="number"], [type="tel"], [type="url"] {
+  direction: rtl;
+}
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6, span, p, li, a {
+letter-spacing: 0px !important;
+font-family: "Vazirmatn RD FD", sans-serif;
+}
+.odometer.odometer-auto-theme,.odometer.odometer-theme-default{direction: ltr;font-family: "Vazirmatn RD FD", sans-serif;}
+.coming-soon-area .coming-soon .list ul {
+  direction: ltr;
+}
+button, input, optgroup, select, textarea {
+font-family: "Vazirmatn RD FD", sans-serif;
+}
+.theme-switcher {
+  right: unset!important;
+  left: 80px;
+}
+
+
+/*# sourceMappingURL=rtl.css.map */
