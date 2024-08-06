@@ -1,48 +1,72 @@
-
-{% extends 'base.html' %}
-
-{% load static %}
-
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block content %} 
 {% load main_tags %}
 
 <!-- -------------------base----------------- -->
-
 <div class="main-banner banner bg-f9faff">
-<div class="shape">
-<img class="black-line" src="{% static 'assets/images/banner/box-shape1.png' %}" alt="shape">
-<img class="orange-line" src="{% static 'assets/images/banner/box-shape2.png' %}" alt="shape">
-<img class="half-circle" src="{% static 'assets/images/banner/half-circle.png' %}" alt="shape">
+
+  <div class="shape">
+    <img
+      class="black-line"
+      src="{% static 'assets/images/banner/box-shape1.png' %}"
+      alt="shape"
+    />
+    <img
+      class="orange-line"
+      src="{% static 'assets/images/banner/box-shape2.png' %}"
+      alt="shape"
+    />
+    <img
+      class="half-circle"
+      src="{% static 'assets/images/banner/half-circle.png' %}"
+      alt="shape"
+    />
+  </div>
+  <div class="container-fluid">
+    <div class="row align-items-center">
+      <div class="col-lg-7">
+        <div class="banner-text-area banner-text-area-3">
+          <h6>به آزمایشگاه دانشگاه صنعتی شیراز خوش آمدید !</h6>
+          <h1>{{home.title}}</h1>
+          <p>{{home.top_text|safe|truncatechars:600}}</p>
+          <a
+            class="default-button default-button-4"
+            href="{% url 'services:index' %}"
+            ><span>خدمات ما</span></a
+          >
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="banner-img-area">
+          <img class="main-img" src="{{home.banner.url}}" alt="image" />
+          <div class="shapes">
+            <img
+              class="b3-dot"
+              src="{% static 'assets/images/banner/b3-dots.png' %}"
+              alt="shape"
+            />
+            <img
+              class="dot-circle"
+              src="{% static 'assets/images/banner/dot-circle.png' %}"
+              alt="shape"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="container-fluid">
-<div class="row align-items-center">
-<div class="col-lg-7">
-<div class="banner-text-area banner-text-area-3">
-<h6>به آزمایشگاه دانشگاه صنعتی شیراز خوش آمدید !</h6>
-<h1>{{home.title}}</h1>
-<p>{{home.top_text|safe|truncatechars:600}}</p>    
-<a class="default-button default-button-4" href="{% url 'services:index' %}"><span>خدمات ما</span></a>
-</div>
-</div>
-<div class="col-lg-5">
-<div class="banner-img-area">
-<img class="main-img" src="{{home.banner.url}}" alt="image">
-<div class="shapes">
-<img class="b3-dot" src="{% static 'assets/images/banner/b3-dots.png' %}" alt="shape">
-<img class="dot-circle" src="{% static 'assets/images/banner/dot-circle.png' %}" alt="shape">
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+<br>
+{% include 'website/slideshow.html' %}
 
 <div class="about about-1 pt-100">
-<div class="container-fluid">
- <div class="row">
-<div class="col-lg-6 col-md-12 col-sm-12 col-12">
-<div class="about-img-area-3" style='background-image: url("{{home.aboutـbanner.url}}")'>
-<!-- <div class="about-img-list">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-6 col-md-12 col-sm-12 col-12">
+        <div
+          class="about-img-area-3"
+          style='background-image: url("{{home.aboutـbanner.url}}")'
+        >
+          <!-- <div class="about-img-list">
 <ul>
 <li><strong>%100</strong> شرکت مورد اعتماد</li>
 <li><strong>460</strong> پروژه تکمیل شده</li>
@@ -50,20 +74,24 @@
 <li><strong>200</strong> رضایت مشتریان</li>
 </ul>
 </div> -->
-</div>
-</div>
-<div class="col-lg-6 col-md-12 col-sm-12 col-12">
-<div class="about-text-area pl-20">
-<div class="default-section-title">
-<h6> درباره ما </h6>
-<h3>{{home.aboutـtitle}}</h3>
-</div>
-<p>{{home.about_text|safe|truncatechars:1100}}</p>
-<a class="default-button default-button-4" href="{% url 'website:about' %}"><span>اطلاعات بیشتر</span></a>
-</div>
-</div>
-</div>
-</div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12 col-sm-12 col-12">
+        <div class="about-text-area pl-20">
+          <div class="default-section-title">
+            <h6>درباره ما</h6>
+            <h3>{{home.aboutـtitle}}</h3>
+          </div>
+          <p>{{home.about_text|safe|truncatechars:1100}}</p>
+          <a
+            class="default-button default-button-4"
+            href="{% url 'website:about' %}"
+            ><span>اطلاعات بیشتر</span></a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- 
@@ -99,7 +127,6 @@
 <!-- service -->
 <!-- {% include 'website/index-services.html' %} -->
 {% display_latest_services %}
-
 
 <!-- ---------------/ -->
 
@@ -305,8 +332,6 @@
 </div> -->
 
 {% display_latest_posts %}
-
-
 
 <!-- _____________footer__________________ -->
 {% endblock content %}
