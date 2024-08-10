@@ -71,7 +71,7 @@ class BlogDetailView(DetailView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        form = self.form_class(request.POST)  # فرم را با استفاده از form_class نمونه‌سازی کنید
+        form = self.form_class(request.POST)  
         if form.is_valid():
             return self.form_valid(form)
         else:

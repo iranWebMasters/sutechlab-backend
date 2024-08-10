@@ -16,6 +16,7 @@ class Category(models.Model):
 
 class Post(models.Model):
     title = models.CharField("عنوان", max_length=255)
+    slug = models.SlugField("اسلاگ", max_length=255, unique=True, blank=True)
     content = RichTextField("محتوا")
     tags = TaggableManager("برچسب‌ها")
     published_date = jmodels.jDateField("تاریخ انتشار", null=True)

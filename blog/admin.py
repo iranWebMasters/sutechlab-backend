@@ -14,7 +14,8 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ['title', 'content']
     filter_horizontal = ('category',)
     readonly_fields = ('counted_comment',)
-    exclude = ('counted_views',) 
+    exclude = ('counted_views',)
+    prepopulated_fields = {"slug": ("title", "author")}
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('name', 'phone_number', 'post', 'approved', 'created_date', 'updated_date')
