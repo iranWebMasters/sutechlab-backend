@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'blog',
     'taggit',
     'services',
+    'accounts',
 
     'decouple',
     'django.contrib.humanize',
@@ -161,3 +162,9 @@ if config("USE_SSL_SETTINGS",default=False,cast=bool):
     CSRF_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SECURE = True
     SESSION_COOKIE_SAMESITE = 'Strict'
+    
+    
+    
+# registration url redirects
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'

@@ -91,10 +91,19 @@
           <div class="col-lg-3">
             <div class="topbar-right-side">
               <div class="account">
-                <a href="profile-authentication.html"
-                  ><i class="fas fa-user"></i> ورود</a
-                >
-              </div>
+                {% if user.is_authenticated %}
+                    <form id="logout-form" action="{% url 'accounts:logout' %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" style="border:none; background:none; padding:0; cursor:pointer;">
+                            <i class="fas fa-user"></i> خروج
+                        </button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'accounts:login' %}"><i class="fas fa-user"></i> ورود</a>
+                {% endif %}
+            </div>
+            
+            
             </div>
           </div>
         </div>
