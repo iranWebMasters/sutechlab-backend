@@ -1,9 +1,13 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.urls import reverse
 from taggit.managers import TaggableManager
 from django_jalali.db import models as jmodels
 from ckeditor.fields import RichTextField
+from django.contrib.auth import get_user_model
+
+
+User = get_user_model()
+
 
 class Category(models.Model):
     name = models.CharField("نام", max_length=31)
@@ -23,7 +27,7 @@ class Post(models.Model):
     status = models.BooleanField("نمایش در سایت", default=True)
     created_date = jmodels.jDateField("تاریخ ایجاد", auto_now_add=True)
     updated_date = jmodels.jDateField("تاریخ بروزرسانی", auto_now=True)
-    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name="نویسنده")
+    author = models.ForeignKey('accounts.Profile', on_delete=models.SET_NULL, null=True, verbose_name="نویسنده")
     counted_views = models.IntegerField("تعداد بازدیدها", default=0)
     counted_comment = models.IntegerField("تعداد نظرات", default=0)
     category = models.ManyToManyField(Category, verbose_name="دسته‌بندی")

@@ -1,8 +1,125 @@
+<!-- templates/registration/register.html -->
+{% include 'website/messages.html' %}
+<div class="register-container">
+    <h2>ثبت‌ نام</h2>
+    <form method="post" class="register-form">
+        {% csrf_token %}
 
-<form  method="post">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type"submit">
-        Register
-    </button>
-</form>
+        <div class="form-group">
+            <label for="id_email">ایمیل</label>
+            {{ form.email }}
+            {% if form.email.errors %}
+                <div class="error-message">
+                    {% for error in form.email.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="id_password1">گذرواژه</label>
+            {{ form.password1 }}
+            {% if form.password1.errors %}
+                <div class="error-message">
+                    {% for error in form.password1.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="id_password2">تکرار گذرواژه</label>
+            {{ form.password2 }}
+            {% if form.password2.errors %}
+                <div class="error-message">
+                    {% for error in form.password2.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-success">ثبت‌ نام</button>
+    </form>
+</div>
+
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+    }
+
+    .register-container {
+        width: 350px;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        background-color: #ffffff;
+        transition: all 0.3s ease;
+    }
+
+    .register-container:hover {
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .register-container h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #555;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        font-size: 16px;
+        background-color: #f8f8f8;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus {
+        border-color: #007bff;
+        background-color: #fff;
+    }
+
+    .register-form .btn {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #28a745;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .register-form .btn:hover {
+        background-color: #218838;
+    }
+
+    .error-message {
+        color: #dc3545;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+</style>

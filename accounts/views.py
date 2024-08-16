@@ -1,10 +1,10 @@
 from django.contrib.auth.views import LogoutView,LoginView
-from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
 from django.views.generic import FormView
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from .forms import CustomUserCreationForm
 
 class LoginView(LoginView):
     def form_valid(self, form):
@@ -13,12 +13,12 @@ class LoginView(LoginView):
 
 class LogoutView(LogoutView):
     def dispatch(self, request, *args, **kwargs):
-        messages.success(request, "شما با موفقیت از سایت خارج شدید.")
+        messages.warning(request, "شمااز سایت خارج شدید.")
         return super().dispatch(request, *args, **kwargs)
 
 class RegisterView(FormView):
     template_name = 'registration/register.html'
-    form_class = UserCreationForm
+    form_class = CustomUserCreationForm
     success_url = reverse_lazy('accounts:login')
     
     def form_valid(self, form):
