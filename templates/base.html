@@ -66,7 +66,7 @@
             </ul>
           </div>
         </div>
-        <div class="col-lg-3">
+        {% comment %} <div class="col-lg-3">
           <div class="topbar-right-side">
             <div class="account">
               {% if user.is_authenticated %}
@@ -80,10 +80,8 @@
               <a href="{% url 'accounts:login' %}"><i class="fas fa-user"></i> ورود</a>
               {% endif %}
             </div>
-
-
           </div>
-        </div>
+        </div> {% endcomment %}
       </div>
     </div>
   </div>
@@ -141,9 +139,20 @@
                     </button>
                   </li>
                   <li>
-                    <a class="default-button default-button-3" href="{% url 'website:contact' %}"><span>شروع
-                        کنید</span></a>
+                    {% if user.is_authenticated %}
+                    <form id="logout-form" action="{% url 'accounts:logout' %}" method="post" style="display:inline;">
+                      {% csrf_token %}
+                      <button type="submit" class="default-button default-button-3">
+                        <span>خروج</span>
+                      </button>
+                    </form>
+                    {% else %}
+                    <a class="default-button default-button-3" href="{% url 'accounts:login' %}">
+                      <span>ورود</span>
+                    </a>
+                    {% endif %}
                   </li>
+                  
                 </ul>
               </div>
             </div>
