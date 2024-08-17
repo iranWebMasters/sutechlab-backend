@@ -3,7 +3,7 @@
 :root {
   --fontFamily: 'Vazirmatn RD FD', sans-serif;
   --fontFamily2: 'Vazirmatn RD FD', sans-serif;
-  --mainColor: #60bc0f;
+  --mainColor: #ff630e;
   --secondColor: #2e2f46;
   --backgroundColor: #ebebeb;
   --transparentColor: #fcebe5;
@@ -2858,9 +2858,9 @@ Index 03 About Area CSS
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  min-height: 70vh;
+  background-image: url("../images/about/a3.jpg");
   height: 100%;
-  /* position: relative; */
+  position: relative;
 }
 
 .about-img-area-3 img {
@@ -3132,19 +3132,18 @@ Index 03 Newsletter Area CSS
 Uni Banner Area CSS
 =================================================*/
 .uni-banner {
-  background-color: white !important; /* این را اضافه کنید تا اطمینان حاصل شود که این تغییر اعمال شود */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  background-image: url("../images/inner-images/uni-banner-bg.jpg");
   position: relative;
 }
-
 
 .uni-banner::before {
   content: '';
   width: 100%;
   height: 100%;
-  background-color: #fdf5ebb3;
+  background-color: rgba(0, 0, 0, 0.7);
   position: absolute;
   right: 0;
   top: 0;
@@ -3158,7 +3157,7 @@ Uni Banner Area CSS
 }
 
 .uni-banner-text h1 {
-  color: rgba(0, 0, 0, 0.8); /* رنگ تیره‌تر با شفافیت بیشتر */
+  color: var(--fix-whiteColor);
   margin-bottom: 15px;
   font-size: 60px;
   font-weight: 900;
@@ -3180,9 +3179,8 @@ Uni Banner Area CSS
 }
 
 .uni-banner-text ul li a {
-  color: rgba(67, 41, 0, 0.8); /* رنگ تیره‌تر با شفافیت بیشتر */
+  color: var(--fix-whiteColor);
 }
-
 
 .uni-banner-text ul li::after {
   content: '/';
@@ -3533,16 +3531,10 @@ Details page Common Area CSS
 }
 
 .recent-news-card img {
-  width: 100px; /* تغییر ابعاد عرض تصویر */
-  height: auto; /* اتصال ابعاد زمینه تصویر به عرض تصویر */
-  border-radius: 0; /* تبدیل تصویر به یک مربع */
   position: absolute;
+  border-radius: 50%;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
 }
-
-
 
 .recent-news-card h5 {
   line-height: 1.4;

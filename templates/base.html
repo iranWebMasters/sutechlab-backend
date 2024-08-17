@@ -8,7 +8,7 @@
     <meta name="keywords" content="آزمایشگاه دانشگاه صنعتی شیراز" />
     <meta name="description" content="آزمایشگاه دانشگاه صنعتی شیراز" />
     <meta name="author" content="Barat Hadian" />
-
+    <base href="{% static '/' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/animate.min.css' %}" />
     <link
       rel="stylesheet"
@@ -47,9 +47,9 @@
       type="image/png"
       href="{% static 'assets/images/fav-icon.png' %}"
     />
-    <base href="{% static '/' %}"/>
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
-    
+    <link href="assets/css/registration.css" rel="stylesheet" />
+
     <link rel="stylesheet" href="assets/css/ratherapp-slideshow.css" />
   </head>
   <body>
@@ -92,18 +92,31 @@
             <div class="topbar-right-side">
               <div class="account">
                 {% if user.is_authenticated %}
-                    <form id="logout-form" action="{% url 'accounts:logout' %}" method="post" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" style="border:none; background:none; padding:0; cursor:pointer;">
-                            <i class="fas fa-user"></i> خروج
-                        </button>
-                    </form>
+                <form
+                  id="logout-form"
+                  action="{% url 'accounts:logout' %}"
+                  method="post"
+                  style="display: inline"
+                >
+                  {% csrf_token %}
+                  <button
+                    type="submit"
+                    style="
+                      border: none;
+                      background: none;
+                      padding: 0;
+                      cursor: pointer;
+                    "
+                  >
+                    <i class="fas fa-user"></i> خروج
+                  </button>
+                </form>
                 {% else %}
-                    <a href="{% url 'accounts:login' %}"><i class="fas fa-user"></i> ورود</a>
+                <a href="{% url 'accounts:login' %}"
+                  ><i class="fas fa-user"></i> ورود</a
+                >
                 {% endif %}
-            </div>
-            
-            
+              </div>
             </div>
           </div>
         </div>
