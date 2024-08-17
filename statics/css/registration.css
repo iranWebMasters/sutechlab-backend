@@ -1,15 +1,14 @@
-/* استایل پایه برای فرم و اجزای آن */
 .login-container,
 .register-container {
     width: 90%;
-    max-width: 400px; /* حداکثر عرض برای فرم */
+    max-width: 400px; 
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
     background-color: #ffffff;
     margin: auto;
     margin-top: 5%;
-    margin-bottom: 132px; /* فاصله پایین */
+    margin-bottom: 150px; 
     box-sizing: border-box;
 }
 
@@ -69,18 +68,89 @@
     padding: 12px;
     font-size: 16px;
     color: #fff;
-    background-color: #28a745;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.btn:hover {
+.btn-primary {
+    background-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.btn-success {
+    background-color: #28a745;
+}
+
+.btn-success:hover {
     background-color: #218838;
 }
 
-/* ریسپانسیو */
+.btn-danger {
+    background-color: #dc3545;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+}
+
+.btn-info:hover {
+    background-color: #138496;
+}
+
+.btn-light {
+    background-color: #f8f9fa;
+    color: #212529;
+}
+
+.btn-light:hover {
+    background-color: #e2e6ea;
+}
+
+.btn-dark {
+    background-color: #343a40;
+}
+
+.btn-dark:hover {
+    background-color: #23272b;
+}
+
+.btn-link {
+    background-color: transparent;
+    color: #007bff;
+    border: none;
+    font-size: 16px;
+}
+
+.btn-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
 @media (max-width: 768px) {
     .login-container,
     .register-container {

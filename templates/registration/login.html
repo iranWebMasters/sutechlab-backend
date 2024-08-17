@@ -1,5 +1,4 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <div class="login-container">
   <h2>ورود به حساب</h2>
   <form method="post" class="login-form">
@@ -30,8 +29,8 @@
     <button type="submit" class="btn btn-success">ورود</button>
   </form>
   <div class="register-section">
-    <p>حساب کاربری ندارید؟</p>
-    <a href="{% url 'accounts:register' %}" class="btn btn-primary">ثبت‌ نام</a>
+    <br />
+    <a href="{% url 'accounts:register' %}" class="btn btn-info">ثبت‌ نام</a>
   </div>
 </div>
 {% endblock %}
