@@ -1,0 +1,39 @@
+
+{% load static %}
+{% load jformat %}
+<div class="blog ptb-100">
+    <div class="container">
+    <div class="default-section-title default-section-title-middle">
+    <h6>وبلاگ</h6>
+    <h3>اخبار وبلاگ </h3>
+    </div>
+    <div class="section-content">
+    <div class="row justify-content-center">
+        {% for post in posts %}
+    <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+    <div class="blog-card blog-card-3">
+    <div class="blog-card-img">
+    <a href="{% url 'blog:single' pk=post.id %}"><img src={{post.image.url}} alt="image"></a>
+    <a class="blog-card-category" href="{% url 'blog:single' pk=post.id %}">{{post.category.first}}</a>
+    </div>
+    <div class="blog-card-text">
+    <div class="blog-date">
+    <ul>
+    <!-- <li><i class="far fa-user"></i> توسط مدیر</li> -->
+    <!-- <li><i class="far fa-comments"></i> نظرات</li> -->
+    <li><i class="far fa-calendar-alt"></i>{{post.published_date|jformat:" %Y %d %B " }}</li>
+    </ul>
+    </div>
+    <h4><a href="{% url 'blog:single' pk=post.id %}">{{post.title}}</a></h4>
+    <p>{{post.content|truncatewords:37|safe}}</p>
+    <a class="read-more-btn" href="{% url 'blog:single' pk=post.id %}">بیشتر بخوانید</a>
+    </div>
+    </div>
+    </div>
+    {% endfor %}
+
+    </div>
+    </div>
+    </div>
+    </div>
+    

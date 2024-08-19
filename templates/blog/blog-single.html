@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load blog_tags %}
+
+
+{% block content %}
+
+<div class="uni-banner">
+<div class="container">
+<div class="uni-banner-text">
+<h1>{{post.title}}</h1>
+<ul>
+<li><a href="{% url 'website:index' %}">خانه</a></li>
+<li>{{post.title}}</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+<div class="blog ptb-100">
+<div class="container">
+<div class="row">
+<div class="col-lg-8 col-md-12 col-sm-12 col-12">
+<div class="blog-details-text-area pr-20">
+<div class="blog-card mt-0">
+<div class="blog-card-img">
+<a href="{% url 'blog:single' pk=post.id %}"><img src="{{ post.image.url }}" alt="image"></a>
+<a class="blog-card-category" href="blog-details.html">خدمات نظافت</a>
+</div>
+<div class="blog-card-text">
+<div class="blog-date">
+<ul>
+<li><i class="far fa-user"></i> توسط {{post.author}}</li>
+<li><i class="far fa-comments"></i> نظرات  ({% comment_count post.id%}) </li>
+<li><i class="far fa-calendar-alt"></i> 21 دی 1400</li>
+</ul>
+</div>
+<h4>{{post.title}}</h4>
+<p>{{post.content|safe}}</p>
+</div>
+</div>
+<div class="blog-text-footer">
+<div class="tag-area">
+<ul>
+<li><i class="fas fa-tags"></i></li>
+{% for category in post.category.all %}
+  {% if not forloop.last %}
+    <li>{{ category }} , </li>
+  {% else %}
+    <li>{{ category }}</li>
+  {% endif %}
+{% endfor %}
+</ul>
+</div>
+<!-- <div class="social-icons">
+<ul>
+<li><span>اشتراک گذاری:</span></li>
+<li><a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+<li><a href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+<li><a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a></li>
+<li><a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a></li>
+</ul>
+</div> -->
+</div>
+
+{% include 'blog/blog-comments.html' %}
+{% include 'blog/blog-send-comment.html' %}
+
+</div>
+</div>
+<div class="col-lg-4 col-md-12 col-sm-12 col-12">
+<div class="sidebar-content pt-30">
+{% include 'blog/blog-search.html' %}
+{% postcategories %}
+{% popularposts %}
+<div class="sidebar-card sd-tag">
+<h3>برچسب ها</h3>
+<ul>
+{% for tag in post.tags.all %}
+<li><a href="{% url 'blog:tag' tag_name=tag.name %}">{{ tag.name }}</a></li>
+{% endfor %}
+
+</ul>
+</div>
+<!-- {% include 'blog/blog-hours.html' %} -->
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endblock content %}

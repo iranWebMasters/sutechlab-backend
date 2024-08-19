@@ -1,0 +1,49 @@
+<!-- templates/registration/register.html -->
+{% extends "base.html" %}
+{% block content %}
+{% include 'website/messages.html' %}
+<div class="register-container">
+    <h2>ثبت‌ نام</h2>
+    <form method="post" class="register-form">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="id_email">ایمیل</label>
+            {{ form.email }}
+            {% if form.email.errors %}
+                <div class="error-message">
+                    {% for error in form.email.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="id_password1">گذرواژه</label>
+            {{ form.password1 }}
+            {% if form.password1.errors %}
+                <div class="error-message">
+                    {% for error in form.password1.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="id_password2">تکرار گذرواژه</label>
+            {{ form.password2 }}
+            {% if form.password2.errors %}
+                <div class="error-message">
+                    {% for error in form.password2.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-success">ثبت‌ نام</button>
+    </form>
+</div>
+{% endblock %}

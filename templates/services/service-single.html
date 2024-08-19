@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load blog_tags %}
+{% load static %}
+
+{% block content %}
+<div class="uni-banner">
+<div class="container">
+<div class="uni-banner-text">
+<h1>{{post.title}}</h1>
+<ul>
+<li><a href="{% url 'website:index' %}">خانه</a></li>
+<li>جزئیات خدمات</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+<div class="service detials-page ptb-100">
+<div class="container">
+<div class="row">
+<div class="col-lg-8 col-md-12 col-sm-12 col-12">
+<div class="details-text-area pr-20">
+<div class="details-page-img">
+<img src="{{ post.image.url }}" alt="image">
+</div>
+<h3>{{post.title}}</h3>
+<p>{{post.content|safe}}</p>
+</div>
+</div>
+<div class="col-lg-4 col-md-12 col-sm-12 col-12">
+<div class="sidebar-content pt-30">
+{% include 'services/service-search.html' %}
+{% postcategories %}
+{% include 'blog/blog-hours.html' %}
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+{% endblock content %}

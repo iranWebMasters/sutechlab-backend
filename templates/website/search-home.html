@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load blog_tags %}
+
+{% block content %}
+
+<div class="uni-banner">
+<div class="container">
+<div class="uni-banner-text">
+<h1>نتایج جست و جو</h1>
+<ul>
+<li><a href="{% url 'website:index' %}">خانه</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="blog-service ptb-100">
+<div class="container">
+<div class="default-section-title default-section-title-middle">
+<h6>وبلاگ</h6>
+<h3>اخبار وبلاگ ما</h3>
+</div>
+<div class="section-content">
+<div class="row justify-content-center">
+    {% if post_list %}
+    {% for post in post_list %}
+        <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+            <div class="blog-card">
+                <div class="blog-card-img">
+                    <a href="{% url 'blog:single' pk=post.id %}"><img src="{{ post.image.url }}" alt="{{ post.title }}"></a>
+                </div>
+                <div class="blog-card-text">
+                    <div class="blog-date">
+                        <ul>
+                            <li><i class="far fa-user"></i> توسط {{post.author}}</li>
+                            <li><i class="far fa-comments"></i>نظرات ({% comment_count post.id %})</li>
+                            <li><i class="far fa-calendar-alt"></i> {{post.published_date|date:"D M Y"}} </li>
+                        </ul>
+                    </div>
+                    <h4><a href="{% url 'blog:single' pk=post.id %}">{{post.title}}</a></h4>
+                    <p>{{ post.content|truncatewords_html:45|safe }}</p>
+                    <a class="read-more-btn" href="{% url 'blog:single' pk=post.id %}">بیشتر بخوانید</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
+
+{% if service_list %}
+    {% for service in service_list %}
+        <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+            <div class="service-card">
+                <div class="service-card-img">
+                    <a href="{% url 'services:single' pk=service.id %}"><img src="{{ service.image.url }}" alt="{{ service.title }}"></a>
+                </div>
+                <div class="service-card-text">
+                    <h4><a href="{% url 'services:single' pk=service.id %}">{{ service.title }}</a></h4>
+                    <p>{{ service.content|truncatewords_html:45|safe }}</p>
+                    <a class="read-more-btn" href="{% url 'services:single' pk=service.id %}">بیشتر بخوانید</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
+</div>
+</div>
+</div>
+</div>
+
+<!-- Pagination -->
+<div class="pagination-wrapper mt-60 d-flex justify-content-center">
+    <div class="pagination">
+        <ul class="pagination">
+            <li>
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}"><i class="fas fa-arrow-right"></i></a>
+                {% else %}
+                {% endif %}
+            </li>
+            {% for i in page_obj.paginator.page_range %}
+            {% if i >= page_obj.number|add:"-3" and i <= page_obj.number|add:"3" %}
+                <li class="{% if i == page_obj.number %}active{% endif %}">
+                    <a href="?page={{ i }}">{{ i }}</a>
+                </li>
+            {% endif %}
+            {% endfor %}
+        
+            <li>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}"><i class="fas fa-arrow-left"></i></a>
+                {% else %}
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+</div>
+
+{% endblock content %}

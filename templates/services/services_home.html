@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="uni-banner">
+<div class="container">
+<div class="uni-banner-text">
+<h1>خدمات </h1>
+<ul>
+<li><a href="{% url 'website:index' %}">خانه</a></li>
+<li>خدمات</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+<div class="service service-4 ptb-100">
+<div class="container">
+<div class="default-section-title default-section-title-middle">
+<h6>خدمات ما</h6>
+<h3>ما بهترین خدمات را ارائه می دهیم</h3>
+</div>
+<div class="section-content row">
+{% for post in services %}
+<div class="col-lg-4 col-md-6 col-sm-12 col-12">
+<div class="service-card-3">
+<div class="service-card-img-3">
+<a href="{% url 'services:single' pk=post.id %}">
+<img src="{{ post.image.url }}"  alt="{{ post.title }}">
+</a>
+</div>
+<div class="service-card-text-3">
+<h4><a href="{% url 'services:single' pk=post.id %}">{{ post.title }}</a></h4>
+<p>{{ post.content|truncatewords_html:45|safe }}</p>
+<a class="read-more-btn" href="{% url 'services:single' pk=post.id %}">بیشتر بدانید</a>
+</div>
+</div>
+</div>
+{% endfor %}
+</div>
+</div>
+</div>
+
+
+{% endblock content %}
