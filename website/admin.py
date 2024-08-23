@@ -19,8 +19,7 @@ class NewsletterAdmin(admin.ModelAdmin):
 
 
 class HomePageAdmin(admin.ModelAdmin):
-    list_display = ('title',)
-    search_fields = ('title',)
+    filter_horizontal = ('banner',)
 
 class AboutUsAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'title',)
@@ -28,7 +27,8 @@ class AboutUsAdmin(admin.ModelAdmin):
     readonly_fields = ('__str__',)
     summernote_fields = ('content',)
 
-
+class BannersUsAdmin(admin.ModelAdmin):
+    pass
 
 admin.site.register(HomePage, HomePageAdmin)
 admin.site.register(ContactUs, ContactUsAdmin)
@@ -36,3 +36,4 @@ admin.site.register(Newsletter, NewsletterAdmin)
 admin.site.register(WorkingHour, WorkingHourAdmin)
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(AboutUs, AboutUsAdmin)
+admin.site.register(Banners, BannersUsAdmin)

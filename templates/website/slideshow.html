@@ -1,40 +1,73 @@
-<div class="portfolio shape-bg ptb-100">
-  <div class="container">
-    <div class="default-section-title">
-      <h6>نمونه کارهای ما</h6>
-      <h3>ما بهترین خدمات را ارائه می دهیم</h3>
-    </div>
-    <div class="section-content">
-      <div class="portfolio-slider-area owl-carousel">
-        <div class="portfolio-card">
-          <img src="/images/portfolio/p1.jpg" alt="image" />
-          <div class="portfolio-text">
-            <p>نظافت دفتر کار</p>
-            <h4><a href="service-details.html">دفتر بازرگانی</a></h4>
+<div class="page animated" style="animation-duration: 500ms">
+  <div id="home">
+    <section
+      class="section swiper-container swiper-slider swiper-slider-classic swiper-container-vertical"
+      data-loop="true"
+      data-autoplay="4859"
+      data-simulate-touch="true"
+      data-direction="vertical"
+      data-nav="false"
+    >
+      <div class="swiper-wrapper text-center">
+        {% for banner in banners %}
+        <div
+          class="swiper-slide"
+          data-slide-bg="{{ banner.image.url }}"
+          style="
+            background-image: url('{{ banner.image.url }}');
+            background-size: cover;
+            height: 450px;
+          "
+        >
+          <div class="swiper-slide-caption section-md">
+            <div class="container">
+              <h1
+                data-caption-animate="fadeInLeft"
+                data-caption-delay="0"
+                class="not-animated"
+              >
+                {{ banner.title }}
+              </h1>
+              <p
+                class="text-width-large not-animated"
+                data-caption-animate="fadeInRight"
+                data-caption-delay="100"
+              >
+                {{ banner.description }}
+              </p>
+              <br/>
+              <a
+                class="default-button default-button-4"
+                href="{% url 'services:index' %}"
+                data-toggle="modal"
+                data-caption-animate="fadeInUp"
+                data-caption-delay="200"
+              >
+                خدمات
+              </a>
+            </div>
           </div>
         </div>
-        <div class="portfolio-card">
-          <img src="/images/portfolio/p2.jpg" alt="image" />
-          <div class="portfolio-text">
-            <p>نظافت صنعتی</p>
-            <h4><a href="service-details.html">طبقه تولیدی</a></h4>
-          </div>
+        {% endfor %}
+      </div>
+      <!-- Swiper Pagination-->
+      <div class="swiper-pagination__module">
+        <div class="swiper-pagination__fraction">
+          <span class="swiper-pagination__fraction-index">03</span
+          ><span class="swiper-pagination__fraction-divider">/</span
+          ><span class="swiper-pagination__fraction-count">03</span>
         </div>
-        <div class="portfolio-card">
-          <img src="/images/portfolio/p3.jpg" alt="image" />
-          <div class="portfolio-text">
-            <p>نظافت پارکینگ</p>
-            <h4><a href="service-details.html">پارکینگ خانه</a></h4>
-          </div>
-        </div>
-        <div class="portfolio-card">
-          <img src="/images/portfolio/p4.jpg" alt="image" />
-          <div class="portfolio-text">
-            <p>نظافت اتاق</p>
-            <h4><a href="service-details.html">تمیز کردن کف</a></h4>
-          </div>
+        <div class="swiper-pagination__divider"></div>
+        <div
+          class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets"
+        >
+          <span class="swiper-pagination-bullet"></span
+          ><span class="swiper-pagination-bullet"></span
+          ><span
+            class="swiper-pagination-bullet swiper-pagination-bullet-active"
+          ></span>
         </div>
       </div>
-    </div>
+    </section>
   </div>
 </div>

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.conf.urls import handler404
 from django.views import View
 from django.views.generic import ListView
-from .models import Contact,HomePage ,AboutUs
+from .models import Contact,HomePage ,AboutUs , Banners
 from django.views.generic.edit import FormView
 from .forms import ContactUsForm,NewsletterForm
 from django.urls import reverse_lazy
@@ -21,8 +21,9 @@ class HomeView(View):
 
     def get(self, request):
         home_page = HomePage.objects.first()
+        banners = home_page.banner.all() if home_page else []
         
-        return render(request, self.template_name, {'home': home_page})
+        return render(request, self.template_name, {'home': home_page, 'banners': banners})
 
 class AboutView(View):
     template_name = 'website/about.html'

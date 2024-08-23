@@ -69,18 +69,24 @@ class Newsletter(models.Model):
         return self.email
 
 
+class Banners(models.Model):
+    title = models.CharField(max_length=255, verbose_name="تیتر بنر")
+    image = models.ImageField(upload_to='banners/', verbose_name="تصویر بنر")
+    description = models.TextField(verbose_name="توضیحات بنر", blank=True, null=True)
+    def __str__(self):
+        return self.title
 
+    class Meta:
+        verbose_name = "بنر"
+        verbose_name_plural = "بنرها"
+        
 class HomePage(models.Model):
-    title = models.CharField(max_length=255, verbose_name="تیتر صفحه اصلی")
-    top_text = models.TextField(verbose_name="متن بالای صفحه")
-    banner = models.ImageField(upload_to='banners/', verbose_name="بنر صفحه اصلی")
+    banner = models.ManyToManyField(Banners, related_name='HomePage', verbose_name='بنر ها')
     aboutـtitle = models.CharField(max_length=255, verbose_name="تیتر  درباره ما صفحه اصلی")
     about_text = models.TextField(verbose_name=" متن درباره صفحه اصلی" )
     aboutـbanner = models.ImageField(upload_to='banners/', verbose_name=" بنر در باره ما صفحه اصلی")
     bottom_text = models.TextField(verbose_name="متن پایین صفحه")
 
-    def __str__(self):
-        return self.title
     
     class Meta:
         verbose_name = "صفحه اصلی"

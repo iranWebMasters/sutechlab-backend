@@ -2,61 +2,8 @@
 {% load main_tags %}
 
 <!-- -------------------base----------------- -->
-{% include 'website/main_slideshow.html' %}
-{% comment %} <div class="main-banner banner bg-f9faff">
+{% include 'website/slideshow.html' %}
 
-  <div class="shape">
-    <img
-      class="black-line"
-      src="{% static '/images/banner/box-shape1.png' %}"
-      alt="shape"
-    />
-    <img
-      class="orange-line"
-      src="{% static '/images/banner/box-shape2.png' %}"
-      alt="shape"
-    />
-    <img
-      class="half-circle"
-      src="{% static '/images/banner/half-circle.png' %}"
-      alt="shape"
-    />
-  </div>
-  <div class="container-fluid">
-    <div class="row align-items-center">
-      <div class="col-lg-7">
-        <div class="banner-text-area banner-text-area-3">
-          <h6>به آزمایشگاه دانشگاه صنعتی شیراز خوش آمدید !</h6>
-          <h1>{{home.title}}</h1>
-          <p>{{home.top_text|safe|truncatechars:600}}</p>
-          <a
-            class="default-button default-button-4"
-            href="{% url 'services:index' %}"
-            ><span>خدمات ما</span></a
-          >
-        </div>
-      </div>
-      <div class="col-lg-5">
-        <div class="banner-img-area">
-          <img class="main-img" src="{{home.banner.url}}" alt="image" />
-          <div class="shapes">
-            <img
-              class="b3-dot"
-              src="{% static '/images/banner/b3-dots.png' %}"
-              alt="shape"
-            />
-            <img
-              class="dot-circle"
-              src="{% static '/images/banner/dot-circle.png' %}"
-              alt="shape"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> {% endcomment %}
-{% comment %} {% include 'website/slideshow.html' %} {% endcomment %}
 <div class="about about-1 pt-100">
   <div class="container-fluid">
     <div class="row">
