@@ -184,3 +184,26 @@
         font-size: 14px;
     }
 }
+
+
+
+.menu-sidebar-1 ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .menu-sidebar-1 li {
+    margin: 0;
+  }
+  
+  .auth-buttons {
+    display: flex;
+    align-items: center;
+  }
+  
+  .auth-buttons form,
+  .auth-buttons a {
+    margin-right: 10px; /* Adjust space between buttons as needed */
+  }
+  

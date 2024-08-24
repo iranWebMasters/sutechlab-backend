@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'taggit',
     'services',
     'accounts',
+    'userprofile',
 
     'decouple',
     'django.contrib.humanize',

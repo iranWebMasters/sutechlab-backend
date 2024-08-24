@@ -12,14 +12,12 @@ class LoginView(LoginView):
         return super().form_valid(form)
     
     def form_invalid(self, form):
-        # ثبت ارورهای فرم به سیستم پیام‌ها
         for field in form:
             for error in field.errors:
                 messages.error(self.request, f"Error in field '{field.label}': {error}")
         for error in form.non_field_errors():
             messages.error(self.request, f"Non-field error: {error}")
 
-        # ادامه‌ی عملکرد پیش‌فرض
         return super().form_invalid(form)
 
 class LogoutView(LogoutView):
