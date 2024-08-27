@@ -19,7 +19,6 @@ INSTALLED_APPS = [
     'website',
     'blog',
     'taggit',
-    'services',
     'accounts',
     'userprofile',
     'devices',

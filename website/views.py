@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.db.models import Q
 from itertools import chain
 from blog.models import Post
-from services.models import Services
+from devices.models import Device
 
 
 
@@ -83,7 +83,7 @@ class IndexSearchView(ListView):
     def get_queryset(self):
         query = self.request.GET.get('s')
         posts = Post.objects.filter(status=1)
-        services = Services.objects.filter(status=1)
+        services = Device.objects.filter(status=1)
         
         if query:
             # Filter posts and services by title and content

@@ -9,7 +9,7 @@ from django.views.generic import DetailView
 
 class DevicesListView(ListView):
     model = Device
-    template_name = 'services/services_home.html'
+    template_name = 'devices/services_home.html'
     context_object_name = 'services'
     paginate_by = 6
 
@@ -29,13 +29,13 @@ class DevicesListView(ListView):
 
 class DevicesDetailView(DetailView):
     model = Device
-    template_name = 'services/service-single.html'
+    template_name = 'devices/service-single.html'
     context_object_name = 'services'
 
 
 class DevicesSearchView(ListView):
     model = Device
-    template_name = 'services/services_home.html'
+    template_name = 'devices/services_home.html'
     context_object_name = 'services'
     paginate_by = 10
     def get_queryset(self):
