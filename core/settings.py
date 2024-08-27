@@ -20,8 +20,8 @@ INSTALLED_APPS = [
     'blog',
     'taggit',
     'accounts',
-    'userprofile',
     'devices',
+    'userpanel',
 
     'decouple',
     'django.contrib.humanize',

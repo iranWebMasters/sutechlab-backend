@@ -4,5 +4,5 @@ from django.views.generic import TemplateView
 
 
 
-class ProfileIndexview(TemplateView):
-    template_name = 'profile/index.html'
+class Indexview(TemplateView):
+    template_name = 'userpanel/index.html'

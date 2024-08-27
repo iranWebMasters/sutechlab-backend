@@ -26,7 +26,7 @@ urlpatterns = [
     path('devices/', include('devices.urls')),
     path('blog/', include('blog.urls')),
     path('accounts/', include('accounts.urls')),
-    path('profile/', include('userprofile.urls')),
+    path('panel/', include('userpanel.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
