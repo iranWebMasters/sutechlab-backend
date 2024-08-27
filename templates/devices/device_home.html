@@ -7,10 +7,10 @@
 <div class="uni-banner">
 <div class="container">
 <div class="uni-banner-text">
-<h1>خدمات </h1>
+<h1>دستگاه ها </h1>
 <ul>
 <li><a href="{% url 'website:index' %}">خانه</a></li>
-<li>خدمات</li>
+<li>دستگاه ها</li>
 </ul>
 </div>
 </div>
@@ -20,22 +20,22 @@
 <div class="service service-4 ptb-100">
 <div class="container">
 <div class="default-section-title default-section-title-middle">
-<h6>خدمات ما</h6>
-<h3>ما بهترین خدمات را ارائه می دهیم</h3>
+<h6>دستگاه های ما</h6>
+<h3>ما  خدمات خود رابا بهترین دستگاه ها ارائه می دهیم</h3>
 </div>
 <div class="section-content row">
-{% for post in services %}
+{% for device in devices %}
 <div class="col-lg-4 col-md-6 col-sm-12 col-12">
 <div class="service-card-3">
 <div class="service-card-img-3">
-<a href="{% url 'services:single' pk=post.id %}">
-<img src="{{ post.image.url }}"  alt="{{ post.title }}">
+<a href="{% url 'devices:single' pk=device.id %}">
+<img src="{{ device.image.url }}"  alt="{{ device.title }}">
 </a>
 </div>
 <div class="service-card-text-3">
-<h4><a href="{% url 'services:single' pk=post.id %}">{{ post.title }}</a></h4>
-<p>{{ post.content|truncatewords_html:45|safe }}</p>
-<a class="read-more-btn" href="{% url 'services:single' pk=post.id %}">بیشتر بدانید</a>
+<h4><a href="{% url 'devices:single' pk=device.id %}">{{ device.title }}</a></h4>
+<p>{{ device.content|truncatewords_html:45|safe }}</p>
+<a class="read-more-btn" href="{% url 'devices:single' pk=device.id %}">بیشتر بدانید</a>
 </div>
 </div>
 </div>

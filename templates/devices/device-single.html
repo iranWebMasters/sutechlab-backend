@@ -6,7 +6,7 @@
 <div class="uni-banner">
 <div class="container">
 <div class="uni-banner-text">
-<h1>{{services.title}}</h1>
+<h1>{{devices.title}}</h1>
 <ul>
 <li><a href="{% url 'website:index' %}">خانه</a></li>
 <li>جزئیات خدمات</li>
@@ -22,15 +22,15 @@
 <div class="col-lg-8 col-md-12 col-sm-12 col-12">
 <div class="details-text-area pr-20">
 <div class="details-page-img">
-<img src="{{ services.image.url }}" alt="image">
+<img src="{{ devices.image.url }}" alt="image">
 </div>
-<h3>{{services.title}}</h3>
-<p>{{services.content|safe}}</p>
+<h3>{{devices.title}}</h3>
+<p>{{devices.content|safe}}</p>
 </div>
 </div>
 <div class="col-lg-4 col-md-12 col-sm-12 col-12">
 <div class="sidebar-content pt-30">
-{% comment %} {% include 'services/service-search.html' %} {% endcomment %}
+{% comment %} {% include 'devices/service-search.html' %} {% endcomment %}
 {% comment %} {% postcategories %} {% endcomment %}
 {% comment %} {% include 'blog/blog-hours.html' %} {% endcomment %}
 </div>
@@ -40,7 +40,7 @@
 </div>
 <div class="request-button-area pt-30">
     <div class="container">
-        <a href="{% url 'services:index' %}" class="default-button">ثبت درخواست</a>
+        <a href="{% url 'devices:index' %}" class="default-button">ثبت درخواست</a>
     </div>
 </div>
 
