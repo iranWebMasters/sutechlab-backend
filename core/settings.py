@@ -4,16 +4,8 @@ from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# SECRET_KEY = config('SECRET_KEY')
-# DEBUG = config('DEBUG', default=False, cast=bool)
-# DEBUG = config('DEBUG')
-# ALLOWED_HOSTS = [config('ALLOWED_HOSTS')]
-# print(DEBUG)
-# print(ALLOWED_HOSTS)
 SECRET_KEY='django-insecure-95*u*w5%3ye=7fdga*u0*ur#2e^qnd^6^zlg0ptwj5gr+(02mb)'
 DEBUG=True
-# ALLOWED_HOSTS='*'
 ALLOWED_HOSTS = ['localhost', '127.0.0.1',]
 
 
@@ -30,6 +22,7 @@ INSTALLED_APPS = [
     'services',
     'accounts',
     'userprofile',
+    'devices',
 
     'decouple',
     'django.contrib.humanize',
@@ -52,7 +45,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'config.urls'
+ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
     {
@@ -70,7 +63,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'config.wsgi.application'
+WSGI_APPLICATION = 'core.wsgi.application'
 # DATABASES_________________________________________
 
 if DEBUG:

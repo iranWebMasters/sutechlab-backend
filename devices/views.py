@@ -7,15 +7,15 @@ from django.views.generic import DetailView
 
 
 
-class ServicesListView(ListView):
-    model = Services
+class DevicesListView(ListView):
+    model = Device
     template_name = 'services/services_home.html'
     context_object_name = 'services'
     paginate_by = 6
 
     def get_queryset(self):
         current_time = timezone.now()
-        queryset = Services.objects.filter(status=True, published_date__lte=current_time)
+        queryset = Device.objects.filter(status=True, published_date__lte=current_time)
 
         username = self.kwargs.get('username')
         if username:
@@ -27,14 +27,14 @@ class ServicesListView(ListView):
 
         return queryset
 
-class ServicesDetailView(DetailView):
-    model = Services
+class DevicesDetailView(DetailView):
+    model = Device
     template_name = 'services/service-single.html'
     context_object_name = 'services'
 
 
-class ServicesSearchView(ListView):
-    model = Services
+class DevicesSearchView(ListView):
+    model = Device
     template_name = 'services/services_home.html'
     context_object_name = 'services'
     paginate_by = 10
