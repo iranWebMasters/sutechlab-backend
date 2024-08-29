@@ -206,4 +206,134 @@
   .auth-buttons a {
     margin-right: 10px; /* Adjust space between buttons as needed */
   }
-  
+  .profile-update-container {
+    width: 90%;
+    max-width: 400px;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #ffffff, #f0f0f0);
+    margin: auto;
+    margin-top: 5%;
+    margin-bottom: 150px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+}
+
+.profile-update-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-family: "Roboto", sans-serif;
+    color: #444;
+    font-size: 1.8em;
+}
+
+.profile-update-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #333;
+    font-size: 1.1em;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 1.1em;
+    background-color: #fdfdfd;
+    box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: #28a745;
+    box-shadow: 0px 0px 8px rgba(40, 167, 69, 0.5);
+    background-color: #fff;
+}
+
+.form-group input[type="file"] {
+    padding: 5px;
+}
+
+.error-message {
+    color: #e74c3c;
+    font-size: 0.95em;
+    margin-top: 5px;
+}
+
+.error-message p {
+    margin: 0;
+    color: #e74c3c;
+}
+
+.btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 1.2em;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary {
+    background-color: #28a745;
+}
+
+.btn-primary:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0px 4px 10px rgba(40, 167, 69, 0.4);
+}
+
+@media (max-width: 768px) {
+    .profile-update-container {
+        padding: 20px;
+        margin-top: 3%;
+    }
+    
+    .btn {
+        padding: 12px;
+        font-size: 1.1em;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-update-container {
+        width: 95%;
+        margin-top: 2%;
+    }
+    
+    .btn {
+        padding: 12px;
+        font-size: 1em;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        font-size: 1em;
+    }
+}
