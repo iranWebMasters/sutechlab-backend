@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0;">
+    <base href="{% static '/' %}" />
+    <title>قالب پنل مدیریت |نت کپی</title>    
+    <link rel="stylesheet" href="css/pstyle.css">
+    <link rel="stylesheet" href="css/responsive_991.css" media="(max-width:991px)">
+    <link rel="stylesheet" href="css/responsive_768.css" media="(max-width:768px)">
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="icon" type="image/png" href="images/fav-icon.png" />
+
+</head>
+<body>
+<div class="sidebar__nav border-top border-left  ">
+    <span class="bars d-none padding-0-18"></span>
+    <div class="profile__info border cursor-pointer text-center">
+        <div class="avatar__img"><img src="{{profile.image.url}}" class="avatar___img">
+            <div class="v-dialog__container" style="display: block;"></div>
+        </div>
+        <span class="profile__name">{{ profile.first_name }} {{ profile.last_name }}</span>
+
+    </div>
+
+    <ul>
+        <li class="item-li i-dashboard is-active"><a href="index.html">پیشخوان</a></li>
+        <li class="item-li i-courses "><a href="courses.html">آزمون ها</a></li>
+        <li class="item-li i-users"><a href="{% url 'userpanel:update_profile_panel' %}">اطلاعات کاربری</a></li>
+        {% comment %} <li class="item-li i-categories"><a href="categories.html">دسته بندی ها</a></li> {% endcomment %}
+        {% comment %} <li class="item-li i-slideshow"><a href="slideshow.html">اسلایدشو</a></li> {% endcomment %}
+        {% comment %} <li class="item-li i-banners"><a href="banners.html">بنر ها</a></li> {% endcomment %}
+        {% comment %} <li class="item-li i-articles"><a href="articles.html">مقالات</a></li> {% endcomment %}
+        {% comment %} <li class="item-li i-ads"><a href="ads.html">تبلیغات</a></li> {% endcomment %}
+        {% comment %} <li class="item-li i-comments"><a href="comments.html"> نظرات</a></li> {% endcomment %}
+        <li class="item-li i-tickets"><a href="tickets.html"> تیکت ها</a></li>
+        {% comment %} <li class="item-li i-discounts"><a href="discounts.html">تخفیف ها</a></li> {% endcomment %}
+        <li class="item-li i-transactions"><a href="transactions.html">تراکنش ها</a></li>
+        {% comment %} <li class="item-li i-checkouts"><a href="checkouts.html">تسویه حساب ها</a></li> {% endcomment %}
+        {% comment %} <li class="item-li i-checkout__request "><a href="checkout-request.html">درخواست تسویه </a></li> {% endcomment %}
+        <li class="item-li i-my__purchases"><a href="mypurchases.html">خرید های من</a></li>
+        {% comment %} <li class="item-li i-my__peyments"><a href="mypeyments.html">پرداخت های من</a></li> {% endcomment %}
+        <li class="item-li i-notification__management"><a href="notification-management.html">مدیریت اطلاع رسانی</a></li>
+        {% comment %} <li class="item-li i-user__inforamtion"><a href="user-information.html">اطلاعات کاربری</a></li> {% endcomment %}
+    </ul>
+
+</div>
+<div class="content">
+    <div class="header d-flex item-center bg-white width-100 border-bottom padding-12-30">
+        <div class="header__right d-flex flex-grow-1 item-center">
+            <span class="bars"></span>
+        </div>
+        <div class="header__left d-flex flex-end item-center margin-top-2">
+            <div class="notification margin-15">
+                <a class="notification__icon"></a>
+                <div class="dropdown__notification">
+                    <div class="content__notification">
+                        <span class="font-size-13">موردی برای نمایش وجود ندارد</span>
+                    </div>
+                </div>
+            </div>
+            <form id="logout-form" action="{% url 'accounts:logout' %}" method="post" style="display: none;">
+                {% csrf_token %}
+            </form>
+            <a href="#" class="logout" title="خروج" onclick="document.getElementById('logout-form').submit(); return false;"></a>
+            
+        </div>
+    </div>
+
+
+  <!-- ------------------------------------ -->
+  {% include 'website/messages.html' %}
+
+  <!-- ------------------------------------ -->
+  {% block content %} {% endblock content %}
+  <!-- ------------------------------------ -->
+
+
+</div>
+</body>
+<script src="js/jquery-3.4.1.min.js"></script>
+<script src="js/js.js"></script>
+</html>

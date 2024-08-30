@@ -27,7 +27,7 @@ class LoginView(LoginView):
 
 class LogoutView(LogoutView):
     def dispatch(self, request, *args, **kwargs):
-        messages.warning(request, "شمااز سایت خارج شدید.")
+        messages.warning(request, "شمااز حساب کاربری خود خارج شدید.")
         return super().dispatch(request, *args, **kwargs)
 
 class RegisterView(FormView):
@@ -57,4 +57,5 @@ class ProfileUpdateView(LoginRequiredMixin,UpdateView):
         messages.error(self.request,"خطایی در بروز رسانی پروفایل شما رخ داد.")
         response = super().form_invalid(form)
         return response
+    
     

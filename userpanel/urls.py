@@ -4,6 +4,6 @@ from .views import *
 app_name = 'userpanel'
 
 urlpatterns = [
-    path('', Indexview.as_view(), name='index'),
-    
+    path('', IndexView.as_view(), name='index'),
+    path('profile/update/', ProfileUpdatePanelView.as_view(), name='update_profile_panel'),
 ]
