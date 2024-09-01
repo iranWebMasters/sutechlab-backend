@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from accounts.models import Profile
 
 class Laboratory(models.Model):
     LOCATION_CHOICES = [
@@ -36,7 +37,7 @@ class Test(models.Model):
     title = models.CharField(max_length=255)
     laboratory = models.ForeignKey('Laboratory', on_delete=models.CASCADE, related_name='tests')
     institute = models.ForeignKey('Institute', on_delete=models.CASCADE, related_name='tests')
-    operator = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='institutes')
+    operator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='institutes')
     iso_17025 = models.CharField(max_length=7, choices=ISO_CHOICES, default='has_not', verbose_name='ISO 17025')
     description = models.TextField()
     status = models.CharField(max_length=8, choices=STATUS_CHOICES, default='active')
