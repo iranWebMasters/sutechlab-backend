@@ -9,7 +9,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.views.generic import ListView,DetailView
 from .forms import *
+from .models import Test
 
 
 
@@ -53,4 +55,13 @@ class ProfileUpdatePanelView(LoginRequiredMixin,UpdateView):
         response = super().form_invalid(form)
         return response
     
-    
+
+
+class TestListView(ListView):
+    model = Test
+    context_object_name = 'tests'
+    ordering = ['-created_date']
+
+class TestDetailView(DetailView):
+    model = Test
+    template_name = 'test_detail.html'
