@@ -61,9 +61,11 @@ class ExperimentListView(ListView):
     model = Experiment
     template_name = 'userpanel/experiment-list.html'
 
-    context_object_name = 'tests'
+    context_object_name = 'experiments'
     ordering = ['-created_date']
 
 class TestDetailView(DetailView):
     model = Experiment
-    template_name = 'userpanel/experiment-detail.html'
+    context_object_name = 'experiments'
+    
+    template_name = 'userpanel/experiment-details.html'
