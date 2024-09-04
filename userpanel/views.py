@@ -57,8 +57,10 @@ class ProfileUpdatePanelView(LoginRequiredMixin,UpdateView):
     
 
 
-class TestListView(ListView):
+class ExperimentListView(ListView):
     model = Experiment
+    template_name = 'userpanel/experiment-list.html'
+
     context_object_name = 'tests'
     ordering = ['-created_date']
 
