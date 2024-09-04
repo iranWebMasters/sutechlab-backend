@@ -43,65 +43,35 @@
                     <th>نام آزمایشگاه</th>
                     <th>نام دانشکده</th>
                     <th>اپراتور</th>
-                    <th>وضعیت</th>
                     <th>ISO 17025</th>
-                    <th>مبلغ (تومان )</th>
+                    <th>مبلغ (تومان)</th>
                     <th>وضعیت</th>
                     <th>عملیات</th>
                 </tr>
                 </thead>
                 <tbody>
+                {% for experiment in experiments %}
                 <tr role="row">
-                    <td><a href="">40851</a></td>
-                    <td><a href="">نت کپی</a></td>
-                    <td><a href="">صیاد اعظمی</a></td>
-                    <td><a href="">6037691581560950</a></td>
-                    <td><a href="">2 روز پیش</a></td>
-                    <td><a href=""> 1 روز پیش</a></td>
-                    <td><a href="">1,430,000</a></td>
-                    <td><a href="" class="text-success">تسویه شده</a></td>
+                    <td><a href="{% url 'userpanel:experiments-detail' experiment.id %}">{{ experiment.id }}</a></td>
+                    <td><a href="">{{ experiment.laboratory.name }}</a></td>
+                    <td><a href="">{{ experiment.faculty.name }}</a></td>
+                    <td><a href="">{{ experiment.operator.first_name }}</a></td>
                     <td>
-                        <a href="" class="item-delete mlg-15" title="حذف"></a>
-                        <a href="show-comment.html"  class="item-reject mlg-15" title="رد"></a>
-                        <a href="show-comment.html"  class="item-confirm mlg-15" title="تایید"></a>
-                        <a href="edit-comment.html" class="item-edit " title="ویرایش"></a>
+                        <a href="" class="{% if experiment.iso_17025 == 'has' %}text-success{% else %}text-error{% endif %}">
+                            {{ experiment.get_iso_17025_display }}
+                        </a>
                     </td>
-                </tr>
-                <tr role="row">
-                    <td><a href="">40851</a></td>
-                    <td><a href="">نت کپی</a></td>
-                    <td><a href="">صیاد اعظمی</a></td>
-                    <td><a href="">6037691581560950</a></td>
-                    <td><a href="">2 روز پیش</a></td>
-                    <td><a href=""> 1 روز پیش</a></td>
-                    <td><a href="">1,430,000</a></td>
-                    <td><a href="" class="text-error">رد شده</a></td>
+                    
+                    <td><a href="">{{ experiment.unit_price }} تومان</a></td>
+                    <td><a href="" class="{% if experiment.status == 'active' %}text-success{% else %}text-error{% endif %}">{{ experiment.get_status_display }}</a></td>
                     <td>
-                        <a href="" class="item-delete mlg-15" title="حذف"></a>
-                        <a href="show-comment.html"  class="item-reject mlg-15" title="رد"></a>
-                        <a href="show-comment.html"  class="item-confirm mlg-15" title="تایید"></a>
-                        <a href="edit-comment.html" class="item-edit " title="ویرایش"></a>
-                    </td>
+                        <a href="{% url 'userpanel:experiments-detail' experiment.id %}" class="btn btn-success">انتخاب</a>
+                    </td>                    
                 </tr>
-                <tr role="row">
-                    <td><a href="">40851</a></td>
-                    <td><a href="">نت کپی</a></td>
-                    <td><a href="">صیاد اعظمی</a></td>
-                    <td><a href="">6037691581560950</a></td>
-                    <td><a href="">2 روز پیش</a></td>
-                    <td><a href=""> 1 روز پیش</a></td>
-                    <td><a href="">1,430,000</a></td>
-                    <td><a href="" class="text-warning">در انتظار واریز</a></td>
-                    <td>
-                        <a href="" class="item-delete mlg-15" title="حذف"></a>
-                        <a href="show-comment.html"  class="item-reject mlg-15" title="رد"></a>
-                        <a href="show-comment.html"  class="item-confirm mlg-15" title="تایید"></a>
-                        <a href="edit-comment.html" class="item-edit " title="ویرایش"></a>
-                    </td>
-                </tr>
-
+                {% endfor %}
                 </tbody>
             </table>
         </div>
+        
     </div>
 {% endblock content %}
