@@ -25,7 +25,7 @@ class Unit_price(models.Model):
     ]
 
     unit_price = models.DecimalField(max_digits=15, decimal_places=0, verbose_name='مبلغ واحد')
-    currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='IRR', verbose_name='واحد پول')
+    currency = models.CharField(max_length=5, choices=CURRENCY_CHOICES, default='IRR', verbose_name='واحد پول')
 
     def __str__(self):
         return f"{self.unit_price} {self.get_currency_display()}"

@@ -66,4 +66,4 @@ class ExperimentListView(ListView):
 
 class TestDetailView(DetailView):
     model = Experiment
-    template_name = 'experiment-detail.html'
+    template_name = 'userpanel/experiment-detail.html'
