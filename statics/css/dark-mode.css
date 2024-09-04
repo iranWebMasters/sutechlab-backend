@@ -1,0 +1,202 @@
+.theme-switcher {
+  position: fixed;
+  z-index: 999999;
+  bottom: 30px;
+  right: 80px;
+  /* Rounded sliders */
+}
+
+.theme-switcher .switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 34px;
+}
+
+.theme-switcher .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.theme-switcher .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.theme-switcher .slider::before {
+  position: absolute;
+  content: "";
+  height: 30px;
+  width: 30px;
+  left: 0px;
+  bottom: 4px;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  -webkit-box-shadow: 0 0px 15px #2020203d;
+          box-shadow: 0 0px 15px #2020203d;
+  background: white url("https://i.ibb.co/FxzBYR9/night.png");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.theme-switcher input:checked + .slider {
+  background-color: #111111;
+}
+
+.theme-switcher input:focus + .slider {
+  -webkit-box-shadow: 0 0 1px #111111;
+          box-shadow: 0 0 1px #111111;
+}
+
+.theme-switcher input:checked + .slider:before {
+  -webkit-transform: translateX(24px);
+  transform: translateX(18px);
+  background: white url("https://i.ibb.co/7JfqXxB/sunny.png");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.theme-switcher .slider.round {
+  border-radius: 34px;
+}
+
+.theme-switcher .slider.round::before {
+  border-radius: 50%;
+}
+
+.theme-light {
+  --whiteColor: #ffffff;
+  --blackColor: #242424;
+  --secondColor: #2e2f46;
+  --paragraphColor: #666666;
+}
+
+.theme-light .white-logo {
+  display: none;
+}
+
+.theme-light .black-logo {
+  display: block;
+}
+
+.theme-dark {
+  --whiteColor: #242424;
+  --blackColor: #ffffff;
+  --secondColor: #676cda;
+  --paragraphColor: #d1d1d1;
+  --boxShadow:  rgba(0, 0, 0, 0.1) 0px 0px 16px;
+  /*================================================
+    Form Select Area CSS
+    =================================================*/
+  /*================================================
+    Index 01 Banner Area CSS
+    =================================================*/
+  /*================================================
+    Index 01 Features Area CSS
+    =================================================*/
+  /*================================================
+    Index 01 Booking Area CSS
+    =================================================*/
+  /*================================================
+    Index 01 Services Area CSS
+    =================================================*/
+  /*================================================
+    Index 01 Testimonials Area CSS
+    =================================================*/
+  /*================================================
+    Index 01 Newsletter Area CSS
+    =================================================*/
+  /*================================================
+    Index 02 Booking Area CSS
+    =================================================*/
+  /*================================================
+    Index 03 Why Choose Us Area CSS
+    =================================================*/
+  /*================================================
+    Uni Banner Area CSS
+    =================================================*/
+  /*================================================
+    Blog Details Area CSS
+    =================================================*/
+}
+
+.theme-dark .bg-000000 {
+  background-color: #000000;
+}
+
+.theme-dark .bg-f9faff {
+  background-color: #000000;
+}
+
+.theme-dark .white-logo {
+  display: block;
+}
+
+.theme-dark .black-logo {
+  display: none;
+}
+
+.theme-dark .nice-select .option:hover, .theme-dark .nice-select .option.focus, .theme-dark .nice-select .option.selected.focus {
+  background-color: #3c3c3c;
+}
+
+.theme-dark .booking-content .booking-form-content .form-control, .theme-dark .booking-content .booking-form-content .form-select {
+  background-color: #0a0a0a;
+}
+
+.theme-dark .main-banner-bg::before {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.theme-dark .features-bg, .theme-dark .shape-bg {
+  position: relative;
+  background-image: unset;
+  background-color: #000000;
+}
+
+.theme-dark .booking-content, .theme-dark .newsletter-content-area {
+  background-color: #141414;
+  background-image: unset;
+}
+
+.theme-dark .service-card .service-card-text {
+  background-color: rgba(0, 0, 0, 0.8);
+  background-image: unset;
+}
+
+.theme-dark .testimonial-card {
+  background-color: #2b2c2c;
+}
+
+.theme-dark .newsletter-1::before {
+  background-color: #000000;
+}
+
+.theme-dark .home-banner-bg, .theme-dark .home-banner-img {
+  background-color: #000000;
+  background-image: unset;
+}
+
+.theme-dark .why-we-card-3 {
+  background-color: #2a2a2a;
+}
+
+.theme-dark .uni-banner::before {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.theme-dark .blog-quote, .theme-dark .blog-text-footer {
+  background-color: #202020;
+}
+/*# sourceMappingURL=dark-mode.css.map */

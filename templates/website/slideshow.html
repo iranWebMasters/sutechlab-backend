@@ -1,0 +1,73 @@
+<div class="page animated" style="animation-duration: 500ms">
+  <div id="home">
+    <section
+      class="section swiper-container swiper-slider swiper-slider-classic swiper-container-vertical"
+      data-loop="true"
+      data-autoplay="4859"
+      data-simulate-touch="true"
+      data-direction="vertical"
+      data-nav="false"
+    >
+      <div class="swiper-wrapper text-center">
+        {% for banner in banners %}
+        <div
+          class="swiper-slide"
+          data-slide-bg="{{ banner.image.url }}"
+          style="
+            background-image: url('{{ banner.image.url }}');
+            background-size: cover;
+            height: 450px;
+          "
+        >
+          <div class="swiper-slide-caption section-md">
+            <div class="container">
+              <h1
+                data-caption-animate="fadeInLeft"
+                data-caption-delay="0"
+                class="not-animated"
+              >
+                {{ banner.title }}
+              </h1>
+              <p
+                class="text-width-large not-animated"
+                data-caption-animate="fadeInRight"
+                data-caption-delay="100"
+              >
+                {{ banner.description }}
+              </p>
+              <br/>
+              <a
+                class="default-button default-button-4"
+                href="{% url 'devices:index' %}"
+                data-toggle="modal"
+                data-caption-animate="fadeInUp"
+                data-caption-delay="200"
+              >
+                خدمات
+              </a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <!-- Swiper Pagination-->
+      <div class="swiper-pagination__module">
+        <div class="swiper-pagination__fraction">
+          <span class="swiper-pagination__fraction-index">03</span
+          ><span class="swiper-pagination__fraction-divider">/</span
+          ><span class="swiper-pagination__fraction-count">03</span>
+        </div>
+        <div class="swiper-pagination__divider"></div>
+        <div
+          class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets"
+        >
+          <span class="swiper-pagination-bullet"></span
+          ><span class="swiper-pagination-bullet"></span
+          ><span
+            class="swiper-pagination-bullet swiper-pagination-bullet-active"
+          ></span>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

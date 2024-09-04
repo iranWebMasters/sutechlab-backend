@@ -1,0 +1,300 @@
+{% load static %} {% load main_tags %} {% get_single_contact as contact %} {% home_page_data as home %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="theme-light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="آزمایشگاه دانشگاه صنعتی شیراز" />
+  <meta name="description" content="آزمایشگاه دانشگاه صنعتی شیراز" />
+  <meta name="author" content="Barat Hadian" />
+
+
+  <base href="{% static '/' %}" />
+
+
+  <link rel="stylesheet" href="css/animate.min.css" />
+  <link rel="stylesheet" href="css/bootstrap.rtl.min.css" />
+  <link rel="stylesheet" href="css/fontawsome.min.css" />
+  <link rel="stylesheet" href="fonts/font/flaticon.css" />
+  <link rel="stylesheet" href="css/meanmenu.min.css" />
+  <link rel="stylesheet" href="css/owl.carousel.min.css" />
+  <link rel="stylesheet" href="css/nice-select.css" />
+  <link rel="stylesheet" href="css/barfiller.css" />
+  <link rel="stylesheet" href="css/magnific-popup.css" />
+  <link rel="stylesheet" href="css/odometer-theme-default.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dark-mode.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <link rel="stylesheet" href="css/rtl.css" />
+  <title>آزمایشگاه دانشگاه صنعتی شیراز</title>
+  <link rel="icon" type="image/png" href="images/fav-icon.png" />
+  <!-- <link href="css/bootstrap.min.css" rel="stylesheet" /> -->
+
+  <link rel="stylesheet" href="css/ratherapp-slideshow.css" />
+  <link rel="stylesheet" href="css/registration.css" />
+</head>
+
+<body>
+  <div class="theme-switcher">
+    <label id="switch" class="switch">
+      <input type="checkbox" onchange="toggleTheme()" id="slider" />
+      <span class="slider round"></span>
+    </label>
+  </div>
+
+  <div class="topbar">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-9">
+          <div class="topbar-left-side">
+            <ul>
+              <li>
+                <i class="fas fa-phone-alt"></i>
+                <a href="tel:{{ contact.landline_phone }}">{{ contact.landline_phone }}</a>
+              </li>
+              <li>
+                <i class="fas fa-phone-alt"></i>
+                <a href="tel:{{ contact.mobile_phone }}">{{ contact.mobile_phone }}</a>
+              </li>
+              <li><i class="fas fa-clock"></i> {{ contact.workingHour }}</li>
+              <li>
+                <i class="fas fa-map-marker-alt"></i>
+                <a href="https://goo.gl/maps/LFFvE4dNnyq67gGeA">{{ contact.address }}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="header-area">
+    <div class="navbar-area">
+      <div class="main-responsive-nav">
+        <div class="container">
+          <div class="mobile-nav">
+            <a href="{% url 'website:index' %}" class="logo">
+              <img class="black-logo" src="images/logo.png" alt="logo" />
+              <img class="white-logo" src="images/white-logo.png" alt="logo" />
+            </a>
+            <ul class="menu-sidebar menu-small-device">
+              <li>
+                <button class="popup-button">
+                  <i class="fas fa-search"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-nav">
+        <div class="container">
+          <nav class="navbar navbar-expand-md navbar-light">
+            <a class="navbar-brand" href="{% url 'website:index' %}">
+              <img class="black-logo" src="images/logo.png" alt="logo" />
+              <img class="white-logo" src="images/white-logo.png" alt="logo" />
+            </a>
+            <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
+              <ul class="navbar-nav">
+                <li class="nav-item plus-icon">
+                  <a href="{% url 'website:index' %}" class="nav-link dropdown-toggle active">خانه <i class=""></i></a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'devices:index' %}" class="nav-link dropdown-toggle">خدمات <i></i></a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'website:about' %}">درباره ما</a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'blog:index' %}" class="nav-link dropdown-toggle">وبلاگ <i class=""></i></a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'website:contact' %}" class="nav-link">تماس با ما</a>
+                </li>
+              </ul>
+              <div class="menu-sidebar menu-sidebar-1">
+                <ul>
+                  <li>
+                    <button class="popup-button">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </li>
+                  <li class="auth-buttons">
+                    {% if user.is_authenticated %}
+                    <form id="logout-form" action="{% url 'accounts:logout' %}" method="post" style="display:inline;">
+                      {% csrf_token %}
+                      <button type="submit" class="default-button default-button-3">
+                        <span>خروج</span>
+                      </button>
+                    </form>
+                    <a class="default-button default-button-6" href="{% url 'userpanel:index' %}">
+                      <span>حساب کاربری</span>
+                    </a>
+                    {% else %}
+                    <a class="default-button default-button-3" href="{% url 'accounts:login' %}">
+                      <span>ورود</span>
+                    </a>
+                    {% endif %}
+                  </li>
+                </ul>
+              </div>
+              
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ------------------------------------ -->
+  {% include 'website/messages.html' %}
+
+  <!-- ------------------------------------ -->
+  {% block content %} {% endblock content %}
+  <!-- ------------------------------------ -->
+  <!-- ------------------------------------ -->
+  <div class="footer footer-2 ptb-100 bg-000000">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+          <div class="footer-logo-area">
+            <a href="{% url 'website:index' %}"><img src="images/white-logo.png" alt="image" /></a>
+            <p>{{home.bottom_text}}</p>
+            <div class="footer-social-icons">
+              <span>مارا دنبال کنید : </span>
+              <ul>
+                <!-- <li><a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+<li><a href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+<li><a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a></li> -->
+                <li>
+                  <a href="https://www.instagram.com/{{ contact.instagram }}" target="_blank"><i
+                      class="fab fa-instagram"></i></a>
+                </li>
+                <li>
+                  <a href="tel:{{ contact.landline_phone }}" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+          <div class="footer-links footer-contact-list">
+            <h3>اطلاعات تماس</h3>
+            <div class="footer-content-card">
+              <i class="fas fa-map-marker-alt"></i>
+              <h5>موقعیت:</h5>
+              <p><a href="">{{ contact.address }}</a></p>
+            </div>
+            <div class="footer-content-card">
+              <i class="fas fa-envelope"></i>
+              <h5>ایمیل:</h5>
+              <p>
+                <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
+              </p>
+            </div>
+            <div class="footer-content-card">
+              <i class="fas fa-mobile-alt"></i>
+              <h5>تلفن:</h5>
+              <p>
+                <a href="tel:{{ contact.landline_phone }}">{{ contact.landline_phone }}</a>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+          <div class="footer-links footer-quick-links">
+            <h3>لینک های سریع</h3>
+            <ul>
+              <li>
+                <a href="{% url 'website:about' %}" target="_blank"><i class="fas fa-angle-left"></i> <span>درباره
+                    ما</span></a>
+              </li>
+              <li>
+                <a href="{% url 'devices:index' %}" target="_blank"><i class="fas fa-angle-left"></i> <span>خدمات
+                    ما</span></a>
+              </li>
+              <li>
+                <a href="{% url 'blog:index' %}" target="_blank"><i class="fas fa-angle-left"></i> <span>وبلاگ
+                    ما</span></a>
+              </li>
+              <li>
+                <a href="{% url 'website:contact' %}" target="_blank"><i class="fas fa-angle-left"></i>
+                  <span>تماس با ما</span></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+          <div class="footer-links footer-newsletter">
+            <h3>خبرنامه</h3>
+            <p>برای دریافت اخبار به روز ما در خبرنامه ما مشترک شوید!</p>
+            <form action="{% url 'website:newsletter' %}" method="post">
+              {% csrf_token %}
+              <input name="email" type="text" class="form-control" placeholder="ایمیل شما" />
+              <button class="default-button" type="submit">
+                <span>ارسال</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="popup">
+    <div class="popup-content">
+      <button class="close-btn" id="popup-close">
+        <i class="fas fa-times"></i>
+      </button>
+      <form action="{% url 'website:search' %}">
+        <div class="input-group search-box">
+          <input type="text" class="form-control" name="s" placeholder="جستجو" />
+          <button class="btn" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="go-top">
+    <img src="images/png/002-top.png" alt="" />
+  </div>
+  <!-- __________________________-goftino_______________________________________ -->
+
+  <!-- __________________________-goftino_______________________________________ -->
+
+  <script src="js/snippets.js"></script>
+
+  <script src="js/jquery-3.6.0.min.js"></script>
+
+  <script src="js/bootstrap.bundle.min.js"></script>
+
+  <script src="js/meanmenu.js"></script>
+
+  <script src="js/owl.carousel.min.js"></script>
+
+  <script src="js/jquery.magnific-popup.min.js"></script>
+
+  <script src="js/jquery.nice-select.min.js"></script>
+
+  <script src="js/form-validator.min.js"></script>
+  <script src="js/contact-form-script.js"></script>
+
+  <script src="js/appear.min.js"></script>
+
+  <script src="js/TweenMax.js"></script>
+
+  <script src="js/odometer.min.js"></script>
+
+  <script src="js/jquery.barfiller.js"></script>
+
+  <script src="js/custom.js"></script>
+
+  <script src="js/device.js"></script>
+  <script src="js/swiper.js"></script>
+  <script src="js/slideshow-script.js"></script>
+</body>
+
+</html>

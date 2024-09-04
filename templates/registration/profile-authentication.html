@@ -1,0 +1,112 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<div class="uni-banner">
+  <div class="container">
+    <div class="uni-banner-text">
+      <h1>حساب کاربری</h1>
+      <ul>
+        <li><a href="index.html">خانه</a></li>
+        <li>حساب کاربری</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="login ptb-100">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-md-12 col-sm-12 col-12">
+        <div class="default-section-title">
+          <h3>ورود کاربران</h3>
+        </div>
+        <div class="login-form pr-20">
+          <form>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label"
+                >نام کاربری یا ایمیل*</label
+              >
+              <input
+                type="email"
+                class="form-control"
+                id="exampleInputEmail1"
+                aria-describedby="emailHelp"
+              />
+              <div id="emailHelp" class="form-text">
+                ما هرگز ایمیل شما را با دیگران به اشتراک نمی گذاریم.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label"
+                >گذرواژه*</label
+              >
+              <input
+                type="password"
+                class="form-control"
+                id="exampleInputPassword1"
+              />
+            </div>
+            <div class="mb-3 form-check">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="exampleCheck1"
+              />
+              <label class="form-check-label" for="exampleCheck1"
+                >مرا بخاطر بسپار</label
+              >
+            </div>
+            <button type="submit" class="default-button">
+              <span>ورود</span>
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12 col-sm-12 col-12">
+        <div class="default-section-title pt-30">
+          <h3>ثبت نام</h3>
+        </div>
+        <div class="login-form">
+          <form>
+            <div class="mb-3">
+              <label for="exampleInputUsername1" class="form-label"
+                >نام کاربری*</label
+              >
+              <input
+                type="Text"
+                class="form-control"
+                id="exampleInputUsername1"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">ایمیل*</label>
+              <input
+                type="email"
+                class="form-control"
+                id="exampleInputEmail1"
+                aria-describedby="emailHelp"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label"
+                >گذرواژه*</label
+              >
+              <input
+                type="password"
+                class="form-control"
+                id="exampleInputPassword1"
+              />
+            </div>
+            <p>
+              گذرواژه باید حداقل هشت کاراکتر باشد. برای قوی تر کردن آن، از حروف
+              بزرگ و کوچک، اعداد و نمادهایی مانند ! " ? $ % ^ & )
+            </p>
+            <button type="submit" class="default-button">
+              <span>ثبت نام</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,756 @@
+@media only screen and (max-width: 767px) {
+  :root {
+    --fontSize: 14px;
+    --card-title-fontSize: 18px;
+  }
+  .ptb-100 {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+  .pt-100 {
+    padding-top: 50px;
+  }
+  .pb-100 {
+    padding-bottom: 50px;
+  }
+  .ptb-70 {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  .pt-70 {
+    padding-top: 20px;
+  }
+  .pb-70 {
+    padding-bottom: 20px;
+  }
+  .pt-30 {
+    padding-top: 30px;
+  }
+  .pl-20 {
+    padding-right: 0px;
+  }
+  .pr-20 {
+    padding-left: 0px;
+  }
+  .default-section-title h3 {
+    font-size: 20px;
+  }
+  .section-content {
+    margin-top: 0px;
+  }
+  .buy-now-btn {
+    top: unset;
+    bottom: 20px;
+    left: unset;
+    right: 10px;
+    -webkit-transform: translate(0);
+            transform: translate(0);
+  }
+  .theme-switcher {
+    bottom: 20px;
+    left: 80px;
+  }
+  /*================================================
+    Index 01 Banner CSS
+    =================================================*/
+  .banner-text-area {
+    margin-left: auto;
+    padding-top: 60px;
+    padding-bottom: 30px;
+    padding-right: 0px;
+  }
+  .banner-text-area h1 {
+    font-size: 30px;
+    margin-bottom: 10px;
+  }
+  .main-banner-img {
+    text-align: center;
+  }
+  .main-banner-img img {
+    left: 0px;
+  }
+  /*================================================
+    Index 01 About CSS
+    =================================================*/
+  .about-1 .about-img-area {
+    margin-left: auto;
+  }
+  .about-1 .about-img-area .about-img-2 {
+    left: 0px;
+    text-align: end;
+  }
+  .about-1 .about-img-area .about-img-2 img {
+    max-width: 50%;
+    text-align: center;
+  }
+  .about-1 .about-img-area .about-img-2 a {
+    width: 80px;
+    height: 80px;
+    font-size: 40px;
+right: 55%;
+padding-top: 20px;
+  }
+  .about-1 .about-text-area {
+    max-width: 720px;
+    margin-right: auto;
+    margin-top: 30px;
+    margin-left: auto;
+  }
+  /*================================================
+    Index 01 Features CSS
+    =================================================*/
+  .fmt-0 {
+    margin-top: 30px;
+  }
+  .features-card {
+    padding: 20px;
+  }
+  .features-card .features-icon-area {
+    position: relative;
+    right: 0;
+    top: 0;
+    -webkit-transform: translate(0);
+            transform: translate(0);
+    margin-bottom: 15px;
+  }
+  .features-bg {
+    padding-bottom: 250px;
+  }
+  .booking-content {
+    padding: 20px 15px 30px;
+  }
+  /*================================================
+    Index 01 Service CSS
+    =================================================*/
+  .service-card .service-card-text {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+  .portfolio-slider-area .owl-nav {
+    position: relative;
+    top: unset;
+    right: 0;
+    margin-top: 30px;
+    text-align: center;
+  }
+  .portfolio-slider-area .owl-nav button {
+    width: 30px;
+    height: 30px;
+  }
+  /*================================================
+    Index 01 Testimonial CSS
+    =================================================*/
+  .testimonial-card {
+    padding: 30px 15px;
+  }
+  /*================================================
+    Index 01 Pricing CSS
+    =================================================*/
+  .pricing-card .pricing-text-area {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+  .pricing-card .service-price-list ul li {
+    padding: 15px 0px;
+  }
+  /*================================================
+    Index 01 Blog CSS
+    =================================================*/
+  .blog-date ul li {
+    margin-left: 10px;
+    font-size: 12px;
+  }
+  .blog-date ul li::before {
+    left: -9px;
+    top: -3px;
+  }
+  /*================================================
+    Index 01 Newsletter CSS
+    =================================================*/
+  .news-input-card {
+    margin-top: 30px;
+  }
+  .newsletter-content-area {
+    padding: 20px 15px 30px;
+  }
+  /*================================================
+    Footer CSS
+    =================================================*/
+  .footer-logo-area p {
+    font-size: 14px;
+  }
+  .footer-logo-area .footer-social-icons span {
+    font-size: 13px;
+    margin-left: 5px;
+  }
+  .footer-logo-area .footer-social-icons ul li a {
+    margin-right: 2px;
+  }
+  .footer-links {
+    padding-right: 0px;
+    margin-top: 30px;
+  }
+  .footer-links h3 {
+    margin-bottom: 20px;
+  }
+  .about-img-area-2 .about-text-2 {
+    right: 0px;
+    bottom: 0;
+  }
+  /*================================================
+    FAQ CSS
+    =================================================*/
+  .faq-text-area {
+    margin-bottom: 30px;
+  }
+  .faq-img-area .about-text-2 {
+    left: 0px;
+    bottom: 0;
+  }
+  /*================================================
+    Index 02 Booking area CSS
+    =================================================*/
+  .booking-play-button {
+    padding: 80px 0px 80px;
+  }
+  .booking-play-button a {
+    width: 80px;
+    height: 80px;
+    font-size: 50px;
+  }
+  .booking-form-area {
+    margin-bottom: 50px;
+    padding: 20px 15px;
+  }
+  .accordion-button {
+    font-size: 15px;
+  }
+  /*================================================
+    Index 03 Banner area CSS
+    =================================================*/
+  .banner-text-area-3 {
+    padding-top: 60px;
+    padding-bottom: 30px;
+  }
+  .banner-img-area {
+    margin-left: 0;
+  }
+  .banner-img-area .shapes .b3-dot {
+    right: 20px;
+    width: 20%;
+  }
+  .banner-img-area .shapes .dot-circle {
+    width: 20%;
+  }
+  .shape {
+    display: none;
+  }
+  /*================================================
+    Index 03 About area CSS
+    =================================================*/
+  .about-img-area-3 {
+    padding: 20px;
+  }
+  .about-img-area-3::before {
+    display: none;
+  }
+  .about-img-area-3 .about-img-list {
+    position: relative;
+    width: 100%;
+    top: unset;
+    right: unset;
+    -webkit-transform: translate(0);
+            transform: translate(0);
+  }
+  .about-img-area-3 .about-img-list ul li {
+    font-size: 15px;
+    padding: 7px;
+  }
+  .about-img-area-3 .about-img-list ul li strong {
+    font-size: 20px;
+  }
+  /*================================================
+    Index 03 Why Choose Us area CSS
+    =================================================*/
+  .why-we-card-3 {
+    padding-right: 80px;
+    padding-left: 10px;
+  }
+  .why-we-card-3 i {
+    right: 15px;
+  }
+  /*================================================
+    Index 03 Testimonial area CSS
+    =================================================*/
+  .testimonial-card-3 {
+    padding-top: 0px;
+  }
+  /*================================================
+    Index 03 Booking area CSS
+    =================================================*/
+  .booking-form-area-3 {
+    padding: 0px;
+    margin-top: 50px;
+  }
+  .booking-form-area-3 .booking-form-content-3 {
+    padding: 20px 15px 20px;
+    margin: 0;
+  }
+  .booking-3::before {
+    display: none;
+  }
+  .booking-3 .booking-play-button {
+    padding: 20px 0px 100px;
+  }
+  .features-bg-4 {
+    padding-bottom: 50px;
+  }
+  /*================================================
+    terms Area CSS
+    =================================================*/
+  .terms h1 {
+    font-size: 21px;
+  }
+  .terms h2 {
+    font-size: 20px;
+  }
+  .terms h3 {
+    font-size: 19px;
+  }
+  .terms h4 {
+    font-size: 18px;
+  }
+  .terms h5 {
+    font-size: 17px;
+  }
+  .terms h6 {
+    font-size: 16px;
+  }
+  /*================================================
+    Uni Banner Area CSS
+    =================================================*/
+  .uni-banner-text {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+  .uni-banner-text h1 {
+    font-size: 30px;
+  }
+  .google-map {
+    width: 100%;
+    height: 200px;
+  }
+  .bd-form {
+    padding: 20px 15px;
+  }
+}
+
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+  .footer-contact-list {
+    margin-top: 0px;
+  }
+  .about-1 .about-img-area .about-img-2 img {
+    max-width: 100%;
+  }
+  .about-1 .about-img-area .about-img-2 a {
+left: 50%;
+  }
+  .banner-text-area {
+    max-width: 505px;
+  }
+  .recent-news-card h5 {
+    padding-top: 15px;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  /*================================================
+    Default CSS
+    =================================================*/
+  :root {
+    --card-title-fontSize: 20px;
+  }
+  .ptb-100 {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+  .pt-100 {
+    padding-top: 80px;
+  }
+  .pb-100 {
+    padding-bottom: 80px;
+  }
+  .ptb-70 {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+  .pt-70 {
+    padding-top: 50px;
+  }
+  .pb-70 {
+    padding-bottom: 50px;
+  }
+  .pt-30 {
+    margin-top: 30px;
+  }
+  .pl-20, .pr-20 {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .section-content {
+    margin-top: 0px;
+  }
+  .default-section-title h3 {
+    font-size: 29px;
+  }
+  /*================================================
+    Index 01 Banner CSS
+    =================================================*/
+  .banner-text-area {
+    margin-left: auto;
+    padding-top: 80px;
+    padding-bottom: 30px;
+    padding-right: 30px;
+  }
+  .banner-text-area h1 {
+    font-size: 55px;
+  }
+  .main-banner-img {
+    text-align: center;
+  }
+  .main-banner-img img {
+    left: 0px;
+  }
+  /*================================================
+    Index 01 About CSS
+    =================================================*/
+  .about-1 .about-img-area {
+    margin-left: auto;
+  }
+  .about-1 .about-img-area .about-img-2 {
+    left: 0px;
+  }
+  .about-1 .about-text-area {
+    max-width: 720px;
+    margin-right: auto;
+    margin-top: 30px;
+    margin-left: auto;
+  }
+  /*================================================
+    Index 01 Features CSS
+    =================================================*/
+  .fmt-0 {
+    margin-top: 30px;
+  }
+  .features-card {
+    padding: 30px;
+  }
+  .features-card .features-icon-area {
+    position: relative;
+    right: 0;
+    top: 0;
+    -webkit-transform: translate(0);
+            transform: translate(0);
+    margin-bottom: 15px;
+  }
+  .features-bg {
+    padding-bottom: 280px;
+  }
+  /*================================================
+    Index 01 Service CSS
+    =================================================*/
+  .service-card .service-card-text {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+  /*================================================
+    Index 01 Testimonial CSS
+    =================================================*/
+  .testimonial-card {
+    padding: 30px 15px;
+  }
+  /*================================================
+    Index 01 Pricing CSS
+    =================================================*/
+  .pricing-card .pricing-text-area {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+  .pricing-card .service-price-list ul li {
+    padding: 15px 0px;
+  }
+  /*================================================
+    Index 01 Blog CSS
+    =================================================*/
+  .blog-date ul li {
+    margin-left: 10px;
+    font-size: 12px;
+  }
+  .blog-date ul li::before {
+    left: -9px;
+    top: -3px;
+  }
+  /*================================================
+    Index 01 Newsletter CSS
+    =================================================*/
+  .news-input-card {
+    margin-top: 30px;
+  }
+  /*================================================
+    Footer CSS
+    =================================================*/
+  .footer-logo-area p {
+    font-size: 14px;
+  }
+  .footer-logo-area .footer-social-icons span {
+    font-size: 13px;
+    margin-left: 5px;
+  }
+  .footer-logo-area .footer-social-icons ul li a {
+    margin-right: 2px;
+  }
+  .footer-links {
+    padding-right: 0px;
+    margin-top: 30px;
+  }
+  .footer-contact-list {
+    margin-top: 0px;
+  }
+  /*================================================
+    FAQ CSS
+    =================================================*/
+  .faq-text-area {
+    margin-bottom: 30px;
+  }
+  /*================================================
+    Index 02 Booking area CSS
+    =================================================*/
+  .booking-play-button {
+    padding: 150px 0px 150px;
+  }
+  .booking-form-area {
+    margin-bottom: 80px;
+  }
+  /*================================================
+    Index 03 Banner area CSS
+    =================================================*/
+  .banner-text-area-3 {
+    padding-top: 80px;
+    padding-bottom: 30px;
+  }
+  .banner-img-area {
+    margin-left: 0;
+  }
+  .banner-img-area .shapes .b3-dot {
+    right: 20px;
+    width: 20%;
+  }
+  .banner-img-area .shapes .dot-circle {
+    width: 20%;
+  }
+  /*================================================
+    Index 03 About area CSS
+    =================================================*/
+  .about-img-area-3 {
+    background-image: unset;
+    height: auto;
+  }
+  .about-img-area-3 img {
+    display: block;
+  }
+  /*================================================
+    Index 03 Why Choose Us area CSS
+    =================================================*/
+  .why-we-card-3 {
+    padding-right: 80px;
+    padding-left: 10px;
+  }
+  .why-we-card-3 i {
+    right: 15px;
+  }
+  /*================================================
+    Index 03 Booking area CSS
+    =================================================*/
+  .booking-form-area-3 .booking-form-content-3 {
+    padding: 30px 30px 40px;
+  }
+  .booking-3 .booking-play-button {
+    padding: 20px 0px 100px;
+  }
+  .features-bg-4 {
+    padding-bottom: 80px;
+  }
+  /*================================================
+    terms Area CSS
+    =================================================*/
+  .terms h1 {
+    font-size: 23px;
+  }
+  .terms h2 {
+    font-size: 22px;
+  }
+  .terms h3 {
+    font-size: 21px;
+  }
+  .terms h4 {
+    font-size: 20px;
+  }
+  .terms h5 {
+    font-size: 19px;
+  }
+  .terms h6 {
+    font-size: 18px;
+  }
+  /*================================================
+    Uni Banner Area CSS
+    =================================================*/
+  .uni-banner-text {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+  .uni-banner-text h1 {
+    font-size: 36px;
+  }
+  .recent-news-card h5 {
+    padding-top: 15px;
+  }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  :root {
+    --card-title-fontSize: 20px;
+  }
+  .banner-text-area {
+    margin-left: auto;
+    padding-top: 80px;
+    padding-bottom: 30px;
+  }
+  .banner-text-area h1 {
+    font-size: 55px;
+  }
+  .main-banner-img {
+    text-align: center;
+  }
+  .main-banner-img img {
+    left: 0px;
+  }
+  .about-1 .about-img-area {
+    margin-left: auto;
+  }
+  .about-1 .about-img-area .about-img-2 {
+    left: 0px;
+  }
+  .about-1 .about-text-area {
+    max-width: 950px;
+    margin-right: auto;
+    margin-top: 30px;
+  }
+  .fmt-0 {
+    margin-top: 30px;
+  }
+  .service-card .service-card-text {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+  .testimonial-card {
+    padding: 30px 15px;
+  }
+  .pricing-card .pricing-text-area {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+  .pricing-card .service-price-list ul li {
+    padding: 15px 0px;
+  }
+  .blog-date ul li {
+    margin-left: 10px;
+    font-size: 12px;
+  }
+  .blog-date ul li::before {
+    left: -9px;
+    top: -3px;
+  }
+  .footer-logo-area p {
+    font-size: 14px;
+  }
+  .footer-logo-area .footer-social-icons span {
+    font-size: 13px;
+    margin-left: 5px;
+  }
+  .footer-logo-area .footer-social-icons ul li a {
+    margin-right: 2px;
+  }
+  .banner-text-area-2 {
+    max-width: 515px;
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+  .banner-text-area-2 h1 {
+    font-size: 45px;
+  }
+  .features-card {
+    padding-left: 20px;
+  }
+  .service-card-2 .service-hover-text p {
+    font-size: 14px;
+  }
+  .service-card-2 .service-hover-text h4 {
+    margin-bottom: 5px;
+    margin-top: 0px;
+  }
+  .service-card-2 .service-card-2-footer h4 {
+    font-size: 18px;
+  }
+  .team-card .team-text-area {
+    padding: 25px 15px;
+  }
+  .banner-text-area-3 {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+  .banner-img-area .shapes .b3-dot {
+    right: 0px;
+    width: 20%;
+  }
+  .banner-img-area .shapes .dot-circle {
+    width: 20%;
+  }
+  .why-we-card-3 {
+    padding-right: 80px;
+    padding-left: 10px;
+  }
+  .why-we-card-3 i {
+    right: 15px;
+  }
+  .booking-form-area-3 .booking-form-content-3 {
+    padding: 30px 30px 40px;
+  }
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1399px) {
+  .banner-text-area {
+    max-width: 645px;
+  }
+  .banner-text-area h1 {
+    font-size: 50px;
+  }
+  .fmt-0 {
+    margin-top: 30px;
+  }
+  .banner-img-area .shapes .b3-dot {
+    right: 0px;
+  }
+}
+
+@media only screen and (min-width: 1550px) {
+  .banner-text-area {
+    max-width: 790px;
+  }
+  .about-img-area-2 .about-text-2 {
+    right: -60px;
+  }
+  .faq-img-area .about-text-2 {
+    left: -30px;
+  }
+}
+/*# sourceMappingURL=responsive.css.map */

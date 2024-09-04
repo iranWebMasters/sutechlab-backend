@@ -1,0 +1,34 @@
+{% extends 'userpanel/base.html' %}
+{% load static %} 
+{% block content %} 
+    <div class="breadcrumb">
+        <ul>
+            <li><a href="{% url 'userpanel:index' %}">پیشخوان</a></li>
+            <li><a href="#" class="is-active">اطلاعات کاربری</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <div class="user-info bg-white padding-30 font-size-13">
+            <form method="POST" action="{% url 'userpanel:update_profile_panel' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="profile__info border cursor-pointer text-center">
+                    <div class="avatar__img">
+                        <img src="{{ profile.image.url }}" class="avatar___img">
+                        <input type="file" name="image" accept="image/*" class="hidden avatar-img__input">
+                        <div class="v-dialog__container" style="display: block;"></div>
+                        <div class="box__camera default__avatar"></div>
+                    </div>
+                    <span class="profile__name">    {{ profile.first_name }} {{ profile.last_name }}</span>
+                </div>
+                <input class="text" name="first_name" placeholder="نام" value="{{ profile.first_name }}">
+                <input class="text text-left" name="last_name" placeholder="نام خانوادگی" value="{{ profile.last_name }}">
+                <input class="text text-left" name="phone_number" placeholder="شماره موبایل" value="{{ profile.phone_number }}">
+                <input class="text text-left" name="national_id" placeholder="کد ملی" value="{{ profile.national_id }}">
+                <input class="text text-left" name="postal_code" placeholder="کد پستی" value="{{ profile.postal_code }}">
+                <textarea class="text" name="address" placeholder="آدرس">{{ profile.address }}</textarea>
+                <br>
+                <button type="submit" class="btn btn-netcopy_net">ذخیره تغییرات</button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

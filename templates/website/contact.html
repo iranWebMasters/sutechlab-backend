@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+{% load main_tags %}
+
+{% get_single_contact as contact %}
+
+
+<div class="uni-banner">
+<div class="container">
+<div class="uni-banner-text">
+<h1>تماس با ما</h1>
+<ul>
+<li><a href="{% url 'website:index' %}">خانه</a></li>
+<li>تماس با ما</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+<div class="contact-page ptb-100">
+<div class="container">
+<div class="default-section-title">
+<h6>ارسال پیام</h6>
+</div>
+<div class="section-content">
+<div class="row">
+<div class="col-lg-4 col-md-12 col-sm-12 col-12">
+<div class="contact-card-area">
+<div class="row justify-content-center">
+<div class="col-lg-12 col-md-6 col-sm-12 col-12">
+<div class="contact-card">
+<i class="fas fa-map-marker-alt"></i>
+<h4>موقعیت ما</h4>
+<p>{{ contact.address }}</p>
+</div>
+</div>
+<div class="col-lg-12 col-md-6 col-sm-12 col-12">
+<div class="contact-card">
+<i class="fas fa-phone-alt"></i>
+<h4>تلفن ما</h4>
+<p><a href="tel:{{ contact.mobile_phone }}">{{ contact.mobile_phone }}</a></p>
+<p><a href="tel:{{ contact.landline_phone }}">{{ contact.landline_phone }}</a></p>
+</div>
+</div>
+<div class="col-lg-12 col-md-6 col-sm-12 col-12">
+<div class="contact-card">
+<i class="far fa-envelope"></i>
+<h4>ایمیل</h4>
+<p><a href="mailto: {{ contact.email }}">{{ contact.email }}</a></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-lg-8 col-md-12 col-sm-12 col-12">
+<div class="contact-page-form-area">
+<div class="bd-form details-text-area" id="bd-form">
+<h3>ارسال پیام</h3>
+<form action="{% url 'website:contactus' %}" method="post">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-6">
+        <input type="text" class="form-control" placeholder="نام" name="name" required>
+      </div>
+      <div class="col-md-6">
+        <input type="email" class="form-control" placeholder="ایمیل" name="email" required>
+      </div>
+      <div class="col-md-6">
+        <input type="text" class="form-control" placeholder="تلفن" name="phone" required>
+      </div>
+      <!-- <div class="col-md-6">
+        <input type="text" class="form-control" placeholder="وبسایت" name="website" required>
+      </div> -->
+      <div class="col-md-12">
+        <textarea rows="5" class="form-control" placeholder="پیام شما" name="message" required></textarea>
+      </div>
+      <div class="col-md-12">
+        <button class="default-button" type="submit"><span>ارسال پیام</span></button>
+      </div>
+    </div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- <div class="google-map">
+<iframe class="g-map" src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d2371.0813443498755!2d-113.4208817841543!3d53.53846178001977!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1s25%2F50%20Street%20Here%20United%20For%20Australia!5e0!3m2!1sen!2sbd!4v1626086534014!5m2!1sen!2sbd"></iframe>
+</div> -->
+{% endblock content %}

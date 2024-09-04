@@ -1,0 +1,278 @@
+{% extends 'base.html' %} {% load static %} {% block content %} 
+{% load main_tags %}
+
+<!-- -------------------base----------------- -->
+{% include 'website/slideshow.html' %}
+
+<div class="about about-1 pt-100">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-6 col-md-12 col-sm-12 col-12">
+        <div
+          class="about-img-area-3"
+          style='background-image: url("{{home.aboutـbanner.url}}")'
+        >
+          <!-- <div class="about-img-list">
+<ul>
+<li><strong>%100</strong> شرکت مورد اعتماد</li>
+<li><strong>460</strong> پروژه تکمیل شده</li>
+<li><strong>60</strong> برنده جایزه</li>
+<li><strong>200</strong> رضایت مشتریان</li>
+</ul>
+</div> -->
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12 col-sm-12 col-12">
+        <div class="about-text-area pl-20">
+          <div class="default-section-title">
+            <h6>درباره ما</h6>
+            <h3>{{home.aboutـtitle}}</h3>
+          </div>
+          <p>{{home.about_text|safe|truncatechars:1100}}</p>
+          <a
+            class="default-button default-button-4"
+            href="{% url 'website:about' %}"
+            ><span>اطلاعات بیشتر</span></a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 
+<div class="features pt-70 pb-100">
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+<div class="features-card-3">
+<i class="flaticon-customer-support"></i>
+<h4>ارسال یک پیام</h4>
+<p>لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم استاندارد صنعت بوده است.</p>
+</div>
+</div>
+<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+<div class="features-card-3">
+<i class="flaticon-appointment"></i>
+<h4>برنامه نظافت</h4>
+<p>لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم استاندارد صنعت بوده است.</p>
+</div>
+</div>
+<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+<div class="features-card-3">
+<i class="flaticon-support-1"></i>
+<h4>ارائه خدمات</h4>
+<p>لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم استاندارد صنعت بوده است.</p>
+</div>
+</div>
+</div>
+</div>
+</div> -->
+
+<!-- ---------------/ -->
+{% display_devices %}
+
+
+<!-- <div class="why-we ptb-100">
+<div class="container">
+<div class="default-section-title default-section-title-middle">
+<h6>چرا ما را انتخاب می کنید</h6>
+<h3>چرا مشتریان ما را انتخاب می کنند</h3>
+</div>
+<div class="section-content">
+<div class="row">
+<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+<div class="why-we-card-3">
+<i class="flaticon-technical-support"></i>
+<h4>تیم با تجربه</h4>
+<p>لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم استاندارد صنعت بوده است.</p>
+</div>
+</div>
+<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+<div class="why-we-card-3">
+<i class="flaticon-clock"></i>
+<h4>خدمات سریع</h4>
+<p>لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم استاندارد صنعت بوده است.</p>
+</div>
+</div>
+<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+<div class="why-we-card-3">
+<i class="flaticon-review"></i>
+<h4>بهترین تجهیزات</h4>
+<p>لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم استاندارد صنعت بوده است.</p>
+</div>
+</div>
+<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+<div class="why-we-card-3">
+<i class="flaticon-leaf"></i>
+<h4>محصولات طبیعی</h4>
+<p>لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم استاندارد صنعت بوده است.</p>
+</div>
+</div>
+<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+<div class="why-we-card-3">
+<i class="flaticon-booking"></i>
+<h4>رزرو آنلاین آسان</h4>
+<p>لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم استاندارد صنعت بوده است.</p>
+</div>
+</div>
+<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+<div class="why-we-card-3">
+<i class="flaticon-user"></i>
+<h4>بیمه شده و محدود</h4>
+<p>لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم استاندارد صنعت بوده است.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div> -->
+
+<!-- 
+<div class="booking booking-3">
+<div class="container">
+<div class="row align-items-center">
+<div class="col-lg-6">
+<div class="booking-form-area booking-form-area-3">
+<div class="booking-form-content-3">
+<div class="default-section-title default-section-title-middle">
+<h3>درخواست خدمات</h3>
+</div>
+<form>
+<div class="row">
+<div class="col-lg-6 col-md-6 col-sm-6 col-12">
+<div class="booking-form-content">
+<input type="text" class="form-control" placeholder="نام">
+</div>
+</div>
+<div class="col-lg-6 col-md-6 col-sm-6 col-12">
+<div class="booking-form-content">
+<input type="Email" class="form-control" placeholder="ایمیل">
+</div>
+</div>
+<div class="col-lg-6 col-md-6 col-sm-6 col-12">
+<div class="booking-form-content">
+<input type="text" class="form-control" placeholder="کد پستی">
+</div>
+</div>
+<div class="col-lg-6 col-md-6 col-sm-6 col-12">
+<div class="booking-form-content">
+<input type="text" class="form-control" placeholder="تلفن">
+</div>
+</div>
+<div class="col-lg-6 col-md-6 col-sm-6 col-12">
+<div class="booking-form-content">
+<select class="form-select" aria-label="Default select example">
+<option selected disabled>انتخاب خدمات</option>
+<option value="1">نظافت اتاق خواب</option>
+<option value="2">نظافت دفتر کار</option>
+<option value="3">نظافت خانه</option>
+</select>
+</div>
+</div>
+<div class="col-lg-6 col-md-6 col-sm-6 col-12">
+<div class="booking-form-content">
+<button class="default-button" type="submit"><span>ارسال جزئیات</span></button>
+</div>
+</div>
+ </div>
+</form>
+</div>
+</div>
+</div>
+<div class="col-lg-6">
+<div class="booking-play-button">
+<div class="play-button">
+<a class="video-popup" href="https://www.youtube.com/watch?v=0qNsC-NLuhM"><i class="flaticon-play-button"></i></a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+ -->
+<!-- 
+<div class="testimonial ptb-100">
+<div class="container">
+<div class="default-section-title default-section-title-middle">
+<h6>بازخورد مشتریان</h6>
+<h3>مشتریان درباره ما چه می گویند</h3>
+</div>
+<div class="section-content">
+<div class="row justify-content-center">
+<div class="col-lg-4 col-md-6 col-sm-12 col-12">
+<div class="testimonial-card testimonial-card-3">
+<i class="flaticon-right-quote"></i>
+<div class="testimonial-footer">
+<img src="{% static '/images/testimonial/tc1.jpg' %}" alt="image">
+<div class="testimonial-footer-intro">
+<h4>جان اسمیت</h4>
+<p>طراح وب</p>
+</div>
+</div>
+<p>لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم استاندارد صنعت بوده است.</p>
+<div class="stars">
+<ul>
+<li><i class="fas fa-star"></i></li>
+<li><i class="fas fa-star"></i></li>
+<li><i class="fas fa-star"></i></li>
+<li><i class="fas fa-star"></i></li>
+<li><i class="far fa-star"></i></li>
+<li><span>4.0</span></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-lg-4 col-md-6 col-sm-12 col-12">
+<div class="testimonial-card testimonial-card-3">
+<i class="flaticon-right-quote"></i>
+<div class="testimonial-footer">
+<img src="{% static '/images/testimonial/tc2.jpg' %}" alt="image">
+<div class="testimonial-footer-intro">
+<h4>سن واتسون</h4>
+<p>طراح وب</p>
+</div>
+</div>
+<p>لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم استاندارد صنعت بوده است.</p>
+<div class="stars">
+<ul>
+<li><i class="fas fa-star"></i></li>
+<li><i class="fas fa-star"></i></li>
+<li><i class="fas fa-star"></i></li>
+<li><i class="fas fa-star"></i></li>
+<li><i class="fas fa-star"></i></li>
+<li><span>5.0</span></li>
+</ul>
+ </div>
+</div>
+</div>
+<div class="col-lg-4 col-md-6 col-sm-12 col-12">
+<div class="testimonial-card testimonial-card-3">
+<i class="flaticon-right-quote"></i>
+<div class="testimonial-footer">
+<img src="{% static '/images/testimonial/tc3.jpg' %}" alt="image">
+<div class="testimonial-footer-intro">
+<h4>الکس آلینا</h4>
+<p>طراح وب</p>
+</div>
+</div>
+<p>لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم به سادگی ساختار چاپ و متن را در بر می گیرد. لورم ایپسوم استاندارد صنعت بوده است.</p>
+<div class="stars">
+<ul>
+<li><i class="fas fa-star"></i></li>
+<li><i class="fas fa-star"></i></li>
+<li><i class="fas fa-star"></i></li>
+<li><i class="fas fa-star"></i></li>
+<li><i class="far fa-star"></i></li>
+<li><span>4.0</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div> -->
+{% display_latest_posts %}
+
+<!-- _____________footer__________________ -->
+{% endblock content %}

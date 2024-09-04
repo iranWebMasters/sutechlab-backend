@@ -1,0 +1,9 @@
+<div class="sidebar-card categories mt-30">
+    <h3>دسته بندی ها</h3>
+    <ul>
+    {% for name, count in categories.items %}
+    
+    <li><a  href="{% url 'blog:blog_list_category' cat_name=name %}"><i class="fas fa-angle-double-left"></i>{{ name }} ({{ count }}) </a></li>
+    {% endfor %}
+    </ul>
+    </div>
