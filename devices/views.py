@@ -9,13 +9,12 @@ from django.views.generic import DetailView
 
 class DevicesListView(ListView):
     model = Device
-    template_name = 'devices/services_home.html'
+    template_name = 'devices/device-home.html'
     context_object_name = 'services'
     paginate_by = 6
 
     def get_queryset(self):
-        current_time = timezone.now()
-        queryset = Device.objects.filter(status=True, published_date__lte=current_time)
+        queryset = Device.objects.filter(status=True,)
 
         username = self.kwargs.get('username')
         if username:

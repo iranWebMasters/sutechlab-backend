@@ -50,6 +50,7 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=250)
     last_name = models.CharField(max_length=250)
     image = models.ImageField(blank=True, null=True)
+    image = models.ImageField(upload_to='profile_images/', blank=True, null=True, default='profile_images/default.jpg')
     national_id = models.CharField(max_length=10)
     phone_number = models.CharField(max_length=15)
     address = models.TextField()

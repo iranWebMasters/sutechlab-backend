@@ -11,7 +11,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView,DetailView
 from .forms import *
-from .models import Test
+from services.models import Experiment
 
 
 
@@ -58,10 +58,10 @@ class ProfileUpdatePanelView(LoginRequiredMixin,UpdateView):
 
 
 class TestListView(ListView):
-    model = Test
+    model = Experiment
     context_object_name = 'tests'
     ordering = ['-created_date']
 
 class TestDetailView(DetailView):
-    model = Test
-    template_name = 'test_detail.html'
+    model = Experiment
+    template_name = 'experiment-detail.html'
