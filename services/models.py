@@ -55,6 +55,7 @@ class Laboratory(models.Model):
         ('SH', 'شیراز'),
     ]
     name = models.CharField(max_length=255, verbose_name='نام آزمایشگاه')
+    faculty = models.ForeignKey('Faculty', on_delete=models.CASCADE, related_name='experiments', verbose_name='دانشکده')
     location = models.CharField(max_length=2, choices=LOCATION_CHOICES, verbose_name='مکان')
 
     def __str__(self):
@@ -70,6 +71,22 @@ class Faculty(models.Model):
 
     def __str__(self):
         return self.name
+    
+class ExperimentSpecification(models.Model):
+    UNIT_TYPE_CHOICES = [
+        ('EQ', 'دستگاه'),
+        ('CM', 'کامپیوتر'),
+        ('MA', 'ماشین'),
+    ]
+    
+    name_fa = models.CharField(max_length=255, verbose_name='نام فارسی آزمون')
+    name_en = models.CharField(max_length=255, verbose_name='نام انگلیسی آزمون')
+    unit_type = models.CharField(max_length=2, choices=UNIT_TYPE_CHOICES, verbose_name='نوع واحد آزمون')
+    operating_range = models.TextField(verbose_name='گستره کاری')
+    description = models.TextField(verbose_name='توصیف آزمون')
+
+    def __str__(self):
+        return self.name_en
 
 class Experiment(models.Model):
     STATUS_CHOICES = [
@@ -81,13 +98,12 @@ class Experiment(models.Model):
         ('has_not', 'ندارد'),
     ]
     
-    title = models.CharField(max_length=255, verbose_name='عنوان آزمایش')
     laboratory = models.ForeignKey('Laboratory', on_delete=models.CASCADE, related_name='experiments', verbose_name='آزمایشگاه')
-    faculty = models.ForeignKey('Faculty', on_delete=models.CASCADE, related_name='experiments', verbose_name='دانشکده')
+    experiment = models.ForeignKey(ExperimentSpecification, on_delete=models.CASCADE, related_name='experiments', verbose_name='مشخصات آزمایش')
     device = models.ForeignKey(Device, on_delete=models.CASCADE, related_name='experiments', verbose_name='دستگاه')
     operator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='experiments', verbose_name='اپراتور')
+    parameters = models.ManyToManyField(Parameter, related_name='experiments', verbose_name='پارامتر ها')  # Many-to-Many relationship for parameters
     iso_17025 = models.CharField(max_length=7, choices=ISO_CHOICES, default='has_not', verbose_name='ISO 17025')
-    description = models.TextField(verbose_name='توضیحات')
     status = models.CharField(max_length=8, choices=STATUS_CHOICES, default='active', verbose_name='وضعیت')
     created_date = models.DateField(auto_now_add=True, verbose_name='تاریخ ایجاد')
     updated_date = models.DateField(auto_now=True, verbose_name='تاریخ به‌روزرسانی')

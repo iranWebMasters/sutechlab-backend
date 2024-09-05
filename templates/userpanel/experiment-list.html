@@ -8,20 +8,20 @@
         </ul>
     </div>
     <div class="main-content">
-        <div class="tab__box">
+        {% comment %} <div class="tab__box">
             <div class="tab__items">
                 <a class="tab__item is-active" href="checkouts.html"> همه تسویه ها</a>
                 <a class="tab__item " href="checkouts.html">تسویه های جدید</a>
                 <a class="tab__item " href="checkouts.html">تسویه های واریز شده</a>
                 <a class="tab__item " href="checkout-request.html">درخواست تسویه جدید</a>
             </div>
-        </div>
+        </div> {% endcomment %}
         <div class="bg-white padding-20">
             <div class="t-header-search">
                 <form action="" onclick="event.preventDefault();">
                     <div class="t-header-searchbox font-size-13">
                         <input type="text" class="text search-input__box font-size-13"
-                               placeholder="جستجوی در تسویه حساب ها">
+                               placeholder="جستجوی در آزمون ها ">
                         <div class="t-header-search-content ">
                             <input type="text" class="text" placeholder="شماره کارت">
                             <input type="text" class="text" placeholder="شماره">
@@ -39,7 +39,8 @@
             <table class="table">
                 <thead role="rowgroup">
                 <tr role="row" class="title-row">
-                    <th>شناسه آزمون</th>
+                    <th>ردیف آزمون</th>
+                    <th>نام آزمون</th>
                     <th>نام آزمایشگاه</th>
                     <th>نام دانشکده</th>
                     <th>اپراتور</th>
@@ -53,6 +54,7 @@
                 {% for experiment in experiments %}
                 <tr role="row">
                     <td><a href="{% url 'userpanel:experiments-detail' experiment.id %}">{{ experiment.id }}</a></td>
+                    <td><a href="">{{ experiment.title }}</a></td>
                     <td><a href="">{{ experiment.laboratory.name }}</a></td>
                     <td><a href="">{{ experiment.faculty.name }}</a></td>
                     <td><a href="">{{ experiment.operator.first_name }}</a></td>
