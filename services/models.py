@@ -30,7 +30,7 @@ class Unit_price(models.Model):
     def __str__(self):
         return f"{self.unit_price} {self.get_currency_display()}"
 
-class Parameter(models.Model):
+class Parameters(models.Model):
     UNIT_CHOICES = [
         ('C', 'سانتی گراد'),
         ('F', 'فارنهایت'),
@@ -98,7 +98,7 @@ class Experiment(models.Model):
     experiment = models.ForeignKey(ExperimentSpecification, on_delete=models.CASCADE, related_name='experiments', verbose_name='مشخصات آزمایش')
     device = models.ForeignKey(Device, on_delete=models.CASCADE, related_name='experiments', verbose_name='دستگاه')
     operator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='experiments', verbose_name='اپراتور')
-    parameters = models.ManyToManyField(Parameter, related_name='experiments', verbose_name='پارامتر ها')  # Many-to-Many relationship for parameters
+    parameters = models.ManyToManyField(Parameters, related_name='experiments', verbose_name='پارامتر ها')  # Many-to-Many relationship for parameters
     iso_17025 = models.CharField(max_length=7, choices=ISO_CHOICES, default='has_not', verbose_name='ISO 17025')
     status = models.CharField(max_length=8, choices=STATUS_CHOICES, default='active', verbose_name='وضعیت')
     created_date = models.DateField(auto_now_add=True, verbose_name='تاریخ ایجاد')

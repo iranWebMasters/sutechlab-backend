@@ -38,6 +38,12 @@
     font-size: 1rem;
 }
 
+.parameters.linear{
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 2rem;
+}
+
 .parameters .label {
     font-weight: bold;
     color: #3d3d91;

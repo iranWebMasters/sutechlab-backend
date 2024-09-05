@@ -1,6 +1,7 @@
 from django.db import models
 
 class Device(models.Model):
+    name = models.CharField("نام دستگاه", max_length=255)
     brand = models.CharField("برند", max_length=255)
     usage = models.CharField("کاربرد", max_length=255)
     services_description = models.TextField("شرح خدمات")

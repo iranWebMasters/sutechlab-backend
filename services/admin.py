@@ -55,7 +55,7 @@ class ExperimentAdmin(admin.ModelAdmin):
 
 admin.site.register(Laboratory, LaboratoryAdmin)
 admin.site.register(Faculty, FacultyAdmin)
-admin.site.register(Parameter, ParameterAdmin)
+admin.site.register(Parameters, ParameterAdmin)
 admin.site.register(Unit_amount, Unit_amountAdmin)
 admin.site.register(Unit_price, Unit_priceAdmin)
 admin.site.register(Experiment, ExperimentAdmin)
