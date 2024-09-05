@@ -2,9 +2,8 @@ from django.contrib import admin
 from .models import *
 
 class LaboratoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'location')
+    list_display = ('name',)
     search_fields = ('name',)
-    list_filter = ('location',)
 
 class FacultyAdmin(admin.ModelAdmin):
     list_display = ('name', 'location')

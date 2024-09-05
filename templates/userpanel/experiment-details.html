@@ -1,77 +1,50 @@
 {% extends 'userpanel/base.html' %}
 {% load static %} 
 {% block content %} 
- <style>
-
-    .exp {
-        max-width: 1200px;
-        margin: 50px auto;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        direction: rtl;
-        text-align: right;
-    }
-    
-    .exp-title {
-        color: green;
-        text-align: center;
-    }
-    
-    .details-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-    
-    .info-section {
-        width: 100%;
-        color: #333;
-    }
-    
-    .section-heading {
-        color: #3d3d91;
-        border-bottom: 2px solid #ffaa00;
-        padding-bottom: 5px;
-    }
-    
-    .parameters p {
-        margin: 5px 0;
-        font-size: 1rem;
-    }
-    
-    .parameters .label {
-        font-weight: bold;
-        color: #3d3d91;
-        font-size: 0.8rem;
-    }
-    
-    .parameters .ceramic-value {
-        font-weight: bold;
-        color: #7a52a2;
-        font-size: 1.3em;
-    }
-        
- </style>
 
  <div class="exp">
-    <h1 class="exp-title">آزمو‌ن آون</h1>
+    <h1 class="exp-title">{{ experiments.experiment.name_fa }}</h1>
     <div class="details-container">
         <div class="info-section">
-            <h2 class="section-heading">آزمایشگاه سرامیک </h2>
+            <h2 class="section-heading">{{ experiments.laboratory.name }} </h2>
             
             <div class="parameters">
                 <p>
-                    دانشکده مهندسی و علم مواد
+                    دانشکده: {{ experiments.laboratory.faculty.name }}
+                </p>
+                <p>
+                    <span class="label">نام مدیر فنی :</span>
+                     آذینه ملک‌خاچاطوریان
+                </p>
+            </div>
+            
+
+        </div>
+        <div class="info-section">
+            <h2 class="section-heading">{{ experiments.laboratory.name }} </h2>
+            
+            <div class="parameters">
+                <p>
+                    دانشکده: {{ experiments.laboratory.faculty.name }}
                 </p>
                 <p>
                     <span class="label">نام مدیریتی:</span>
                      آذینه ملک‌خاچاطوریان
                 </p>
+            </div>
+            
+
+        </div>
+        <div class="info-section">
+            <h2 class="section-heading">{{ experiments.laboratory.name }} </h2>
+            
+            <div class="parameters">
                 <p>
-                    <span class="label">کد کنترلی آزمایشگاه:</span>
-                     <span class="value">7-1214</span>
+                    دانشکده: {{ experiments.laboratory.faculty.name }}
+                </p>
+                <p>
+                    <span class="label">نام مدیریتی:</span>
+                     آذینه ملک‌خاچاطوریان
                 </p>
             </div>
             
@@ -79,6 +52,7 @@
         </div>
     </div>
 </div>
+
 
 
 {% endblock content %}

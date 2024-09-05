@@ -54,9 +54,9 @@
                 {% for experiment in experiments %}
                 <tr role="row">
                     <td><a href="{% url 'userpanel:experiments-detail' experiment.id %}">{{ experiment.id }}</a></td>
-                    <td><a href="">{{ experiment.title }}</a></td>
+                    <td><a href="">{{ experiment.experiment.name_fa }}</a></td>
                     <td><a href="">{{ experiment.laboratory.name }}</a></td>
-                    <td><a href="">{{ experiment.faculty.name }}</a></td>
+                    <td><a href="">{{ experiment.laboratory.faculty.name }}</a></td>
                     <td><a href="">{{ experiment.operator.first_name }}</a></td>
                     <td>
                         <a href="" class="{% if experiment.iso_17025 == 'has' %}text-success{% else %}text-error{% endif %}">

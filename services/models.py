@@ -50,14 +50,10 @@ class Parameter(models.Model):
         return f"{self.name} - {self.get_unit_display()} - {self.unit_amount} - {self.unit_price}"
 
 class Laboratory(models.Model):
-    LOCATION_CHOICES = [
-        ('SD', 'صدرا'),
-        ('SH', 'شیراز'),
-    ]
     name = models.CharField(max_length=255, verbose_name='نام آزمایشگاه')
     faculty = models.ForeignKey('Faculty', on_delete=models.CASCADE, related_name='experiments', verbose_name='دانشکده')
-    location = models.CharField(max_length=2, choices=LOCATION_CHOICES, verbose_name='مکان')
-
+    technical_manager = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='managed_laboratories', verbose_name=' مدیر فنی')
+    
     def __str__(self):
         return self.name
 
@@ -108,5 +104,3 @@ class Experiment(models.Model):
     created_date = models.DateField(auto_now_add=True, verbose_name='تاریخ ایجاد')
     updated_date = models.DateField(auto_now=True, verbose_name='تاریخ به‌روزرسانی')
 
-    def __str__(self):
-        return self.title

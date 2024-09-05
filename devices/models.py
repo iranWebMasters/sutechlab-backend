@@ -6,6 +6,7 @@ class Device(models.Model):
     services_description = models.TextField("شرح خدمات")
     additional_details = models.TextField("توضیحات", blank=True, null=True)
     image = models.ImageField("تصویر", upload_to='services_images/')
+    status = models.BooleanField("وضعیت", default=False)
     
     class Meta:
         ordering = ['brand']

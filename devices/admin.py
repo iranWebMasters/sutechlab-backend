@@ -1,11 +1,9 @@
 from django.contrib import admin
-from .models import *
+from .models import Device
 
+class DeviceAdmin(admin.ModelAdmin):
+    list_display = ('brand', 'usage')  # Remove created_date and updated_date
+    list_filter = ('brand', )
+    search_fields = ('brand', 'usage', 'services_description')
 
-class ServiceAdmin(admin.ModelAdmin):
-    list_display = ('title', 'status','created_date', 'updated_date')
-    list_filter = ('status', )
-    search_fields = ('title', 'content')
-    readonly_fields = ('created_date', 'updated_date')    
-    
-admin.site.register(Device, ServiceAdmin)
+admin.site.register(Device, DeviceAdmin)
