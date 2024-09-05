@@ -65,29 +65,35 @@
         <div class="info-section">
             <h2 class="section-heading">پارامتر ها: </h2>
         
-            <div class="parameters linear">
+            <div class="parameters">
                 {% for parameter in experiments.parameters.all %}
-                <p>
-                    <span class="label">نام:</span>
-                    {{ parameter.name }}
-                </p>
-                <p>
-                    <span class="label">واحد اندازه گیری:</span>  
-                    {{ parameter.get_unit_display }}
-                </p>
-                <p>
-                    <span class="label">مقدار واحد:</span>
-                    {{ parameter.unit_amount.amount }} {{ parameter.unit_amount.get_unit_display }}
-                </p>
-                <p>
-                    <span class="label">مبلغ واحد:</span>
-                    {{ parameter.unit_price.unit_price }} {{ parameter.unit_price.get_currency_display }}
-                </p>
+                <div class="parameters-line">
+                    <p>
+                        <span class="label">نام:</span>
+                        {{ parameter.name }}
+                    </p>
+                    <p>
+                        <span class="label">واحد اندازه گیری:</span>  
+                        {{ parameter.get_unit_display }}
+                    </p>
+                    <p>
+                        <span class="label">مقدار واحد:</span>
+                        {{ parameter.unit_amount.amount }} {{ parameter.unit_amount.get_unit_display }}
+                    </p>
+                    <p>
+                        <span class="label">مبلغ واحد:</span>
+                        {{ parameter.unit_price.unit_price }} {{ parameter.unit_price.get_currency_display }}
+                    </p>
+                </div>
                 {% endfor %}
             </div>
         </div>
         
     </div>
+
+    <a href="#" class="btn btn-success">
+        ثبت درخواس
+    </a>
 </div>
 
 
