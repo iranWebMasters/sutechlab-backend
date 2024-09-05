@@ -1,0 +1,114 @@
+{% extends 'userpanel/base.html' %}
+{% load static %} 
+{% block content %} 
+
+<style>
+    .stepper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 800px;
+        margin: 20px auto;
+    }
+    
+    .step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 2px solid #9e9e9e;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5em;
+        color: #9e9e9e;
+        margin-bottom: 5px;
+    }
+    
+    .line {
+        width: 100px;
+        height: 2px;
+        background-color: #ddd;
+    }
+    
+    .step p {
+        font-size: 1em;
+        color: #9e9e9e;
+    }
+    
+    /* Active Step */
+    .active .circle {
+        border-color: #3d3d91;
+        color: #3d3d91;
+    }
+    
+    .active p {
+        color: #3d3d91;
+    }
+    
+    /* Completed Step */
+    .completed .circle {
+        background-color: #4caf50;
+        border: none;
+        color: white;
+        font-size: 1.5em;
+    }
+    
+    .completed .checkmark {
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+    
+    .completed p {
+        color: #4caf50;
+    }
+    
+    .completed-line {
+        background-color: #4caf50;
+    }
+    
+    /* Inactive Step */
+    .step .circle {
+        color: #9e9e9e;
+    }
+    
+    .step p {
+        color: #9e9e9e;
+    }
+    
+</style>
+
+
+<div class="stepper">
+    <div class="step completed">
+        <div class="circle">
+            <span class="checkmark">✔</span>
+        </div>
+        <p>اطلاعات درخواست</p>
+    </div>
+    <div class="line completed-line"></div>
+    <div class="step active">
+        <div class="circle">2</div>
+        <p>اطلاعات نمونه</p>
+    </div>
+    <div class="line"></div>
+    <div class="step">
+        <div class="circle">3</div>
+        <p>اطلاعات آزمون</p>
+    </div>
+    <div class="line"></div>
+    <div class="step">
+        <div class="circle">4</div>
+        <p>اطلاعات تکمیلی</p>
+    </div>
+</div>
+
+
+
+{% endblock content %}
