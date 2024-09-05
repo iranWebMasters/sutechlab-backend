@@ -35,7 +35,7 @@
 
 .parameters p {
     margin: 5px 0;
-    font-size: 1rem;
+    font-size: 1.2rem;
 }
 
 .parameters:has(.parameters-line){
@@ -54,11 +54,22 @@
 .parameters .label {
     font-weight: bold;
     color: #3d3d91;
-    font-size: 0.8rem;
+    font-size: 1rem;
 }
 
-.parameters .ceramic-value {
-    font-weight: bold;
-    color: #7a52a2;
-    font-size: 1.3em;
+.parameters-line .label{
+    font-size: 1.1rem;
+}
+
+.parameters-line p{
+    font-size: 1.2rem;
+}
+
+.exp a.btn{
+    width: 150px;
+    padding: 0.5em 0.2em;
+    color: white;
+    font-size: 1.2rem;
+    margin-top: 40px;
+    border-radius: 7px;
 }

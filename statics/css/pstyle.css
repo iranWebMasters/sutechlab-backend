@@ -599,7 +599,7 @@ textarea {
 .sidebar__nav ul li a::before {
     position: absolute;
     font-size: 20px;
-    top: 10px;
+    top: 0.6em;
     right: 15px;
     color: #636e72;
 
