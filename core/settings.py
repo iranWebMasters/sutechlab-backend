@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'devices',
     'userpanel',
     'services',
+    'requests',
 
     'decouple',
     'django.contrib.humanize',
