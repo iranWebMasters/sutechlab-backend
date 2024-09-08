@@ -46,16 +46,21 @@ class User(AbstractBaseUser,PermissionsMixin):
         return self.email
     
 class Profile(models.Model):
-    user=models.ForeignKey(User,on_delete=models.CASCADE)
-    first_name=models.CharField(max_length=250)
-    last_name=models.CharField(max_length=250)
-    image=models.ImageField(blank=True,null=True)
-    description=models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=250)
+    last_name = models.CharField(max_length=250)
+    image = models.ImageField(blank=True, null=True)
+    image = models.ImageField(upload_to='profile_images/', blank=True, null=True, default='profile_images/default.jpg')
+    national_id = models.CharField(max_length=10)
+    phone_number = models.CharField(max_length=15)
+    address = models.TextField()
+    postal_code = models.CharField(max_length=10)
     created_date = models.DateField(auto_now_add=True)
     updated_date = models.DateField(auto_now=True)
-    
-    def __str__ (self):
-        return self.user.email
+
+    def __str__(self):
+        return f"{self.first_name} - {self.last_name} - {self.national_id}"
+
     
 @receiver(post_save,sender=User)
 def save_profile(sender,instance,created,**kwargs):

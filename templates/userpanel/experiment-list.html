@@ -1,0 +1,79 @@
+{% extends 'userpanel/base.html' %}
+{% load static %} 
+{% block content %} 
+    <div class="breadcrumb">
+        <ul>
+            <li><a href="index.html">پیشخوان</a></li>
+            <li><a href="checkouts.html" class="is-active"> تسویه حساب ها</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        {% comment %} <div class="tab__box">
+            <div class="tab__items">
+                <a class="tab__item is-active" href="checkouts.html"> همه تسویه ها</a>
+                <a class="tab__item " href="checkouts.html">تسویه های جدید</a>
+                <a class="tab__item " href="checkouts.html">تسویه های واریز شده</a>
+                <a class="tab__item " href="checkout-request.html">درخواست تسویه جدید</a>
+            </div>
+        </div> {% endcomment %}
+        <div class="bg-white padding-20">
+            <div class="t-header-search">
+                <form action="" onclick="event.preventDefault();">
+                    <div class="t-header-searchbox font-size-13">
+                        <input type="text" class="text search-input__box font-size-13"
+                               placeholder="جستجوی در آزمون ها ">
+                        <div class="t-header-search-content ">
+                            <input type="text" class="text" placeholder="شماره کارت">
+                            <input type="text" class="text" placeholder="شماره">
+                            <input type="text" class="text" placeholder="تاریخ">
+                            <input type="text" class="text" placeholder="ایمیل">
+                            <input type="text" class="text margin-bottom-20" placeholder="نام و نام خانوادگی">
+                            <btutton class="btn btn-netcopy_net">جستجو</btutton>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="table__box">
+            <table class="table">
+                <thead role="rowgroup">
+                <tr role="row" class="title-row">
+                    <th>ردیف آزمون</th>
+                    <th>نام آزمون</th>
+                    <th>نام آزمایشگاه</th>
+                    <th>نام دانشکده</th>
+                    <th>اپراتور</th>
+                    <th>ISO 17025</th>
+                    <th>مبلغ (تومان)</th>
+                    <th>وضعیت</th>
+                    <th>عملیات</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for experiment in experiments %}
+                <tr role="row">
+                    <td><a href="{% url 'userpanel:experiments-detail' experiment.id %}">{{ experiment.id }}</a></td>
+                    <td><a href="">{{ experiment.experiment.name_fa }}</a></td>
+                    <td><a href="">{{ experiment.laboratory.name }}</a></td>
+                    <td><a href="">{{ experiment.laboratory.faculty.name }}</a></td>
+                    <td><a href="">{{ experiment.operator.first_name }}</a></td>
+                    <td>
+                        <a href="" class="{% if experiment.iso_17025 == 'has' %}text-success{% else %}text-error{% endif %}">
+                            {{ experiment.get_iso_17025_display }}
+                        </a>
+                    </td>
+                    
+                    <td><a href="">{{ experiment.unit_price }} تومان</a></td>
+                    <td><a href="" class="{% if experiment.status == 'active' %}text-success{% else %}text-error{% endif %}">{{ experiment.get_status_display }}</a></td>
+                    <td>
+                        <a href="{% url 'userpanel:experiments-detail' experiment.id %}" class="btn btn-success">انتخاب</a>
+                    </td>                    
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+{% endblock content %}

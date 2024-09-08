@@ -24,5 +24,31 @@ class CustomUserAdmin(UserAdmin):
             )}
         ),
     )
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = (
+        'user', 
+        'first_name', 
+        'last_name', 
+        'national_id', 
+        'phone_number', 
+        'address', 
+        'postal_code', 
+        'created_date', 
+        'updated_date'
+    )
+    search_fields = (
+        'user__email', 
+        'first_name', 
+        'last_name', 
+        'national_id', 
+        'phone_number'
+    )
+    list_filter = (
+        'created_date', 
+        'updated_date'
+    )
+    ordering = ('user',)
+    readonly_fields = ('created_date', 'updated_date')
+
+admin.site.register(Profile, ProfileAdmin)
 admin.site.register(User,CustomUserAdmin)
-admin.site.register(Profile,)

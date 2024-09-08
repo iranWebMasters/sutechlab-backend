@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load blog_tags %}
+{% load static %}
+
+{% block content %}
+<div class="uni-banner">
+<div class="container">
+<div class="uni-banner-text">
+<h1>{{devices.title}}</h1>
+<ul>
+<li><a href="{% url 'website:index' %}">خانه</a></li>
+<li>جزئیات خدمات</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+<div class="service detials-page ptb-100">
+<div class="container">
+<div class="row">
+<div class="col-lg-8 col-md-12 col-sm-12 col-12">
+<div class="details-text-area pr-20">
+<div class="details-page-img">
+<img src="{{ devices.image.url }}" alt="image">
+</div>
+<h3>{{devices.title}}</h3>
+<p>{{devices.content|safe}}</p>
+</div>
+</div>
+<div class="col-lg-4 col-md-12 col-sm-12 col-12">
+<div class="sidebar-content pt-30">
+{% comment %} {% include 'devices/service-search.html' %} {% endcomment %}
+{% comment %} {% postcategories %} {% endcomment %}
+{% comment %} {% include 'blog/blog-hours.html' %} {% endcomment %}
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="request-button-area pt-30">
+    <div class="container">
+        <a href="{% url 'devices:index' %}" class="default-button">ثبت درخواست</a>
+    </div>
+</div>
+
+
+{% endblock content %}

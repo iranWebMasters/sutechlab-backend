@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0;">
+    <base href="{% static '/' %}" />
+    <title>قالب پنل مدیریت |نت کپی</title>    
+    <link rel="stylesheet" href="css/pstyle.css">
+    <link rel="stylesheet" href="css/responsive_991.css" media="(max-width:991px)">
+    <link rel="stylesheet" href="css/responsive_768.css" media="(max-width:768px)">
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="icon" type="image/png" href="images/fav-icon.png" />
+    <link rel="stylesheet" href="css/animate.min.css" />
+    <link rel="stylesheet" href="css/bootstrap.rtl.min.css" />
+    <link rel="stylesheet" href="css/fontawsome.min.css" />
+    <link rel="stylesheet" href="fonts/font/flaticon.css" />
+    <link rel="stylesheet" href="css/meanmenu.min.css" />
+    <link rel="stylesheet" href="css/owl.carousel.min.css" />
+    <link rel="stylesheet" href="css/nice-select.css" />
+    <link rel="stylesheet" href="css/barfiller.css" />
+    <link rel="stylesheet" href="css/magnific-popup.css" />
+    <link rel="stylesheet" href="css/odometer-theme-default.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/dark-mode.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <link rel="stylesheet" href="css/rtl.css" />
+    <link rel="stylesheet" href="css/pstyle-custom.css" />
+
+</head>
+<body>
+<div class="sidebar__nav border-top border-left  ">
+    <span class="bars d-none padding-0-18"></span>
+    <div class="profile__info border cursor-pointer text-center">
+        <div class="avatar__img"><img src="{{profile.image.url}}" class="avatar___img">
+            <div class="v-dialog__container" style="display: block;"></div>
+        </div>
+        <span class="profile__name">{{ profile.first_name }} {{ profile.last_name }}</span>
+
+    </div>
+
+    <ul>
+        <li class="item-li i-dashboard is-active"><a href="{% url 'userpanel:index' %}">پیشخوان</a></li>
+        <li class="item-li i-courses "><a href="{% url 'userpanel:experiments-list' %}">آزمون ها</a></li>
+        <li class="item-li i-users"><a href="{% url 'userpanel:update_profile_panel' %}">اطلاعات کاربری</a></li>
+        <li class="item-li i-tickets"><a href="tickets.html"> تیکت ها</a></li>
+        <li class="item-li i-transactions"><a href="transactions.html">تراکنش ها</a></li>
+        <li class="item-li i-my__purchases"><a href="mypurchases.html">خرید های من</a></li>
+        <li class="item-li i-notification__management"><a href="notification-management.html">مدیریت اطلاع رسانی</a></li>
+    </ul>
+
+</div>
+<div class="content">
+    <div class="header d-flex item-center bg-white width-100 border-bottom padding-12-30">
+        <div class="header__right d-flex flex-grow-1 item-center">
+            <span class="bars"></span>
+        </div>
+        <div class="header__left d-flex flex-end item-center margin-top-2">
+            <div class="notification margin-15">
+                <a class="notification__icon"></a>
+                <div class="dropdown__notification">
+                    <div class="content__notification">
+                        <span class="font-size-13">موردی برای نمایش وجود ندارد</span>
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'website:index' %}" class="logout" title="خروج"></a>
+            
+        </div>
+    </div>
+
+
+  <!-- ------------------------------------ -->
+  {% include 'website/messages.html' %}
+
+  <!-- ------------------------------------ -->
+  {% block content %} {% endblock content %}
+  <!-- ------------------------------------ -->
+
+
+</div>
+</body>
+<script src="js/jquery-3.4.1.min.js"></script>
+<script src="js/js.js"></script>
+</html>

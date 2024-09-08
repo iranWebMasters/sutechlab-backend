@@ -1,0 +1,101 @@
+{% extends 'userpanel/base.html' %}
+{% load static %} 
+{% block content %} 
+
+ <div class="exp">
+    <h1 class="exp-title">{{ experiments.experiment.name_fa }}</h1>
+    <div class="details-container">
+        <div class="info-section">
+            <h3 class="section-heading">{{ experiments.laboratory.name }} </h3>
+            
+            <div class="parameters">
+                <p>
+                    دانشکده: {{ experiments.laboratory.faculty.name }}
+                </p>
+                <p>
+                    <span class="label">نام مدیر فنی :</span>
+                    {{ experiments.laboratory.technical_manager.first_name }}
+                </p>
+            </div>
+        </div>
+        <div class="info-section">
+            <h3 class="section-heading">{{ experiments.experiment.name_fa }} </h3>
+            
+            <div class="parameters">
+                <p>
+                    <span class="label">نام انگلیسی آزمون:</span>
+                    {{ experiments.experiment.name_en }}
+                </p>
+                <p>
+                    <span class="label">نوع واحد آزمون :</span>
+                    {{ experiments.experiment.unit_type }}
+                </p>
+                <p>
+                    <span class="label">گستره کاری:</span>
+                    {{ experiments.experiment.operating_range }}
+                </p>
+                <p>
+                    <span class="label">توصیف آزمون:</span>
+                    {{ experiments.experiment.description }}
+                </p>
+            </div>
+        </div>
+        <div class="info-section">
+            <h3 class="section-heading">{{ experiments.device.name }} </h3>
+            
+            <div class="parameters">
+                <p>
+                    <span class="label">برند(مدل) :</span>
+                    {{ experiments.device.brand }}
+                </p>
+                <p>
+                    <span class="label">کاربرد:</span>
+                    {{ experiments.device.usage }}
+                </p>
+                <p>
+                    <span class="label">شرح خدمات:</span>
+                    {{ experiments.device.services_description }}
+                </p>
+                <p>
+                    <span class="label">توضیحات:</span>
+                    {{ experiments.device.additional_details }}
+                </p>
+            </div>
+        </div>
+        <div class="info-section">
+            <h3 class="section-heading">پارامتر ها: </h3>
+        
+            <div class="parameters">
+                {% for parameter in experiments.parameters.all %}
+                <div class="parameters-line">
+                    <p>
+                        <span class="label">نام:</span>
+                        {{ parameter.name }}
+                    </p>
+                    <p>
+                        <span class="label">واحد اندازه گیری:</span>  
+                        {{ parameter.get_unit_display }}
+                    </p>
+                    <p>
+                        <span class="label">مقدار واحد:</span>
+                        {{ parameter.unit_amount.amount }} {{ parameter.unit_amount.get_unit_display }}
+                    </p>
+                    <p>
+                        <span class="label">مبلغ واحد:</span>
+                        {{ parameter.unit_price.unit_price }} {{ parameter.unit_price.get_currency_display }}
+                    </p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+    </div>
+
+    <a href="#" class="btn btn-success">
+        ثبت درخواس
+    </a>
+</div>
+
+
+
+{% endblock content %}

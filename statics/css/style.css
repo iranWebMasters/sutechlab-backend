@@ -3132,21 +3132,26 @@ Index 03 Newsletter Area CSS
 Uni Banner Area CSS
 =================================================*/
 .uni-banner {
+  background-color: #eafaf1 ; /* سبز لیمویی بسیار روشن */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  background-image: url("../images/inner-images/uni-banner-bg.jpg");
   position: relative;
+  color: #333; /* رنگ متن مناسب برای وضوح بیشتر */
+  z-index: 0; /* اطمینان از اینکه محتوا زیر لایه پوششی قرار دارد */
+  padding: 20px; /* فاصله داخلی برای بهبود مشاهده متن */
 }
 
 .uni-banner::before {
   content: '';
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(255, 255, 255, 0.5); /* رنگ سفید نیمه‌شفاف با وضوح بیشتر */
   position: absolute;
-  right: 0;
   top: 0;
+  left: 0;
+  z-index: 1; /* لایه پوششی بالاتر از محتوای داخلی */
+  pointer-events: none; /* جلوگیری از تأثیر روی تعاملات با محتوای زیرین */
 }
 
 .uni-banner-text {
@@ -3154,24 +3159,25 @@ Uni Banner Area CSS
   text-align: center;
   padding-top: 100px;
   padding-bottom: 100px;
+  z-index: 2; /* اطمینان از اینکه متن بالاتر از لایه پوششی قرار دارد */
 }
 
 .uni-banner-text h1 {
-  color: var(--fix-whiteColor);
+  color: #333; /* رنگ متن تنظیم شده برای وضوح بیشتر */
   margin-bottom: 15px;
   font-size: 60px;
   font-weight: 900;
 }
 
 .uni-banner-text ul {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   list-style: none;
 }
 
 .uni-banner-text ul li {
   display: inline-block;
-  color: var(--mainColor);
+  color: var(--mainColor); /* اطمینان از اینکه رنگ اصلی لینک‌ها صحیح است */
   position: relative;
   margin-left: 20px;
   font-size: var(--fontSize);
@@ -3179,7 +3185,7 @@ Uni Banner Area CSS
 }
 
 .uni-banner-text ul li a {
-  color: var(--fix-whiteColor);
+  color: var(--fix-whiteColor); /* اطمینان از اینکه رنگ لینک‌ها صحیح است */
 }
 
 .uni-banner-text ul li::after {
@@ -3188,8 +3194,7 @@ Uni Banner Area CSS
   position: absolute;
   left: -18px;
   top: 50%;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .uni-banner-text ul li:last-child::after {
@@ -3202,6 +3207,7 @@ Uni Banner Area CSS
   margin-right: auto;
   margin-left: auto;
 }
+
 
 /*================================================ 
 Log In Page CSS

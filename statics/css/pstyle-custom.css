@@ -1,0 +1,75 @@
+.exp {
+    max-width: 1200px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    direction: rtl;
+    text-align: right;
+}
+
+.exp-title {
+    color: green;
+    text-align: center;
+}
+
+.details-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.info-section {
+    width: 100%;
+    color: #333;
+    margin-top: 2rem;
+}
+
+.section-heading {
+    color: #3d3d91;
+    border-bottom: 2px solid #ffaa00;
+    padding-bottom: 5px;
+    display: inline-block;
+}
+
+.parameters p {
+    margin: 5px 0;
+    font-size: 1.2rem;
+}
+
+.parameters:has(.parameters-line){
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+
+.parameters-line{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+}
+
+.parameters .label {
+    font-weight: bold;
+    color: #3d3d91;
+    font-size: 1rem;
+}
+
+.parameters-line .label{
+    font-size: 1.1rem;
+}
+
+.parameters-line p{
+    font-size: 1.2rem;
+}
+
+.exp a.btn{
+    width: 150px;
+    padding: 0.5em 0.2em;
+    color: white;
+    font-size: 1.2rem;
+    margin-top: 40px;
+    border-radius: 7px;
+}

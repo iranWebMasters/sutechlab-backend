@@ -66,22 +66,6 @@
             </ul>
           </div>
         </div>
-        {% comment %} <div class="col-lg-3">
-          <div class="topbar-right-side">
-            <div class="account">
-              {% if user.is_authenticated %}
-              <form id="logout-form" action="{% url 'accounts:logout' %}" method="post" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit" style="border:none; background:none; padding:0; cursor:pointer;">
-                  <i class="fas fa-user"></i> خروج
-                </button>
-              </form>
-              {% else %}
-              <a href="{% url 'accounts:login' %}"><i class="fas fa-user"></i> ورود</a>
-              {% endif %}
-            </div>
-          </div>
-        </div> {% endcomment %}
       </div>
     </div>
   </div>
@@ -119,7 +103,7 @@
                   <a href="{% url 'website:index' %}" class="nav-link dropdown-toggle active">خانه <i class=""></i></a>
                 </li>
                 <li class="nav-item">
-                  <a href="{% url 'services:index' %}" class="nav-link dropdown-toggle">خدمات <i></i></a>
+                  <a href="{% url 'devices:index' %}" class="nav-link dropdown-toggle">خدمات <i></i></a>
                 </li>
                 <li class="nav-item">
                   <a href="{% url 'website:about' %}">درباره ما</a>
@@ -138,7 +122,7 @@
                       <i class="fas fa-search"></i>
                     </button>
                   </li>
-                  <li>
+                  <li class="auth-buttons">
                     {% if user.is_authenticated %}
                     <form id="logout-form" action="{% url 'accounts:logout' %}" method="post" style="display:inline;">
                       {% csrf_token %}
@@ -146,15 +130,18 @@
                         <span>خروج</span>
                       </button>
                     </form>
+                    <a class="default-button default-button-6" href="{% url 'userpanel:index' %}">
+                      <span>حساب کاربری</span>
+                    </a>
                     {% else %}
                     <a class="default-button default-button-3" href="{% url 'accounts:login' %}">
                       <span>ورود</span>
                     </a>
                     {% endif %}
                   </li>
-                  
                 </ul>
               </div>
+              
             </div>
           </nav>
         </div>
@@ -225,7 +212,7 @@
                     ما</span></a>
               </li>
               <li>
-                <a href="{% url 'services:index' %}" target="_blank"><i class="fas fa-angle-left"></i> <span>خدمات
+                <a href="{% url 'devices:index' %}" target="_blank"><i class="fas fa-angle-left"></i> <span>خدمات
                     ما</span></a>
               </li>
               <li>
