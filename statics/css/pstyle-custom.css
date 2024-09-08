@@ -75,7 +75,7 @@
 }
 .stepper {
     display: flex;
-    align-items: center;
+    align-items: start;
     justify-content: space-between;
     max-width: 800px;
     margin: 20px auto;
@@ -86,6 +86,7 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+    flex: 1;
 }
 
 .circle {
@@ -105,15 +106,34 @@
     width: 100px;
     height: 2px;
     background-color: #ddd;
+    margin-top: 25px;
 }
 
+.completed-line {
+    background-color: #4caf50;
+}
+
+/* Inactive Step */
 .step p {
     font-size: 1em;
     color: #9e9e9e;
 }
 
+.step .circle {
+    color: #9e9e9e;
+}
+
+.step .num{
+    display: unset;
+    margin-top: 0.2rem;
+}
+
+.step .completed-mark{
+    display: none;
+}
+
 /* Active Step */
-.active .circle {
+.active .circle, .step:hover:not(.completed) .circle {
     border-color: #3d3d91;
     color: #3d3d91;
 }
@@ -130,8 +150,9 @@
     font-size: 1.5em;
 }
 
-.completed .checkmark {
-    font-size: 1.5em;
+.completed .completed-mark {
+    margin-top: 0.4rem;
+    font-size: 1.6rem;
     font-weight: bold;
 }
 
@@ -139,15 +160,10 @@
     color: #4caf50;
 }
 
-.completed-line {
-    background-color: #4caf50;
+.completed .num{
+    display: none;
 }
 
-/* Inactive Step */
-.step .circle {
-    color: #9e9e9e;
-}
-
-.step p {
-    color: #9e9e9e;
+.completed .completed-mark{
+    display: unset;
 }

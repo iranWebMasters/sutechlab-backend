@@ -1,31 +1,119 @@
 {% extends 'userpanel/base.html' %}
-{% load static %} 
-{% block content %} 
+{% load static %}
+{% block content %}
 
 <div class="stepper">
-    <div class="step completed">
+    <div class="step completed" data-number="1">
         <div class="circle">
-            <span class="checkmark">✔</span>
+            <span class="completed-mark">✔</span>
+            <span class="num">1</span>
         </div>
         <p>اطلاعات درخواست</p>
     </div>
     <div class="line completed-line"></div>
-    <div class="step active">
-        <div class="circle">2</div>
+    <div class="step active" data-number="2">
+        <div class="circle">
+            <span class="completed-mark">✔</span>
+            <span class="num">2</span>
+        </div>
         <p>اطلاعات نمونه</p>
     </div>
     <div class="line"></div>
-    <div class="step">
-        <div class="circle">3</div>
+    <div class="step" data-number="4">
+        <div class="circle">
+            <span class="completed-mark">✔</span>
+            <span class="num">3</span>
+        </div>
         <p>اطلاعات آزمون</p>
     </div>
     <div class="line"></div>
-    <div class="step">
-        <div class="circle">4</div>
+    <div class="step" data-number="4">
+        <div class="circle">
+            <span class="completed-mark">✔</span>
+            <span class="num">4</span>
+        </div>
         <p>اطلاعات تکمیلی</p>
     </div>
 </div>
 
 
+<div class="container p-4 request-page" data-index="1" dir="rtl">
+    <div class="bg-white p-4 rounded shadow-lg">
+        <h5 class="mb-4 text-primary">آزمایشگاه : آزمایشگاه سرامیک</h5>
+        <form>
+            <div class="row g-3 mb-3">
+                <div class="col-md-4">
+                    <label for="customerName" class="form-label">نام مشتری</label>
+                    <input type="text" class="form-control bg-light" id="customerName" value="علیرضا انصاری" readonly>
+                </div>
+                <div class="col-md-4">
+                    <label for="customerId" class="form-label">کد مشتری</label>
+                    <input type="text" class="form-control bg-light" id="customerId" value="39335" readonly>
+                </div>
+                <div class="col-md-4">
+                    <label for="requestType" class="form-label">نوع درخواست</label>
+                    <input type="text" class="form-control bg-light" id="requestType" value="بدون امکان سنجی" readonly>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="requestDate" class="form-label">تاریخ ثبت درخواست</label>
+                <input type="text" class="form-control bg-light" id="requestDate" value="1403/06/19" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">توضیحات</label>
+                <textarea class="form-control" id="description" rows="2"></textarea>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-success px-4 me-2">ثبت و مرحله بعد</button>
+                <button type="button" class="btn btn-danger px-4">انصراف</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="container p-4 request-page" data-index="2" dir="rtl" style="display: none;">
+    بخش دوم
+</div>
+<div class="container p-4 request-page" data-index="3" dir="rtl" style="display: none;">
+    بخش سوم
+</div>
+<div class="container p-4 request-page" data-index="4" dir="rtl" style="display: none;">
+    بخش چهارم
+</div>
+
+<style>
+    .form-control:read-only {
+        background-color: #f8f9fa;
+    }
+
+    .btn {
+        border-radius: 0;
+    }
+</style>
+
+<script>
+    (function(){
+    
+        function gotoPage(pageNum){
+            for(let page of document.querySelectorAll(".request-page")){
+                if(page.dataset.index == pageNum)
+                    page.style.display = "";
+                else
+                    page.style.display = "none";
+            }
+        }
+        document.querySelectorAll(".step").forEach(function(item){
+            item.addEventListener("click", function(){
+                gotoPage(item.dataset.number)              
+                item.to  
+            });
+        })
+
+
+
+    })();
+    
+
+</script>
 
 {% endblock content %}
