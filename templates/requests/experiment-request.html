@@ -1,0 +1,31 @@
+{% extends 'userpanel/base.html' %}
+{% load static %} 
+{% block content %} 
+
+<div class="stepper">
+    <div class="step completed">
+        <div class="circle">
+            <span class="checkmark">✔</span>
+        </div>
+        <p>اطلاعات درخواست</p>
+    </div>
+    <div class="line completed-line"></div>
+    <div class="step active">
+        <div class="circle">2</div>
+        <p>اطلاعات نمونه</p>
+    </div>
+    <div class="line"></div>
+    <div class="step">
+        <div class="circle">3</div>
+        <p>اطلاعات آزمون</p>
+    </div>
+    <div class="line"></div>
+    <div class="step">
+        <div class="circle">4</div>
+        <p>اطلاعات تکمیلی</p>
+    </div>
+</div>
+
+
+
+{% endblock content %}
