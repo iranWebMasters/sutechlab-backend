@@ -1,15 +1,21 @@
 from django.db import models
 from accounts.models import Profile
 
-class Request(models.Model):
+
+class RequestInfo(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name='کاربر')
     request_type = models.CharField(max_length=50, verbose_name='نوع درخواست')
-    submission_date = models.DateField(auto_now_add=True, verbose_name='تاریخ ثبت درخواست') 
+    submission_date = models.DateField(auto_now_add=True, verbose_name='تاریخ ثبت درخواست')
     description = models.TextField(blank=True, null=True, verbose_name='توضیحات')
-    additional_info = models.OneToOneField('AdditionalInfo', on_delete=models.CASCADE, null=True, blank=True, verbose_name='اطلاعات اضافی')
 
+class Request(models.Model):
+    RequestInfo = models.OneToOneField('RequestInfo', on_delete=models.CASCADE, null=True, blank=True, verbose_name='اطلاعات درخواست')
+    SampleInfo = models.OneToOneField('SampleInfo', on_delete=models.CASCADE, null=True, blank=True, verbose_name='اطلاعات نمونه')
+    ExperimentInfo = models.OneToOneField('ExperimentInfo', on_delete=models.CASCADE, null=True, blank=True, verbose_name='اطلاعات آزمایش')
+    AdditionalInfo = models.OneToOneField('AdditionalInfo', on_delete=models.CASCADE, null=True, blank=True, verbose_name='اطلاعات تکمیلی')
+# -------------------------------
 
-class Sample(models.Model):
+class SampleInfo(models.Model):
     SAMPLE_TYPE_CHOICES = [
         ('vacuum_oven', 'Vacuum Oven'),
         ('oven', 'Oven'),
@@ -24,7 +30,6 @@ class Sample(models.Model):
         ('OZ', 'اونس'),
     ]
 
-    request = models.ForeignKey(Request, on_delete=models.CASCADE, related_name='samples', verbose_name='درخواست')
     sample_type = models.CharField(max_length=50, choices=SAMPLE_TYPE_CHOICES, verbose_name='نوع نمونه')
     sample_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='مقدار نمونه')
     sample_unit = models.CharField(max_length=50, choices=WEIGHT_CHOICES, verbose_name='واحد اندازه‌گیری')
@@ -35,11 +40,12 @@ class Sample(models.Model):
     storage_unit = models.CharField(max_length=10, choices=[('D', 'روز'), ('W', 'هفته'), ('M', 'ماه')], verbose_name='واحد مدت زمان نگهداری')
     
 class ExperimentInfo(models.Model):
-    ...
+    cost = models.ForeignKey('Cost', on_delete=models.CASCADE, related_name='experiments', verbose_name='هزینه')
+    additional_info = models.ForeignKey('AdditionalInfo', on_delete=models.CASCADE, related_name='experiments', verbose_name='اطلاعات اضافی')
+    discount_info = models.ForeignKey('DiscountInfo', on_delete=models.CASCADE, related_name='experiments', verbose_name='تخفیف')
  
 class AdditionalInfo(models.Model):
     cost = models.ForeignKey('Cost', on_delete=models.CASCADE, related_name='samples', verbose_name='درخواست')
-    discountInfo = models.ForeignKey('DiscountInfo', on_delete=models.CASCADE, related_name='samples', verbose_name='درخواست')
 
 class Cost(models.Model):
     sample_return = models.BooleanField(default=False, verbose_name='نمونه برگشت داده شده بشود')  # فیلد جدید

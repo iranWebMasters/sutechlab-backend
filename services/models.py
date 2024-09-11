@@ -67,7 +67,7 @@ class Faculty(models.Model):
 
     def __str__(self):
         return self.name
-    
+
 class ExperimentSpecification(models.Model):
     UNIT_TYPE_CHOICES = [
         ('EQ', 'دستگاه'),
@@ -83,6 +83,14 @@ class ExperimentSpecification(models.Model):
 
     def __str__(self):
         return self.name_en
+    
+class Standards(models.Model):
+    name = models.CharField(max_length=100, verbose_name='نام استاندارد')
+    description = models.TextField(verbose_name='توصیف استاندارد')
+
+class Sample(models.Model):
+    name = models.CharField(max_length=100, verbose_name='نام نمونه')
+    description = models.TextField(verbose_name='توصیف نمونه')
 
 class Experiment(models.Model):
     STATUS_CHOICES = [
@@ -97,6 +105,7 @@ class Experiment(models.Model):
     laboratory = models.ForeignKey('Laboratory', on_delete=models.CASCADE, related_name='experiments', verbose_name='آزمایشگاه')
     experiment = models.ForeignKey(ExperimentSpecification, on_delete=models.CASCADE, related_name='experiments', verbose_name='مشخصات آزمایش')
     device = models.ForeignKey(Device, on_delete=models.CASCADE, related_name='experiments', verbose_name='دستگاه')
+    Standards = models.ForeignKey(Standards, on_delete=models.CASCADE, related_name='experiments', verbose_name='استاندارد ها')
     operator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='experiments', verbose_name='اپراتور')
     parameters = models.ManyToManyField(Parameters, related_name='experiments', verbose_name='پارامتر ها')  # Many-to-Many relationship for parameters
     iso_17025 = models.CharField(max_length=7, choices=ISO_CHOICES, default='has_not', verbose_name='ISO 17025')

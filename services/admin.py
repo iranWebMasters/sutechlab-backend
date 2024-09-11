@@ -29,6 +29,8 @@ class ExperimentSpecificationAdmin(admin.ModelAdmin):
     list_display = ('name_fa', 'name_en', 'unit_type', 'operating_range', 'description')
     search_fields = ('name_fa', 'name_en')
     list_filter = ('unit_type',)
+class StandardsAdmin(admin.ModelAdmin):
+    ...
 
 class ExperimentAdmin(admin.ModelAdmin):
     list_display = (
@@ -59,4 +61,5 @@ admin.site.register(Parameters, ParameterAdmin)
 admin.site.register(Unit_amount, Unit_amountAdmin)
 admin.site.register(Unit_price, Unit_priceAdmin)
 admin.site.register(Experiment, ExperimentAdmin)
+admin.site.register(Standards, StandardsAdmin)
 admin.site.register(ExperimentSpecification, ExperimentSpecificationAdmin)

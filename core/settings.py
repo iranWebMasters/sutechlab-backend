@@ -28,8 +28,6 @@ INSTALLED_APPS = [
     'decouple',
     'django.contrib.humanize',
     'django_jalali',
-    'ckeditor',
-    'ckeditor_uploader',
     'django.contrib.sites',
     
 ]
