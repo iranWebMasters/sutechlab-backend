@@ -130,7 +130,7 @@ $(document).on('keydown', '.dropdown-select', function (event) {
 });
 
 $(document).ready(function () {
-    create_custom_dropdowns();
+    // create_custom_dropdowns();
 });
 $('.checkedAll').on('click', function (e) {
     if ($(this).is(':checked', true)) {
