@@ -1,31 +1,361 @@
 {% extends 'userpanel/base.html' %}
-{% load static %} 
-{% block content %} 
+{% load static %}
+{% block content %}
 
 <div class="stepper">
-    <div class="step completed">
+    <div class="step" data-index="1">
         <div class="circle">
-            <span class="checkmark">✔</span>
+            <span class="completed-mark">✔</span>
+            <span class="num">1</span>
         </div>
         <p>اطلاعات درخواست</p>
     </div>
-    <div class="line completed-line"></div>
-    <div class="step active">
-        <div class="circle">2</div>
+    <div class="line" data-index="1"></div>
+    <div class="step" data-index="2">
+        <div class="circle">
+            <span class="completed-mark">✔</span>
+            <span class="num">2</span>
+        </div>
         <p>اطلاعات نمونه</p>
     </div>
-    <div class="line"></div>
-    <div class="step">
-        <div class="circle">3</div>
+    <div class="line" data-index="2"></div>
+    <div class="step" data-index="3">
+        <div class="circle">
+            <span class="completed-mark">✔</span>
+            <span class="num">3</span>
+        </div>
         <p>اطلاعات آزمون</p>
     </div>
-    <div class="line"></div>
-    <div class="step">
-        <div class="circle">4</div>
+    <div class="line" data-index="3"></div>
+    <div class="step" data-index="4">
+        <div class="circle">
+            <span class="completed-mark">✔</span>
+            <span class="num">4</span>
+        </div>
         <p>اطلاعات تکمیلی</p>
     </div>
 </div>
 
 
+<div class="container p-4 request-page" data-index="1" dir="rtl">
+    <div class="bg-white p-4 rounded shadow-lg">
+        <h5 class="mb-4 text-primary">آزمایشگاه : آزمایشگاه سرامیک</h5>
+        <form>
+            <div class="row g-3 mb-3">
+                <div class="col-md-4">
+                    <label for="customerName" class="form-label">نام مشتری</label>
+                    <input type="text" class="form-control bg-light" id="customerName" value="علیرضا انصاری" readonly>
+                </div>
+                <div class="col-md-4">
+                    <label for="requestType" class="form-label">نوع درخواست</label>
+                    <input type="text" class="form-control bg-light" id="requestType" value="بدون امکان سنجی" readonly>
+                </div>
+                <div class="col-md-4">
+                    <label for="requestDate" class="form-label">تاریخ ثبت درخواست</label>
+                    <input type="text" class="form-control bg-light" id="requestDate" value="1403/06/19" readonly>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">توضیحات</label>
+                <textarea class="form-control" id="description" rows="2"></textarea>
+            </div>
+        </form>
+        <div class="text-center">
+            <button data-index="1" class="page-btn forward-btn btn btn-success px-4 me-2">ثبت و مرحله بعد</button>
+            <button type="button" class="btn btn-danger px-4">انصراف</button>
+        </div>
+    </div>
+</div>
+
+<div class="container p-4 request-page" data-index="2" dir="rtl" style="display: none;">
+    <div class="bg-white p-4 rounded shadow-lg">
+        <h5 class="text-primary mb-4">مشخصات عمومی نمونه</h5>
+        <form>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="sampleName" class="form-label">نام نمونه</label>
+                    <select class="form-select">
+                        <option selected>اون</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="customerSampleName" class="form-label">نام نمونه مشتری</label>
+                    <input type="text" class="form-control" id="customerSampleName">
+                </div>
+                <div class="col-md-4">
+                    <label for="sampleCount" class="form-label">تعداد نمونه</label>
+                    <input type="number" min="0" class="form-control" id="sampleCount">
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">ویژگی های نمونه</h5>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="isCorruptible">
+                        <label class="form-check-label" for="isCorruptible">
+                            نمونه فاسدشدنی است
+                        </label>
+                    </div>
+                    <div id="corruptibleFields" class="d-none">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="expirationDate" class="form-label">تاریخ انقضاء</label>
+                                <input type="text" class="form-control" id="expirationDate">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="storageDuration" class="form-label">مدت زمان نگهداری</label>
+                                <input type="number" class="form-control" id="storageDuration">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="storageDurationUnit" class="form-label">واحد مدت زمان
+                                    نگهداری</label>
+                                <select id="storageDurationUnit" class="form-select">
+                                    <option selected>انتخاب کنید...</option>
+                                    <option>روز</option>
+                                    <option>ماه</option>
+                                    <option>سال</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="sampleDescription" class="form-label">توضیحات نمونه</label>
+                    <textarea class="form-control" id="sampleDescription" rows="4"></textarea>
+                </div>
+                <div class="col-md-6">
+                    <label for="storageConditions" class="form-label">شرایط نگهداری</label>
+                    <textarea class="form-control" id="storageConditions" rows="4"></textarea>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="fileUpload" class="form-label">نام فایل (باید حروف A-Z باشد/فایل تکمیلی
+                    نمونه)</label>
+                <input class="form-control" type="file" id="fileUpload">
+            </div>
+
+            <div class="text-center mb-3">
+                <button type="button" class="btn btn-secondary me-2">ثبت نمونه</button>
+            </div>
+        </form>
+
+        <h3 class="mt-5 mb-3">جدول نمونه ها</h3>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-primary">
+                    <tr>
+                        <th>ردیف</th>
+                        <th>نام نمونه</th>
+                        <th>نام نمونه مشتری</th>
+                        <th>تعداد نمونه</th>
+                        <th>نمونه فاسدشدنی است؟</th>
+                        <th>تاریخ تحویل نمونه</th>
+                        <th>اقدامات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table rows would be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center">
+            <button data-index="2" class="page-btn backward-btn btn btn-outline-primary px-4 me-2">مرحله قبل</button>
+            <button data-index="2" class="page-btn forward-btn btn btn-success px-4 me-2">ثبت و مرحله بعد</button>
+            <button type="button" class="btn btn-danger px-4">انصراف</button>
+        </div>
+    </div>
+</div>
+<div class="container p-4 request-page" data-index="3" dir="rtl" style="display: none;">
+    <div class="bg-white p-4 rounded shadow-lg">
+        بخش سوم
+        <div class="text-center">
+            <button data-index="3" class="page-btn backward-btn btn btn-outline-primary px-4 me-2">مرحله قبل</button>
+            <button data-index="3" class="page-btn forward-btn btn btn-success px-4 me-2">ثبت و مرحله بعد</button>
+            <button type="button" class="btn btn-danger px-4">انصراف</button>
+        </div>
+    </div>
+</div>
+<div class="container p-4 request-page" data-index="4" dir="rtl" style="display: none;">
+    <div class="bg-white p-4 rounded shadow-lg">
+        بخش چهارم
+        <div class="text-center">
+            <button data-index="4" class="page-btn backward-btn btn btn-outline-primary px-4 me-2">مرحله قبل</button>
+            <button data-index="4" class="page-btn complete-btn btn btn-success px-4 me-2">اتمام و ثبت درخواست</button>
+            <button type="button" class="btn btn-danger px-4">انصراف</button>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed top-0 start-0 p-3" style="z-index: 213">
+    <div id="step-warning" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000"
+        data-bs-animation="false">
+        <div class="toast-body bg-warning text-dark d-flex justify-content-between align-items-center">
+            مرحله قبل هنوز تکمیل نشده
+            <button type="button" class="btn-close bg-light" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    .form-control:read-only {
+        background-color: #f8f9fa;
+    }
+
+    .btn {
+        border-radius: 0;
+    }
+</style>
+<style>
+    .rtl {
+        direction: rtl;
+        text-align: right;
+    }
+</style>
+<style>
+    .datepicker-plot-area {
+        box-sizing: border-box;
+        overflow: hidden;
+        min-height: 70px;
+        display: block;
+        width: 200px;
+        min-width: 200px;
+        padding: 3px;
+        font-family: inherit;
+        position: absolute;
+        border: 1px solid #ccc;
+        background-color: #fff;
+    }
+</style>
+
+<script src="js\persian-date.min.js"></script>
+<script src="js\persian-datepicker.min.js"></script>
+<script>
+    document.getElementById('isCorruptible').addEventListener('change', function () {
+        const corruptibleFields = document.getElementById('corruptibleFields');
+        corruptibleFields.classList.toggle('d-none', !this.checked);
+    });
+</script>
+<script>
+    //(function () {
+
+        var activePage = 1;
+        var lastCompletedPage = 0;
+
+        var requestInfo = {
+            customerName: "",
+            requestType: "",
+            date: "",
+            description: "",
+            samples: [
+                {
+                    type: "",
+                    name: "",
+                    count: 0,
+                    is_perishable: false,
+                    expirationDate: "",
+
+                },
+            ],
+
+        }
+
+        // Ensure an element does have a specific class
+        function ensureClass(element, className) {
+            if (!element.classList.contains(className)) {
+                element.classList.add(className);
+            }
+        }
+
+        // Ensure an element does not have a specific class
+        function stripClass(element, className) {
+            while (element.classList.contains(className)) {
+                element.classList.remove(className);
+            }
+        }
+
+        function gotoPage(pageNum) {
+            activePage = pageNum
+            for (let page of document.querySelectorAll(".request-page")) {
+                if (page.dataset.index == activePage)
+                    page.style.display = "";
+                else
+                    page.style.display = "none";
+            }
+            for (let step of document.querySelectorAll(".stepper .step")) {
+                if (step.dataset.index == activePage)
+                    ensureClass(step, "active");
+                else
+                    stripClass(step, "active");
+            }
+
+        }
+
+        document.querySelectorAll(".stepper .step").forEach(function (item) {
+            item.addEventListener("click", function () {
+                if (item.dataset.index <= lastCompletedPage+1)
+                    gotoPage(item.dataset.index);
+                else {
+                    var toast = new bootstrap.Toast(
+                        document.getElementById('step-warning')
+                    )
+                    toast.show()
+                }
+            });
+        })
+
+        document.addEventListener('DOMContentLoaded', function () {
+            gotoPage(1);
+
+            $('#expirationDate').persianDatepicker({
+                format: 'YYYY/MM/DD',
+                autoClose: true
+            });
+        });
+
+        document.querySelectorAll('button.page-btn').forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                let step = document.querySelector(`.stepper .step[data-index='${btn.dataset.index}']`);
+                let line = document.querySelector(`.stepper .line[data-index='${btn.dataset.index}']`);
+
+                if (btn.classList.contains('forward-btn')) {
+                    ensureClass(step, 'completed');
+                    ensureClass(line, 'completed');
+                    if (Number(btn.dataset.index) > lastCompletedPage)
+                        lastCompletedPage = Number(btn.dataset.index);
+                    gotoPage(Number(btn.dataset.index) + 1);
+                }
+                else if (btn.classList.contains('backward-btn')) {
+                    gotoPage(Number(btn.dataset.index) - 1);
+                }
+                else if (btn.classList.contains('complete-btn')) {
+                    ensureClass(step, 'completed');
+                }
+            });
+        });
+
+
+    //})();
+
+
+</script>
 
 {% endblock content %}
