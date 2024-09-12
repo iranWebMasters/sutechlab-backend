@@ -4,7 +4,6 @@ from accounts.models import Profile
 
 class RequestInfo(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name='کاربر')
-    request_type = models.CharField(max_length=50, verbose_name='نوع درخواست')
     submission_date = models.DateField(auto_now_add=True, verbose_name='تاریخ ثبت درخواست')
     description = models.TextField(blank=True, null=True, verbose_name='توضیحات')
 

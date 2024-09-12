@@ -63,6 +63,36 @@
             </div>
         </div>
         <div class="info-section">
+            <h3 class="section-heading">استاندارد ها</h3>
+        
+            {% if experiments.standards.all %}
+                <div class="parameters">
+                    {% for standards in experiments.standards.all %}
+                        <p>
+                            <span class="label">{{ standards.name }}:</span> {{ standards.description }}
+                        </p>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>هیچ استانداردی وجود ندارد.</p>
+            {% endif %}
+        </div>
+        <div class="info-section">
+            <h3 class="section-heading">نمونه‌ها</h3>
+        
+            {% if experiments.samples.all %}
+                <div class="parameters">
+                    {% for sample in experiments.samples.all %}
+                        <p>
+                            <span class="label">{{ sample.name }}:</span> {{ sample.description }}  
+                        </p>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>هیچ نمونه‌ای وجود ندارد.</p>
+            {% endif %}
+        </div>
+        <div class="info-section">
             <h3 class="section-heading">پارامتر ها: </h3>
         
             <div class="parameters">
