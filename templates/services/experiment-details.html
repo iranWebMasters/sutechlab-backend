@@ -2,6 +2,7 @@
 {% load static %} 
 {% block content %} 
 
+
  <div class="exp">
     <h1 class="exp-title">{{ experiments.experiment.name_fa }}</h1>
     <div class="details-container">
@@ -121,7 +122,7 @@
         
     </div>
 
-    <a href="{% url 'requests:request-detail' experiments.id %}" class="btn btn-success">
+    <a href="{% url 'requests:request-create' %}" class="btn btn-success">
         ثبت درخواست
     </a>
 </div>

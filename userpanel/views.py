@@ -59,7 +59,7 @@ class ProfileUpdatePanelView(LoginRequiredMixin,UpdateView):
 
 class ExperimentListView(ListView):
     model = Experiment
-    template_name = 'userpanel/experiment-list.html'
+    template_name = 'services/experiment-list.html'
 
     context_object_name = 'experiments'
     ordering = ['-created_date']
@@ -68,4 +68,4 @@ class TestDetailView(DetailView):
     model = Experiment
     context_object_name = 'experiments'
     
-    template_name = 'userpanel/experiment-details.html'
+    template_name = 'services/experiment-details.html'
