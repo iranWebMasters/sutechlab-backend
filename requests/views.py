@@ -5,7 +5,7 @@ from services.models import Experiment
 from .forms import *
 
 class RequestTemplateView(TemplateView):
-    template_name = 'requests/test.html'
+    template_name = 'requests/experiment-request.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
