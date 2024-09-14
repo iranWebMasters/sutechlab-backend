@@ -4,7 +4,7 @@
     <div class="breadcrumb">
         <ul>
             <li><a href="{% url 'userpanel:index' %}">پیشخوان</a></li>
-            <li><a href="checkouts.html" class="is-active"> تسویه حساب ها</a></li>
+            <li><a href="{% url 'userpanel:experiments-list' %}" class="is-active">آزمون ها</a></li>
         </ul>
     </div>
     <div class="main-content">
@@ -18,17 +18,16 @@
         </div> {% endcomment %}
         <div class="bg-white padding-20">
             <div class="t-header-search">
-                <form action="" onclick="event.preventDefault();">
+                <form action="{% url 'services:search_tests' %}" method="get">
+                    {% csrf_token %}
                     <div class="t-header-searchbox font-size-13">
-                        <input type="text" class="text search-input__box font-size-13"
-                               placeholder="جستجوی در آزمون ها ">
+                        <input type="text" name="test_name" class="text search-input__box font-size-13"
+                               placeholder="جستجوی در آزمون ها " list="suggestions">
+                        <datalist id="suggestions"></datalist>
                         <div class="t-header-search-content ">
-                            <input type="text" class="text" placeholder="شماره کارت">
-                            <input type="text" class="text" placeholder="شماره">
-                            <input type="text" class="text" placeholder="تاریخ">
-                            <input type="text" class="text" placeholder="ایمیل">
-                            <input type="text" class="text margin-bottom-20" placeholder="نام و نام خانوادگی">
-                            <btutton class="btn btn-netcopy_net">جستجو</btutton>
+                            <input type="text" name="laboratory_name" class="text" placeholder="نام آزمایشگاه">
+                            <input type="text" name="faculty_name" class="text" placeholder="نام دانشکده">
+                            <button type="submit" class="btn btn-netcopy_net">جستجو</button>
                         </div>
                     </div>
                 </form>
@@ -76,4 +75,33 @@
         </div>
         
     </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('input[name="test_name"]').on('input', function() {
+                var query = $(this).val();
+                if (query.length > 2) {  // فقط وقتی که کاربر بیشتر از 2 حرف وارد کند
+                    $.ajax({
+                        url: "{% url 'services:autocomplete_tests' %}",
+                        data: {
+                            'q': query
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            var suggestions = $('#suggestions');
+                            suggestions.empty();  // پاک کردن پیشنهادات قبلی
+                            if (data.length > 0) {
+                                $.each(data, function(index, value) {
+                                    suggestions.append('<option value="' + value.test_name + '">');
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 {% endblock content %}

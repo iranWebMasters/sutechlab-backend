@@ -8,8 +8,8 @@ class RequestTemplateView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        profile = Profile.objects.get(user=self.request.user)
         context['experiment_id'] = self.kwargs.get('pk')
+        profile = Profile.objects.get(user=self.request.user)
         context['profile'] = profile
         return context
     
