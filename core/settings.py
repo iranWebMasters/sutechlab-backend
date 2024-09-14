@@ -163,9 +163,18 @@ AUTH_USER_MODEL = "accounts.User"
 AZ_IRANIAN_BANK_GATEWAYS = {
    'GATEWAYS': {
        'ZARINPAL': {
-           'MERCHANT_CODE': '',
-           'SANDBOX': 1,  # 0 disable, 1 active
-       },
+           'MERCHANT_CODE': '0dbb3d9d-41f7-4776-b97d-545e81377eda',
+           'SANDBOX': 0,  # 0 disable, 1 active
+        },
+        "IDPAY": {
+            "MERCHANT_CODE": "<YOUR MERCHANT CODE>",
+            "METHOD": "GET",  # GET or POST
+            "X_SANDBOX": 0
+        },
+        "PAYV1": {
+            "MERCHANT_CODE": "<YOUR MERCHANT CODE>",
+            "X_SANDBOX": 0,  # 0 disable, 1 active
+        },
    },
    'IS_SAMPLE_FORM_ENABLE': True, # اختیاری و پیش فرض غیر فعال است
    'DEFAULT': 'ZARINPAL',
@@ -175,8 +184,24 @@ AZ_IRANIAN_BANK_GATEWAYS = {
    'SETTING_VALUE_READER_CLASS': 'azbankgateways.readers.DefaultReader', # اختیاری
    'BANK_PRIORITIES': [
        'ZARINPAL',
+       'IDPAY',
+       'PAYV1',
        # and so on ...
    ], # اختیاری
    'IS_SAFE_GET_GATEWAY_PAYMENT': False, #اختیاری، بهتر است True بزارید.
    'CUSTOM_APP': None, # اختیاری 
 }
+
+
+
+
+
+# SMTP 
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'  # یا هاست SMTP دیگری که استفاده می‌کنید
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'ansarialireza@mail.ir'  # ایمیل شما
+# EMAIL_HOST_PASSWORD = 'Ansari1999'  # رمز عبور ایمیل شما
+EMAIL_FILE_PATH = 'tmp/app-messages' 

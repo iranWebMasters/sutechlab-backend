@@ -24,7 +24,7 @@ class IndexView(TemplateView):
             required_fields = [profile.first_name, profile.last_name, profile.national_id, 
                            profile.phone_number, profile.address, profile.postal_code]
             if not all(required_fields):
-                return redirect('accounts:update_profile')
+                return redirect('update_profile')
         return super().dispatch(request, *args, **kwargs)
     
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:

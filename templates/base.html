@@ -124,7 +124,7 @@
                   </li>
                   <li class="auth-buttons">
                     {% if user.is_authenticated %}
-                    <form id="logout-form" action="{% url 'accounts:logout' %}" method="post" style="display:inline;">
+                    <form id="logout-form" action="{% url 'logout' %}" method="post" style="display:inline;">
                       {% csrf_token %}
                       <button type="submit" class="default-button default-button-3">
                         <span>خروج</span>
@@ -134,7 +134,7 @@
                       <span>حساب کاربری</span>
                     </a>
                     {% else %}
-                    <a class="default-button default-button-3" href="{% url 'accounts:login' %}">
+                    <a class="default-button default-button-3" href="{% url 'login' %}">
                       <span>ورود</span>
                     </a>
                     {% endif %}

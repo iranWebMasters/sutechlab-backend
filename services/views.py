@@ -1,10 +1,13 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from .models import Standards, Sample, Experiment, Tests
 from .serializers import StandardsSerializer, SampleSerializer, TestsSerializer, ParametersSerializer
 import jdatetime
 
 class ServicesAPI(APIView):
+    permission_classes = [IsAuthenticated] 
+    
     def get(self, request, pk=None):
         try:
             experiment = Experiment.objects.get(id=pk)

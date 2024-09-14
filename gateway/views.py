@@ -11,12 +11,10 @@ from django.contrib import messages
 
 def go_to_gateway_view(request):
     # خواندن مبلغ از هر جایی که مد نظر است
-    cart = Cart(request)
-    # amount = 50000
-    amount= 50000
+    amount= 5000000
     # تنظیم شماره موبایل کاربر از هر جایی که مد نظر است
     # user_mobile_number = '+989112221234'  # اختیاری
-    user_mobile_number = request.user.phone_number if request.user.is_authenticated else None
+    user_mobile_number = request.user.profile.phone_number if request.user.is_authenticated else None
     # print(user_mobile_number)
 
     factory = bankfactories.BankFactory()
@@ -25,7 +23,7 @@ def go_to_gateway_view(request):
         bank.set_request(request)
         bank.set_amount(amount)
         # یو آر ال بازگشت به نرم افزار برای ادامه فرآیند
-        bank.set_client_callback_url(reverse('payments:callback'))
+        bank.set_client_callback_url(reverse('gateway:callback'))
         bank.set_mobile_number(user_mobile_number)  # اختیاری
     
         # در صورت تمایل اتصال این رکورد به رکورد فاکتور یا هر چیزی که بعدا بتوانید ارتباط بین محصول یا خدمات را با این
@@ -38,7 +36,7 @@ def go_to_gateway_view(request):
         logging.critical(e)
         # TODO: redirect to failed page.
         messages.error(request, "اتصال به درگاه پرداخت ناموفق بود ، لطفااتصال خود را به اینترنت برسی نمایید و  دوباره امتحان کنید")
-        return redirect('cart:cart')
+        return redirect('userpanel:index')
         
 
 

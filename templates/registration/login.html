@@ -1,4 +1,5 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} 
+{% block content %}
 <div class="login-container">
   <h2>ورود به حساب</h2>
   <form method="post" class="login-form">
@@ -6,7 +7,8 @@
 
     <div class="form-group">
       <label for="id_username">ایمیل</label>
-      {{ form.username }} {% if form.username.errors %}
+      {{ form.username }} 
+      {% if form.username.errors %}
       <div class="error-message">
         {% for error in form.username.errors %}
         <p>{{ error }}</p>
@@ -17,7 +19,8 @@
 
     <div class="form-group">
       <label for="id_password">گذرواژه</label>
-      {{ form.password }} {% if form.password.errors %}
+      {{ form.password }} 
+      {% if form.password.errors %}
       <div class="error-message">
         {% for error in form.password.errors %}
         <p>{{ error }}</p>
@@ -30,7 +33,11 @@
   </form>
   <div class="register-section">
     <br />
-    <a href="{% url 'accounts:register' %}" class="btn btn-info">ثبت‌ نام</a>
+    <a href="{% url 'register' %}" class="btn btn-info">ثبت‌ نام</a>
+  </div>
+  <div class="forgot-password-section">
+    <br />
+    <a href="{% url 'password_reset' %}" class="btn btn-warning">فراموشی رمز عبور</a>
   </div>
 </div>
 {% endblock %}
