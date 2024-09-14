@@ -25,15 +25,19 @@ class Unit_priceAdmin(admin.ModelAdmin):
     search_fields = ('unit_price', 'currency')
     list_filter = ('currency',)
 
-class ExperimentSpecificationAdmin(admin.ModelAdmin):
+class TestsAdmin(admin.ModelAdmin):  # Changed name from ExperimentSpecificationAdmin to TestSpecificationAdmin
     list_display = ('name_fa', 'name_en', 'unit_type', 'operating_range', 'description')
     search_fields = ('name_fa', 'name_en')
     list_filter = ('unit_type',)
+    filter_horizontal = ('standards',)
+
 
 class StandardsAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
     list_filter = ('name',)
+    filter_horizontal = ('parameters',)
+
 
 class SampleAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
@@ -42,8 +46,6 @@ class SampleAdmin(admin.ModelAdmin):
 
 class ExperimentAdmin(admin.ModelAdmin):
     list_display = (
-        'laboratory', 
-        'experiment', 
         'device', 
         'operator', 
         'status', 
@@ -53,7 +55,7 @@ class ExperimentAdmin(admin.ModelAdmin):
     )
     search_fields = (
         'laboratory__name', 
-        'experiment__name_en',  # Assuming you want to search by the English name of the experiment
+        'test_specifications__name_en',  # Updated field to match new model structure
         'device__name',  # Assuming there is a `name` field in `Device` model
         'operator__user__email', 
         'operator__first_name', 
@@ -62,7 +64,7 @@ class ExperimentAdmin(admin.ModelAdmin):
     list_filter = ('status', 'iso_17025', 'created_date', 'updated_date')
     date_hierarchy = 'created_date'
     autocomplete_fields = ('operator', 'device', 'parameters')  # Add search fields for autocomplete
-    filter_horizontal = ('parameters', 'samples','standards',)  # Allow selecting multiple parameters and samples in admin interface
+    filter_horizontal = ('parameters', 'samples','tests')  # Removed 'standards' if it doesn't exist
 
 admin.site.register(Laboratory, LaboratoryAdmin)
 admin.site.register(Faculty, FacultyAdmin)
@@ -71,5 +73,5 @@ admin.site.register(Unit_amount, Unit_amountAdmin)
 admin.site.register(Unit_price, Unit_priceAdmin)
 admin.site.register(Experiment, ExperimentAdmin)
 admin.site.register(Standards, StandardsAdmin)
-admin.site.register(ExperimentSpecification, ExperimentSpecificationAdmin)
-admin.site.register(Sample, SampleAdmin)  # Register the Sample model
+admin.site.register(Tests, TestsAdmin)  # Updated model name registration
+admin.site.register(Sample, SampleAdmin)

@@ -24,7 +24,8 @@ INSTALLED_APPS = [
     'userpanel',
     'services',
     'requests',
-
+    
+    'rest_framework',
     'decouple',
     'django.contrib.humanize',
     'django_jalali',

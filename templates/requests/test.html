@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Page</title>
+</head>
+<body>
+    <h1>Experiment Request</h1>
+    <div id="data-container">
+        <!-- داده‌ها اینجا نمایش داده می‌شود -->
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const experimentId = "{{ experiment_id }}"; // دریافت شناسه از context
+
+            axios.get(`/services/services-api/${experimentId}/`)  // آدرس API باید به درستی تنظیم شود
+                .then(response => {
+                    const data = response.data;
+                    document.getElementById('data-container').innerHTML = `
+                        <p>Username: ${data.username}</p>
+                        <p>Date: ${data.date_jalali}</p>
+                        <p>Service ID: ${data.service_id}</p>
+                        <!-- نمایش داده‌های دیگر -->
+                    `;
+                })
+                .catch(error => {
+                    console.error('There was an error!', error);
+                });
+        });
+    </script>
+</body>
+</html>

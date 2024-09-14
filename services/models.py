@@ -68,7 +68,7 @@ class Faculty(models.Model):
     def __str__(self):
         return f"{self.name} ({self.get_location_display()})"
 
-class ExperimentSpecification(models.Model):
+class Tests(models.Model):  # Changed name from ExperimentSpecification to TestSpecification
     UNIT_TYPE_CHOICES = [
         ('EQ', 'دستگاه'),
         ('CM', 'کامپیوتر'),
@@ -81,12 +81,16 @@ class ExperimentSpecification(models.Model):
     operating_range = models.TextField(verbose_name='گستره کاری')
     description = models.TextField(verbose_name='توصیف آزمون')
 
+    standards = models.ManyToManyField('Standards', related_name='test_specifications', verbose_name='استانداردها')
+
     def __str__(self):
         return f"{self.name_fa} / {self.name_en}"
 
 class Standards(models.Model):
     name = models.CharField(max_length=100, verbose_name='نام استاندارد')
     description = models.TextField(verbose_name='توصیف استاندارد')
+
+    parameters = models.ManyToManyField('Parameters', related_name='standards', verbose_name='پارامترها')
 
     def __str__(self):
         return self.name
@@ -110,16 +114,13 @@ class Experiment(models.Model):
     
     laboratory = models.ForeignKey('Laboratory', on_delete=models.CASCADE, related_name='experiments', verbose_name='آزمایشگاه')
     samples = models.ManyToManyField(Sample, related_name='experiments', verbose_name='نمونه‌ها') 
-    experiment = models.ForeignKey(ExperimentSpecification, on_delete=models.CASCADE, related_name='experiments', verbose_name='مشخصات آزمایش')
+    tests = models.ManyToManyField(Tests, related_name='experiments', verbose_name=' آزمون ها')
     device = models.ForeignKey(Device, on_delete=models.CASCADE, related_name='experiments', verbose_name='دستگاه')
-    standards = models.ManyToManyField(Standards, related_name='experiments', verbose_name='استانداردها')  # Updated line for many-to-many relationship
     operator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='experiments', verbose_name='اپراتور')
-    parameters = models.ManyToManyField(Parameters, related_name='experiments', verbose_name='پارامتر ها')
+    parameters = models.ManyToManyField(Parameters, related_name='experiments', verbose_name='پارامترها')
     iso_17025 = models.CharField(max_length=7, choices=ISO_CHOICES, default='has_not', verbose_name='ISO 17025')
     request_type = models.CharField(max_length=50, verbose_name='نوع درخواست')
     status = models.CharField(max_length=8, choices=STATUS_CHOICES, default='active', verbose_name='وضعیت')
     created_date = models.DateField(auto_now_add=True, verbose_name='تاریخ ایجاد')
     updated_date = models.DateField(auto_now=True, verbose_name='تاریخ به‌روزرسانی')
 
-    def __str__(self):
-        return f"Experiment in {self.laboratory.name} - {self.experiment.name_en} ({self.status})"
