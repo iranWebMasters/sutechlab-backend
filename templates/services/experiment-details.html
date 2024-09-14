@@ -1,14 +1,13 @@
 {% extends 'userpanel/base.html' %}
-{% load static %} 
-{% block content %} 
+{% load static %}
+{% block content %}
 
-
- <div class="exp">
-    <h1 class="exp-title">{{ experiments.experiment.name_fa }}</h1>
+<div class="exp">
+    <h1 class="exp-title">{{ experiments.tests.first.name_fa }}</h1>  <!-- Updated to use tests instead of experiment -->
     <div class="details-container">
         <div class="info-section">
             <h3 class="section-heading">{{ experiments.laboratory.name }} </h3>
-            
+
             <div class="parameters">
                 <p>
                     دانشکده: {{ experiments.laboratory.faculty.name }}
@@ -20,30 +19,30 @@
             </div>
         </div>
         <div class="info-section">
-            <h3 class="section-heading">{{ experiments.experiment.name_fa }} </h3>
+            <h3 class="section-heading">{{ experiments.tests.first.name_fa }} </h3>  <!-- Updated to use tests -->
             
             <div class="parameters">
                 <p>
                     <span class="label">نام انگلیسی آزمون:</span>
-                    {{ experiments.experiment.name_en }}
+                    {{ experiments.tests.first.name_en }}
                 </p>
                 <p>
                     <span class="label">نوع واحد آزمون :</span>
-                    {{ experiments.experiment.unit_type }}
+                    {{ experiments.tests.first.unit_type }}
                 </p>
                 <p>
                     <span class="label">گستره کاری:</span>
-                    {{ experiments.experiment.operating_range }}
+                    {{ experiments.tests.first.operating_range }}
                 </p>
                 <p>
                     <span class="label">توصیف آزمون:</span>
-                    {{ experiments.experiment.description }}
+                    {{ experiments.tests.first.description }}
                 </p>
             </div>
         </div>
         <div class="info-section">
             <h3 class="section-heading">{{ experiments.device.name }} </h3>
-            
+
             <div class="parameters">
                 <p>
                     <span class="label">برند(مدل) :</span>
@@ -65,12 +64,12 @@
         </div>
         <div class="info-section">
             <h3 class="section-heading">استاندارد ها</h3>
-        
-            {% if experiments.standards.all %}
+
+            {% if experiments.tests.first.standards.all %}
                 <div class="parameters">
-                    {% for standards in experiments.standards.all %}
+                    {% for standard in experiments.tests.first.standards.all %}
                         <p>
-                            <span class="label">{{ standards.name }}:</span> {{ standards.description }}
+                            <span class="label">{{ standard.name }}:</span> {{ standard.description }}
                         </p>
                     {% endfor %}
                 </div>
@@ -80,7 +79,7 @@
         </div>
         <div class="info-section">
             <h3 class="section-heading">نمونه‌ها</h3>
-        
+
             {% if experiments.samples.all %}
                 <div class="parameters">
                     {% for sample in experiments.samples.all %}
@@ -97,36 +96,46 @@
             <h3 class="section-heading">پارامتر ها: </h3>
         
             <div class="parameters">
-                {% for parameter in experiments.parameters.all %}
-                <div class="parameters-line">
-                    <p>
-                        <span class="label">نام:</span>
-                        {{ parameter.name }}
-                    </p>
-                    <p>
-                        <span class="label">واحد اندازه گیری:</span>  
-                        {{ parameter.get_unit_display }}
-                    </p>
-                    <p>
-                        <span class="label">مقدار واحد:</span>
-                        {{ parameter.unit_amount.amount }} {{ parameter.unit_amount.get_unit_display }}
-                    </p>
-                    <p>
-                        <span class="label">مبلغ واحد:</span>
-                        {{ parameter.unit_price.unit_price }} {{ parameter.unit_price.get_currency_display }}
-                    </p>
-                </div>
-                {% endfor %}
+                {% if experiments.tests.all %}
+                    {% for test in experiments.tests.all %}
+                        {% for standard in test.standards.all %}
+                            {% if standard.parameters.all %}
+                                {% for parameter in standard.parameters.all %}
+                                    <div class="parameters-line">
+                                        <p>
+                                            <span class="label">نام:</span>
+                                            {{ parameter.name }}
+                                        </p>
+                                        <p>
+                                            <span class="label">واحد اندازه گیری:</span>  
+                                            {{ parameter.get_unit_display }}
+                                        </p>
+                                        <p>
+                                            <span class="label">مقدار واحد:</span>
+                                            {{ parameter.unit_amount.amount }} {{ parameter.unit_amount.get_unit_display }}
+                                        </p>
+                                        <p>
+                                            <span class="label">مبلغ واحد:</span>
+                                            {{ parameter.unit_price.unit_price }} {{ parameter.unit_price.get_currency_display }}
+                                        </p>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p>هیچ پارامتر معتبری برای استاندارد {{ standard.name }} وجود ندارد.</p>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    <p>هیچ آزمونی برای نمایش وجود ندارد.</p>
+                {% endif %}
             </div>
-        </div>
-        
+        </div>       
+
     </div>
 
-    <a href="{% url 'requests:request-create' experiments.id %}" class="btn btn-success">
+    <a href="{% url 'orders:request-create' experiments.id %}" class="btn btn-success">
         ثبت درخواست
     </a>
 </div>
-
-
 
 {% endblock content %}
