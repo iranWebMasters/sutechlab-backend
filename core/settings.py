@@ -23,8 +23,9 @@ INSTALLED_APPS = [
     'devices',
     'userpanel',
     'services',
-    'requests',
-    
+    'orders',
+
+    "azbankgateways",
     'rest_framework',
     'decouple',
     'django.contrib.humanize',
@@ -164,3 +165,26 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 AUTH_USER_MODEL = "accounts.User"
+
+
+# Bank payment gateway
+AZ_IRANIAN_BANK_GATEWAYS = {
+   'GATEWAYS': {
+       'ZARINPAL': {
+           'MERCHANT_CODE': '',
+           'SANDBOX': 1,  # 0 disable, 1 active
+       },
+   },
+   'IS_SAMPLE_FORM_ENABLE': True, # اختیاری و پیش فرض غیر فعال است
+   'DEFAULT': 'ZARINPAL',
+   'CURRENCY': 'IRT', # اختیاری
+   'TRACKING_CODE_QUERY_PARAM': 'tc', # اختیاری
+   'TRACKING_CODE_LENGTH': 16, # اختیاری
+   'SETTING_VALUE_READER_CLASS': 'azbankgateways.readers.DefaultReader', # اختیاری
+   'BANK_PRIORITIES': [
+       'ZARINPAL',
+       # and so on ...
+   ], # اختیاری
+   'IS_SAFE_GET_GATEWAY_PAYMENT': False, #اختیاری، بهتر است True بزارید.
+   'CUSTOM_APP': None, # اختیاری 
+}
