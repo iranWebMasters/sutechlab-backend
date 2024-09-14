@@ -1,8 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .models import Standards, Sample, Experiment, Tests
-from .serializers import StandardsSerializer, SampleSerializer, TestsSerializer, ParametersSerializer
+from .models import *
+from .serializers import *
 import jdatetime
 
 class ServicesAPI(APIView):
@@ -13,6 +13,7 @@ class ServicesAPI(APIView):
             experiment = Experiment.objects.get(id=pk)
             tests = experiment.tests.all()
             samples = Sample.objects.filter(experiments__id=pk)
+            laboratory  = Laboratory.objects.filter(experiments__id=pk)
         except Experiment.DoesNotExist:
             return Response({
                 'username': 'مهمان',
@@ -61,6 +62,7 @@ class ServicesAPI(APIView):
             'date': today_jalali,
             'request_type': experiment.request_type,
             'experiment_id': experiment.id,
+            'laboratory':LaboratorySerializer(laboratory,many=True).data,
             'samples': SampleSerializer(samples, many=True).data,
             'tests': tests_data
             

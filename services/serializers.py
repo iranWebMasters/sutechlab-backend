@@ -50,3 +50,8 @@ class TestsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tests
         fields = '__all__'
+
+class LaboratorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Laboratory
+        fields = ['id','name',]
