@@ -21,8 +21,8 @@ class ServicesAPI(APIView):
                 'samples': []
             })
 
-        # گرفتن اطلاعات آزمون‌ها و استانداردها
         tests_data = []
+
         for test in tests:
             standards = test.standards.all()
             standards_data = []
@@ -46,26 +46,19 @@ class ServicesAPI(APIView):
                 'standards': standards_data
             })
 
-        # نام کاربر لاگین شده
         first_name = request.user.profile.first_name if request.user.is_authenticated else 'مهمان'
         last_name = request.user.profile.last_name if request.user.is_authenticated else 'مهمان'
         full_name = f"{first_name} {last_name}"
 
-        # تاریخ شمسی
         today_jalali = jdatetime.date.today().strftime('%Y/%m/%d')
 
-        # شناسه سرویس
-        service_id = request.query_params.get('service_id', 'unknown')
 
-        # ساختن پاسخ
         return Response({
-            'username': full_name,
-            'date_jalali': today_jalali,
-            'service_id': service_id,
+            'full_name': full_name,
+            'date': today_jalali,
             'request_type': experiment.request_type,
-            'experiments': [{
-                'experiment_id': experiment.id,
-                'samples': SampleSerializer(samples, many=True).data,
-                'tests': tests_data
-            }]
+            'experiment_id': experiment.id,
+            'samples': SampleSerializer(samples, many=True).data,
+            'tests': tests_data
+            
         })

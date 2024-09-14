@@ -117,7 +117,7 @@ class Experiment(models.Model):
     tests = models.ManyToManyField(Tests, related_name='experiments', verbose_name=' آزمون ها')
     device = models.ForeignKey(Device, on_delete=models.CASCADE, related_name='experiments', verbose_name='دستگاه')
     operator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='experiments', verbose_name='اپراتور')
-    parameters = models.ManyToManyField(Parameters, related_name='experiments', verbose_name='پارامترها')
+    # parameters = models.ManyToManyField(Parameters, related_name='experiments', verbose_name='پارامترها')
     iso_17025 = models.CharField(max_length=7, choices=ISO_CHOICES, default='has_not', verbose_name='ISO 17025')
     request_type = models.CharField(max_length=50, verbose_name='نوع درخواست')
     status = models.CharField(max_length=8, choices=STATUS_CHOICES, default='active', verbose_name='وضعیت')

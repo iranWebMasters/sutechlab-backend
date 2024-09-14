@@ -63,8 +63,8 @@ class ExperimentAdmin(admin.ModelAdmin):
     )
     list_filter = ('status', 'iso_17025', 'created_date', 'updated_date')
     date_hierarchy = 'created_date'
-    autocomplete_fields = ('operator', 'device', 'parameters')  # Add search fields for autocomplete
-    filter_horizontal = ('parameters', 'samples','tests')  # Removed 'standards' if it doesn't exist
+    autocomplete_fields = ('operator', 'device',)  # Add search fields for autocomplete
+    filter_horizontal = ('samples','tests')  # Removed 'standards' if it doesn't exist
 
 admin.site.register(Laboratory, LaboratoryAdmin)
 admin.site.register(Faculty, FacultyAdmin)
