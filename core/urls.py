@@ -17,6 +17,7 @@ urlpatterns = [
     path('services/', include('services.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path("bankgateways/", az_bank_gateways_urls()),
+    path('gateway/',include('gateway.urls')),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'userpanel',
     'services',
     'orders',
+    'gateway',
 
     "azbankgateways",
     'rest_framework',
@@ -84,15 +85,6 @@ else:
             'HOST':config('HOST', default='127.0.0.1'),
             'PORT':config('PORT', default='5432')
         }
-    # DATABASES = {
-    #     'default': {
-    #         'ENGINE': 'django.db.backends.postgresql',
-    #         'NAME': 'mysite-database',
-    #         'USER': 'root',
-    #         'PASSWORD': 'JjO05MwXpcczY3nSCTnYfBvL',
-    #         'HOST': 'mysite-database', 
-    #         'PORT': '5432',        
-    #     }
 }
 
 # DATABASES_________________________________________
