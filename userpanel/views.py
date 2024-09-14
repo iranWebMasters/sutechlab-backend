@@ -63,9 +63,21 @@ class ExperimentListView(ListView):
 
     context_object_name = 'experiments'
     ordering = ['-created_date']
+    
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        profile = Profile.objects.get(user=self.request.user)
+        context['profile'] = profile
+        return context
 
 class TestDetailView(DetailView):
     model = Experiment
     context_object_name = 'experiments'
     
     template_name = 'services/experiment-details.html'
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        profile = Profile.objects.get(user=self.request.user)
+        context['profile'] = profile
+        return context

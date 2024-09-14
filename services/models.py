@@ -111,7 +111,7 @@ class Experiment(models.Model):
         ('has', 'دارد'),
         ('has_not', 'ندارد'),
     ]
-    
+    test_name = models.CharField(max_length=255, verbose_name='نام آزمون')
     laboratory = models.ForeignKey('Laboratory', on_delete=models.CASCADE, related_name='experiments', verbose_name='آزمایشگاه')
     samples = models.ManyToManyField(Sample, related_name='experiments', verbose_name='نمونه‌ها') 
     tests = models.ManyToManyField(Tests, related_name='experiments', verbose_name=' آزمون ها')

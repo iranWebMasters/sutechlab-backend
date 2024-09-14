@@ -3,7 +3,7 @@
 {% block content %} 
     <div class="breadcrumb">
         <ul>
-            <li><a href="index.html">پیشخوان</a></li>
+            <li><a href="{% url 'userpanel:index' %}">پیشخوان</a></li>
             <li><a href="checkouts.html" class="is-active"> تسویه حساب ها</a></li>
         </ul>
     </div>
@@ -54,7 +54,7 @@
                 {% for experiment in experiments %}
                 <tr role="row">
                     <td><a href="{% url 'userpanel:experiments-detail' experiment.id %}">{{ experiment.id }}</a></td>
-                    <td><a href="">{{ experiment.experiment.name_fa }}</a></td>
+                    <td><a href="">{{ experiment.test_name}}</a></td>
                     <td><a href="">{{ experiment.laboratory.name }}</a></td>
                     <td><a href="">{{ experiment.laboratory.faculty.name }}</a></td>
                     <td><a href="">{{ experiment.operator.first_name }}</a></td>
