@@ -5,16 +5,17 @@ class UnitAmountSerializer(serializers.ModelSerializer):
     unit_display = serializers.SerializerMethodField()
 
     class Meta:
-        model = Unit_amount 
+        model = UnitAmount 
         fields = ['id', 'amount', 'unit', 'unit_display'] 
 
     def get_unit_display(self, obj):
         return obj.get_unit_display()  
 
 class UnitPriceSerializer(serializers.ModelSerializer):
-    currency_display = serializers.SerializerMethodField()  
+    currency_display = serializers.SerializerMethodField()
+
     class Meta:
-        model = Unit_price
+        model = UnitPrice
         fields = ['id', 'unit_price', 'currency', 'currency_display'] 
 
     def get_currency_display(self, obj):
@@ -33,7 +34,7 @@ class ParametersSerializer(serializers.ModelSerializer):
         return obj.get_unit_display()  
 
 class StandardsSerializer(serializers.ModelSerializer):
-    parameters = ParametersSerializer(many=True)  
+    parameters = ParametersSerializer(many=True)
 
     class Meta:
         model = Standards
@@ -45,13 +46,24 @@ class SampleSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class TestsSerializer(serializers.ModelSerializer):
-    standards = StandardsSerializer(many=True) 
+    standards = StandardsSerializer(many=True)
 
     class Meta:
-        model = Tests
+        model = Test
         fields = '__all__'
 
 class LaboratorySerializer(serializers.ModelSerializer):
+    faculty = serializers.StringRelatedField()  # Include faculty name
+    technical_manager = serializers.StringRelatedField()  # Include technical manager
+
     class Meta:
         model = Laboratory
-        fields = ['id','name',]
+        fields = ['id', 'name', 'faculty', 'technical_manager']
+
+class ExperimentSerializer(serializers.ModelSerializer):
+    tests = TestsSerializer(many=True)
+    laboratory = LaboratorySerializer()
+
+    class Meta:
+        model = Experiment
+        fields = ['id', 'request_type', 'tests', 'laboratory']

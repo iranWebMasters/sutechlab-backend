@@ -2,7 +2,7 @@ from django.db import models
 from accounts.models import Profile
 from devices.models import Device
 
-class Unit_amount(models.Model):
+class UnitAmount(models.Model):
     UNIT_CHOICES = [
         ('C', 'سانتی گراد'),
         ('F', 'فارنهایت'),
@@ -18,7 +18,7 @@ class Unit_amount(models.Model):
     def __str__(self):
         return f"{self.amount} {self.get_unit_display()}"
 
-class Unit_price(models.Model):
+class UnitPrice(models.Model):
     CURRENCY_CHOICES = [
         ('IRR', 'ریال'),
         ('Toman', 'تومان'),
@@ -43,8 +43,8 @@ class Parameters(models.Model):
     name = models.CharField(max_length=255, verbose_name='نام پارامتر')
     unit = models.CharField(max_length=50, choices=UNIT_CHOICES, verbose_name='واحد اندازه‌گیری')
     laboratory = models.ForeignKey('Laboratory', on_delete=models.CASCADE, related_name='tests', verbose_name='آزمایشگاه')
-    unit_amount = models.ForeignKey('Unit_amount', on_delete=models.CASCADE, related_name='parameters', verbose_name='مقدار واحد')
-    unit_price = models.ForeignKey('Unit_price', on_delete=models.CASCADE, related_name='parameters', verbose_name='مبلغ واحد')
+    unit_amount = models.ForeignKey('UnitAmount', on_delete=models.CASCADE, related_name='parameters', verbose_name='مقدار واحد')
+    unit_price = models.ForeignKey('UnitPrice', on_delete=models.CASCADE, related_name='parameters', verbose_name='مبلغ واحد')
 
     def __str__(self):
         return f"{self.name} ({self.get_unit_display()}) - {self.unit_amount} - {self.unit_price}"
@@ -68,7 +68,7 @@ class Faculty(models.Model):
     def __str__(self):
         return f"{self.name} ({self.get_location_display()})"
 
-class Tests(models.Model):  # Changed name from ExperimentSpecification to TestSpecification
+class Test(models.Model):
     UNIT_TYPE_CHOICES = [
         ('EQ', 'دستگاه'),
         ('CM', 'کامپیوتر'),
@@ -81,7 +81,7 @@ class Tests(models.Model):  # Changed name from ExperimentSpecification to TestS
     operating_range = models.TextField(verbose_name='گستره کاری')
     description = models.TextField(verbose_name='توصیف آزمون')
 
-    standards = models.ManyToManyField('Standards', related_name='test_specifications', verbose_name='استانداردها')
+    standards = models.ManyToManyField('Standards', related_name='tests', verbose_name='استانداردها')
 
     def __str__(self):
         return f"{self.name_fa} / {self.name_en}"
@@ -99,6 +99,8 @@ class Sample(models.Model):
     name = models.CharField(max_length=100, verbose_name='نام نمونه')
     description = models.TextField(verbose_name='توصیف نمونه')
 
+    tests = models.ManyToManyField(Test, related_name='samples', verbose_name='آزمون‌ها')
+
     def __str__(self):
         return self.name
 
@@ -114,13 +116,13 @@ class Experiment(models.Model):
     test_name = models.CharField(max_length=255, verbose_name='نام آزمون')
     laboratory = models.ForeignKey('Laboratory', on_delete=models.CASCADE, related_name='experiments', verbose_name='آزمایشگاه')
     samples = models.ManyToManyField(Sample, related_name='experiments', verbose_name='نمونه‌ها') 
-    tests = models.ManyToManyField(Tests, related_name='experiments', verbose_name=' آزمون ها')
     device = models.ForeignKey(Device, on_delete=models.CASCADE, related_name='experiments', verbose_name='دستگاه')
     operator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='experiments', verbose_name='اپراتور')
-    # parameters = models.ManyToManyField(Parameters, related_name='experiments', verbose_name='پارامترها')
     iso_17025 = models.CharField(max_length=7, choices=ISO_CHOICES, default='has_not', verbose_name='ISO 17025')
     request_type = models.CharField(max_length=50, verbose_name='نوع درخواست')
     status = models.CharField(max_length=8, choices=STATUS_CHOICES, default='active', verbose_name='وضعیت')
     created_date = models.DateField(auto_now_add=True, verbose_name='تاریخ ایجاد')
     updated_date = models.DateField(auto_now=True, verbose_name='تاریخ به‌روزرسانی')
 
+    def __str__(self):
+        return self.test_name

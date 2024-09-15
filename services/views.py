@@ -7,52 +7,83 @@ import jdatetime
 from django.views.generic.edit import FormView
 from .forms import TestSearchForm
 from django.http import JsonResponse
-from django.shortcuts import render
 from django.views import View
+from django.views.generic import ListView
+from django.db.models import Q
+from .models import Experiment
 
 class ServicesAPI(APIView):
-    permission_classes = [IsAuthenticated] 
+    permission_classes = [IsAuthenticated]
     
     def get(self, request, pk=None):
         try:
             experiment = Experiment.objects.get(id=pk)
-            tests = experiment.tests.all()
-            samples = Sample.objects.filter(experiments__id=pk)
-            laboratory  = Laboratory.objects.filter(experiments__id=pk)
+            samples = experiment.samples.all()
+            laboratory = experiment.laboratory
         except Experiment.DoesNotExist:
             return Response({
-                'username': 'مهمان',
-                'date_jalali': jdatetime.date.today().strftime('%Y/%m/%d'),
-                'service_id': request.query_params.get('service_id', 'unknown'),
+                'full_name': 'مهمان',
+                'date': jdatetime.date.today().strftime('%Y/%m/%d'),
+                'experiment_id': 'unknown',
                 'request_type': 'unknown',
-                'experiments': [],
-                'standards': [],
-                'samples': []
+                'sample_types': []
             })
 
-        tests_data = []
+        samples_data = []
 
-        for test in tests:
-            standards = test.standards.all()
-            standards_data = []
-            for standard in standards:
-                parameters = standard.parameters.all()
-                parameters_serializer = ParametersSerializer(parameters, many=True)
-                standards_data.append({
-                    'standard_id': standard.id,
-                    'name': standard.name,
-                    'description': standard.description,
-                    'parameters': parameters_serializer.data
+        for sample in samples:
+            tests = sample.tests.all()
+            tests_list = []
+            for test in tests:
+                standards = test.standards.all()
+                standards_data = []
+                for standard in standards:
+                    parameters = standard.parameters.all()
+                    parameters_data = []
+                    for parameter in parameters:
+                        unit_amount = {
+                            'id': parameter.unit_amount.id,
+                            'amount': parameter.unit_amount.amount,
+                            'unit': parameter.unit_amount.unit,
+                            'unit_display': parameter.unit_amount.get_unit_display()
+                        }
+                        unit_price = {
+                            'id': parameter.unit_price.id,
+                            'unit_price': str(parameter.unit_price.unit_price),
+                            'currency': parameter.unit_price.currency,
+                            'currency_display': parameter.unit_price.get_currency_display()
+                        }
+                        parameters_data.append({
+                            'id': parameter.id,
+                            'name': parameter.name,
+                            'unit': parameter.unit,
+                            'unit_display': parameter.get_unit_display(),
+                            'laboratory': parameter.laboratory.id,
+                            'unit_amount': unit_amount,
+                            'unit_price': unit_price
+                        })
+                    standards_data.append({
+                        'standard_id': standard.id,
+                        'name': standard.name,
+                        'description': standard.description,
+                        'parameters': parameters_data
+                    })
+                
+                tests_list.append({
+                    'test_id': test.id,
+                    'name_fa': test.name_fa,
+                    'name_en': test.name_en,
+                    'unit_type': test.unit_type,
+                    'operating_range': test.operating_range,
+                    'description': test.description,
+                    'standards': standards_data
                 })
 
-            tests_data.append({
-                'test_id': test.id,
-                'name_fa': test.name_fa,
-                'name_en': test.name_en,
-                'unit_type': test.unit_type,
-                'operating_range': test.operating_range,
-                'description': test.description,
-                'standards': standards_data
+            samples_data.append({
+                'id': sample.id,
+                'name': sample.name,
+                'description': sample.description,
+                'tests': tests_list  # Including detailed test information here
             })
 
         first_name = request.user.profile.first_name if request.user.is_authenticated else 'مهمان'
@@ -61,24 +92,14 @@ class ServicesAPI(APIView):
 
         today_jalali = jdatetime.date.today().strftime('%Y/%m/%d')
 
-
         return Response({
             'full_name': full_name,
             'date': today_jalali,
             'request_type': experiment.request_type,
             'experiment_id': experiment.id,
-            'laboratory':LaboratorySerializer(laboratory,many=True).data,
-            'sample_types': SampleSerializer(samples, many=True).data,
-            'tests': tests_data
-            
+            'laboratory': laboratory.name,
+            'sample_types': samples_data  # Now includes the detailed tests data
         })
-
-# views.py
-
-from django.views.generic import ListView
-from django.db.models import Q
-from .models import Experiment
-from .forms import TestSearchForm
 
 class TestSearchView(ListView):
     model = Experiment
