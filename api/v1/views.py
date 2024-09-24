@@ -5,15 +5,10 @@ from services.models import *
 from orders.models import *
 from .serializers import *
 import jdatetime
-from rest_framework.parsers import JSONParser
 from rest_framework import status
-
-
 
 class StepOneAPI(APIView):
     permission_classes = [IsAuthenticated]
-    # parser_classes = [JSONParser]
-
     def get(self, request, pk=None):
         try:
             experiment = Experiment.objects.get(id=pk)
@@ -26,12 +21,11 @@ class StepOneAPI(APIView):
         full_name = f"{first_name} {last_name}"
 
         today_jalali = jdatetime.date.today().strftime('%Y/%m/%d')
-                # بازیابی اطلاعات RequestInfo (در صورت وجود)
         try:
             request_info = RequestInfo.objects.get(user=request.user.profile, experiment=experiment)
             description = request_info.description
         except RequestInfo.DoesNotExist:
-            description = None  # یا می‌توانید یک مقدار پیش‌فرض قرار دهید
+            description = None
 
         return Response({
             'experiment_id': experiment.id,
