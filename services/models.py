@@ -80,26 +80,17 @@ class Test(models.Model):
     unit_type = models.CharField(max_length=2, choices=UNIT_TYPE_CHOICES, verbose_name='نوع واحد آزمون')
     operating_range = models.TextField(verbose_name='گستره کاری')
     description = models.TextField(verbose_name='توصیف آزمون')
+    # add returable sample --- alireza
+    parameters = models.ManyToManyField('Parameters', related_name='standards', verbose_name='پارامترها')
 
-    standards = models.ManyToManyField('Standards', related_name='tests', verbose_name='استانداردها')
 
     def __str__(self):
         return f"{self.name_fa} / {self.name_en}"
 
-class Standards(models.Model):
-    name = models.CharField(max_length=100, verbose_name='نام استاندارد')
-    description = models.TextField(verbose_name='توصیف استاندارد')
-
-    parameters = models.ManyToManyField('Parameters', related_name='standards', verbose_name='پارامترها')
-
-    def __str__(self):
-        return self.name
 
 class Sample(models.Model):
     name = models.CharField(max_length=100, verbose_name='نام نمونه')
     description = models.TextField(verbose_name='توصیف نمونه')
-
-    tests = models.ManyToManyField(Test, related_name='samples', verbose_name='آزمون‌ها')
 
     def __str__(self):
         return self.name
@@ -115,11 +106,11 @@ class Experiment(models.Model):
     ]
     test_name = models.CharField(max_length=255, verbose_name='نام آزمون')
     laboratory = models.ForeignKey('Laboratory', on_delete=models.CASCADE, related_name='experiments', verbose_name='آزمایشگاه')
+    tests = models.ManyToManyField(Test, related_name='samples', verbose_name='آزمون‌ها')
     samples = models.ManyToManyField(Sample, related_name='experiments', verbose_name='نمونه‌ها') 
     device = models.ForeignKey(Device, on_delete=models.CASCADE, related_name='experiments', verbose_name='دستگاه')
     operator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='experiments', verbose_name='اپراتور')
     iso_17025 = models.CharField(max_length=7, choices=ISO_CHOICES, default='has_not', verbose_name='ISO 17025')
-    request_type = models.CharField(max_length=50, verbose_name='نوع درخواست')
     status = models.CharField(max_length=8, choices=STATUS_CHOICES, default='active', verbose_name='وضعیت')
     created_date = models.DateField(auto_now_add=True, verbose_name='تاریخ ایجاد')
     updated_date = models.DateField(auto_now=True, verbose_name='تاریخ به‌روزرسانی')

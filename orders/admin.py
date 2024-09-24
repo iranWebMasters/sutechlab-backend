@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import RequestInfo, Request, SampleInfo, ExperimentInfo, AdditionalInfo, Cost, DiscountInfo
+from .models import RequestInfo, Request, SampleInfo, ExperimentInfo, AdditionalInfo, DiscountInfo
 
 class RequestInfoAdmin(admin.ModelAdmin):
     list_display = ('user', 'submission_date', 'description')
-    search_fields = ('user__user__username', 'description')  # جستجو بر اساس نام کاربری و توضیحات
+    search_fields = ('user__user__username', 'description')
 
 class RequestAdmin(admin.ModelAdmin):
     list_display = ('RequestInfo', 'SampleInfo', 'ExperimentInfo', 'AdditionalInfo')
@@ -14,7 +14,7 @@ class SampleInfoAdmin(admin.ModelAdmin):
     search_fields = ('sample_type', 'additional_info')
 
 class ExperimentInfoAdmin(admin.ModelAdmin):
-    list_display = ('cost', 'additional_info', 'discount_info')
+    list_display = ()
     search_fields = ('additional_info__additional_info', 'cost__sample_return')
 
 class AdditionalInfoAdmin(admin.ModelAdmin):
@@ -34,5 +34,4 @@ admin.site.register(Request, RequestAdmin)
 admin.site.register(SampleInfo, SampleInfoAdmin)
 admin.site.register(ExperimentInfo, ExperimentInfoAdmin)
 admin.site.register(AdditionalInfo, AdditionalInfoAdmin)
-admin.site.register(Cost, CostAdmin)
 admin.site.register(DiscountInfo, DiscountInfoAdmin)

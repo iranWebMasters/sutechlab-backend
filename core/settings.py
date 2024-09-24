@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'userpanel',
     'services',
     'orders',
+    'api',
     'gateway',
 
     "azbankgateways",

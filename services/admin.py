@@ -30,7 +30,8 @@ class TestsAdmin(admin.ModelAdmin):
     list_display = ('name_fa', 'name_en', 'unit_type', 'operating_range', 'description')
     search_fields = ('name_fa', 'name_en')
     list_filter = ('unit_type',)
-    filter_horizontal = ('standards',)
+    filter_horizontal = ('parameters',)
+
 
 class StandardsAdmin(admin.ModelAdmin):
     list_display = ('name',)
@@ -41,7 +42,6 @@ class SampleAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
     search_fields = ('name',)
     list_filter = ('name',)
-    filter_horizontal = ('tests',)
 
 
 class ExperimentAdmin(admin.ModelAdmin):
@@ -74,6 +74,5 @@ admin.site.register(Parameters, ParameterAdmin)
 admin.site.register(UnitAmount, UnitAmountAdmin)
 admin.site.register(UnitPrice, UnitPriceAdmin)
 admin.site.register(Experiment, ExperimentAdmin)
-admin.site.register(Standards, StandardsAdmin)
 admin.site.register(Test, TestsAdmin)
 admin.site.register(Sample, SampleAdmin)

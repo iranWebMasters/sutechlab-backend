@@ -35,23 +35,29 @@ class SampleInfo(models.Model):
     additional_info = models.TextField(blank=True, null=True, verbose_name='توضیحات اضافی')
     is_perishable = models.BooleanField(default=False, verbose_name='نمونه فاسدشدنی است')
     expiration_date = models.DateField(null=True, blank=True, verbose_name='تاریخ انقضا')
+    sample_return = models.BooleanField(default=False, verbose_name='نمونه برگشت داده شده بشود')
     storage_duration = models.IntegerField(null=True, blank=True, verbose_name='مدت زمان نگهداری (به روز)')
     storage_unit = models.CharField(max_length=10, choices=[('D', 'روز'), ('W', 'هفته'), ('M', 'ماه')], verbose_name='واحد مدت زمان نگهداری')
     
 class ExperimentInfo(models.Model):
-    cost = models.ForeignKey('Cost', on_delete=models.CASCADE, related_name='experiments', verbose_name='هزینه')
-    additional_info = models.ForeignKey('AdditionalInfo', on_delete=models.CASCADE, related_name='experiments', verbose_name='اطلاعات اضافی')
-    discount_info = models.ForeignKey('DiscountInfo', on_delete=models.CASCADE, related_name='experiments', verbose_name='تخفیف')
- 
+    ...
 class AdditionalInfo(models.Model):
-    cost = models.ForeignKey('Cost', on_delete=models.CASCADE, related_name='samples', verbose_name='درخواست')
-
-class Cost(models.Model):
-    sample_return = models.BooleanField(default=False, verbose_name='نمونه برگشت داده شده بشود')  # فیلد جدید
-
+    ...
 
 class DiscountInfo(models.Model):
     is_faculty_member = models.BooleanField(default=False)  # آیا کاربر عضو هیات علمی است؟
     is_student_or_staff = models.BooleanField(default=False)  # آیا کاربر دانشجو یا کارکنان دانشگاه است؟
     is_affiliated_with_institution = models.BooleanField(default=False)  # آیا کاربر متقاضی استفاده از تخفیف نهادهای طرف قرارداد است؟
     discount_institution_name = models.CharField(max_length=255, blank=True)  # نام نهاد تخفیف
+
+
+class TemporaryRequest(models.Model):
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name='کاربر')
+    step = models.IntegerField(default=0)  # مرحله فعلی
+    description = models.TextField(blank=True, null=True, verbose_name='توضیحات')
+    sample_info = models.JSONField(default=dict, verbose_name='اطلاعات نمونه')  # ذخیره موقت اطلاعات نمونه
+    experiment_info = models.JSONField(default=dict, verbose_name='اطلاعات آزمایش')  # ذخیره موقت اطلاعات آزمایش
+    additional_info = models.JSONField(default=dict, verbose_name='اطلاعات تکمیلی')  # ذخیره موقت اطلاعات اضافی
+    finalized = models.BooleanField(default=False)  # آیا درخواست نهایی شده است؟
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
