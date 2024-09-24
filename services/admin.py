@@ -27,9 +27,8 @@ class UnitPriceAdmin(admin.ModelAdmin):
     list_filter = ('currency',)
 
 class TestsAdmin(admin.ModelAdmin):
-    list_display = ('name_fa', 'name_en', 'unit_type', 'operating_range', 'description')
+    list_display = ('name_fa', 'name_en','operating_range', 'description')
     search_fields = ('name_fa', 'name_en')
-    list_filter = ('unit_type',)
     filter_horizontal = ('parameters',)
 
 

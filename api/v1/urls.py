@@ -5,5 +5,5 @@ app_name = 'api-v1'
 
 
 urlpatterns = [
-    path('page1/<int:pk>/', Page1API.as_view(), name='page-1'),
+    path('step-1/<int:pk>/', StepOneAPI.as_view(), name='step-1'),
 ]

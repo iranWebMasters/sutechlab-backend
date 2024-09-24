@@ -18,7 +18,7 @@ class ExperimentInfoAdmin(admin.ModelAdmin):
     search_fields = ('additional_info__additional_info', 'cost__sample_return')
 
 class AdditionalInfoAdmin(admin.ModelAdmin):
-    list_display = ('cost',)
+    list_display = ()
     search_fields = ('cost__sample_return',)
 
 class CostAdmin(admin.ModelAdmin):

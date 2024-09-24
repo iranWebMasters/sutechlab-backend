@@ -5,8 +5,8 @@ from orders.models import *
 class RequestInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = RequestInfo
-        fields = ['id', 'user', 'submission_date', 'description']
-        read_only_fields = ['id', 'submission_date', 'user']  # Add 'user' to read_only_fields
+        fields = ['id', 'user', 'submission_date', 'description','experiment']
+        read_only_fields = ['id', 'submission_date', 'user',]
 
     def create(self, validated_data):
         user = self.context['request'].user.profile

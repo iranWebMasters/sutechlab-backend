@@ -1,11 +1,16 @@
 from django.db import models
 from accounts.models import Profile
+from services.models import Experiment
 
 
 class RequestInfo(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name='کاربر')
+    experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE)
     submission_date = models.DateField(auto_now_add=True, verbose_name='تاریخ ثبت درخواست')
     description = models.TextField(blank=True, null=True, verbose_name='توضیحات')
+    
+    class Meta:
+        unique_together = ('user', 'experiment')
 
 class Request(models.Model):
     RequestInfo = models.OneToOneField('RequestInfo', on_delete=models.CASCADE, null=True, blank=True, verbose_name='اطلاعات درخواست')

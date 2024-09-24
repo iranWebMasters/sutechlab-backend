@@ -69,15 +69,8 @@ class Faculty(models.Model):
         return f"{self.name} ({self.get_location_display()})"
 
 class Test(models.Model):
-    UNIT_TYPE_CHOICES = [
-        ('EQ', 'دستگاه'),
-        ('CM', 'کامپیوتر'),
-        ('MA', 'ماشین'),
-    ]
-    
     name_fa = models.CharField(max_length=255, verbose_name='نام فارسی آزمون')
     name_en = models.CharField(max_length=255, verbose_name='نام انگلیسی آزمون')
-    unit_type = models.CharField(max_length=2, choices=UNIT_TYPE_CHOICES, verbose_name='نوع واحد آزمون')
     operating_range = models.TextField(verbose_name='گستره کاری')
     description = models.TextField(verbose_name='توصیف آزمون')
     # add returable sample --- alireza
