@@ -19,6 +19,7 @@ urlpatterns = [
     path("bankgateways/", az_bank_gateways_urls()),
     path('gateway/',include('gateway.urls')),
     path('api/',include('api.urls')),
+    path('api-auth/', include('rest_framework.urls')),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -26,9 +26,10 @@ INSTALLED_APPS = [
     'orders',
     'api',
     'gateway',
-
-    "azbankgateways",
+    
+    'drf_yasg',
     'rest_framework',
+    "azbankgateways",
     'decouple',
     'django.contrib.humanize',
     'django_jalali',
@@ -206,3 +207,34 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_HOST_USER = 'ansarialireza@mail.ir'  # ایمیل شما
 # EMAIL_HOST_PASSWORD = 'Ansari1999'  # رمز عبور ایمیل شما
 EMAIL_FILE_PATH = 'tmp/app-messages' 
+
+
+# REST Framework
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'rest_framework.authentication.SessionAuthentication',
+#         'rest_framework.authentication.BasicAuthentication',
+#     ],
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.AllowAny',
+#     ],
+#     'DEFAULT_RENDERER_CLASSES': [
+#         'rest_framework.renderers.JSONRenderer',
+#     ],
+# }
+
+# Swagger
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False, 
+    'LOGIN_URL': 'rest_framework:login',
+    'LOGOUT_URL': 'rest_framework:logout',
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    },
+    'DOC_EXPANSION': 'none',  # حالت پیش‌فرض باز یا بسته بودن سندها
+    'DEFAULT_MODEL_RENDERING': 'example',  # برای نمایش مثال‌ها در مدل‌ها
+}
