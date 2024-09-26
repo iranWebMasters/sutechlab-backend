@@ -44,15 +44,11 @@
             <div class="row g-3 mb-3">
                 <div class="col-md-4">
                     <label for="customerName" class="form-label">نام مشتری</label>
-                    <input type="text" class="form-control bg-light" id="customerName" value="علیرضا انصاری" readonly>
-                </div>
-                <div class="col-md-4">
-                    <label for="requestType" class="form-label">نوع درخواست</label>
-                    <input type="text" class="form-control bg-light" id="requestType" value="بدون امکان سنجی" readonly>
+                    <input type="text" class="form-control bg-light" id="customerName" value="{{full_name}}" readonly>
                 </div>
                 <div class="col-md-4">
                     <label for="requestDate" class="form-label">تاریخ ثبت درخواست</label>
-                    <input type="text" class="form-control bg-light" id="requestDate" value="1403/06/19" readonly>
+                    <input type="text" class="form-control bg-light" id="requestDate" value="{{today_jalali}}" readonly>
                 </div>
             </div>
             <div class="mb-3">
@@ -75,7 +71,9 @@
                 <div class="col-md-4">
                     <label for="sampleName" class="form-label">نام نمونه</label>
                     <select class="form-select">
-                        <option selected>اون</option>
+                        {% for sample in samples %}
+                        <option value="{{ sample }}">{{ sample }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="col-md-4">

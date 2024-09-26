@@ -235,6 +235,6 @@ SWAGGER_SETTINGS = {
             'in': 'header'
         }
     },
-    'DOC_EXPANSION': 'none',  # حالت پیش‌فرض باز یا بسته بودن سندها
-    'DEFAULT_MODEL_RENDERING': 'example',  # برای نمایش مثال‌ها در مدل‌ها
+    'DOC_EXPANSION': 'none', 
+    'DEFAULT_MODEL_RENDERING': 'example',
 }

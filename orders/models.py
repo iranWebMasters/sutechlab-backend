@@ -58,11 +58,14 @@ class DiscountInfo(models.Model):
 
 class TemporaryRequest(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name='کاربر')
-    step = models.IntegerField(default=0)  # مرحله فعلی
+    step = models.IntegerField(default=0, verbose_name='مرحله فعلی')
     description = models.TextField(blank=True, null=True, verbose_name='توضیحات')
-    sample_info = models.JSONField(default=dict, verbose_name='اطلاعات نمونه')  # ذخیره موقت اطلاعات نمونه
-    experiment_info = models.JSONField(default=dict, verbose_name='اطلاعات آزمایش')  # ذخیره موقت اطلاعات آزمایش
-    additional_info = models.JSONField(default=dict, verbose_name='اطلاعات تکمیلی')  # ذخیره موقت اطلاعات اضافی
-    finalized = models.BooleanField(default=False)  # آیا درخواست نهایی شده است؟
+    sample_info = models.JSONField(default=dict, verbose_name='اطلاعات نمونه')
+    experiment_info = models.JSONField(default=dict, verbose_name='اطلاعات آزمایش')
+    additional_info = models.JSONField(default=dict, verbose_name='اطلاعات تکمیلی')
+    finalized = models.BooleanField(default=False, verbose_name='درخواست نهایی شده است؟')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Temporary Request - User: {self.user}, Step: {self.step}"

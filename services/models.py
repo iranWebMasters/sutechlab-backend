@@ -84,6 +84,8 @@ class Test(models.Model):
 class Sample(models.Model):
     name = models.CharField(max_length=100, verbose_name='نام نمونه')
     description = models.TextField(verbose_name='توصیف نمونه')
+    is_returnable = models.BooleanField(default=False, verbose_name='نمونه برگشت پذیر است؟')
+
 
     def __str__(self):
         return self.name
