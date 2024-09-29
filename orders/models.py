@@ -54,18 +54,3 @@ class DiscountInfo(models.Model):
     is_student_or_staff = models.BooleanField(default=False)  # آیا کاربر دانشجو یا کارکنان دانشگاه است؟
     is_affiliated_with_institution = models.BooleanField(default=False)  # آیا کاربر متقاضی استفاده از تخفیف نهادهای طرف قرارداد است؟
     discount_institution_name = models.CharField(max_length=255, blank=True)  # نام نهاد تخفیف
-
-
-class TemporaryRequest(models.Model):
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name='کاربر')
-    step = models.IntegerField(default=0, verbose_name='مرحله فعلی')
-    description = models.TextField(blank=True, null=True, verbose_name='توضیحات')
-    sample_info = models.JSONField(default=dict, verbose_name='اطلاعات نمونه')
-    experiment_info = models.JSONField(default=dict, verbose_name='اطلاعات آزمایش')
-    additional_info = models.JSONField(default=dict, verbose_name='اطلاعات تکمیلی')
-    finalized = models.BooleanField(default=False, verbose_name='درخواست نهایی شده است؟')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"Temporary Request - User: {self.user}, Step: {self.step}"

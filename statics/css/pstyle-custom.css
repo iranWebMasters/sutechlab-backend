@@ -177,3 +177,34 @@
 .step.active p {
     color: #3d3d91;
 }
+
+
+    .form-control:read-only {
+        background-color: #f8f9fa;
+    }
+
+    .btn {
+        border-radius: 0;
+    }
+
+
+    .rtl {
+        direction: rtl;
+        text-align: right;
+    }
+
+
+    .datepicker-plot-area {
+        box-sizing: border-box;
+        overflow: hidden;
+        min-height: 70px;
+        display: block;
+        width: 200px;
+        min-width: 200px;
+        padding: 3px;
+        font-family: inherit;
+        position: absolute;
+        border: 1px solid #ccc;
+        background-color: #fff;
+    }
+

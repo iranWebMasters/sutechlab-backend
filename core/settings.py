@@ -24,7 +24,6 @@ INSTALLED_APPS = [
     'userpanel',
     'services',
     'orders',
-    'api',
     'gateway',
     
     'drf_yasg',
