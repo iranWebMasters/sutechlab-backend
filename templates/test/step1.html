@@ -1,0 +1,12 @@
+<!-- your_template.html -->
+<h2>ثبت درخواست جدید</h2>
+
+<p>نام کاربری: {{ full_name }}</p>
+<p>نام آزمایش: {{ experiment_name }}</p>
+<p>نام آزمایشگاه: {{ laboratory_name }}</p>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">ثبت درخواست</button>
+</form>

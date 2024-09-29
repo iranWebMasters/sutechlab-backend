@@ -2,13 +2,10 @@ from django.contrib import admin
 from .models import RequestInfo, Request, SampleInfo, ExperimentInfo, AdditionalInfo, DiscountInfo
 
 class RequestInfoAdmin(admin.ModelAdmin):
-    list_display = ('user', 'submission_date', 'description')
-    search_fields = ('user__user__username', 'description')
+    list_display = ('submission_date', 'description')
 
 class RequestAdmin(admin.ModelAdmin):
-    list_display = ('RequestInfo', 'SampleInfo', 'ExperimentInfo', 'AdditionalInfo')
-    search_fields = ('RequestInfo__description', 'SampleInfo__sample_type')
-
+    ...
 class SampleInfoAdmin(admin.ModelAdmin):
     list_display = ('sample_type', 'sample_amount', 'sample_unit', 'is_perishable', 'expiration_date')
     search_fields = ('sample_type', 'additional_info')

@@ -1,43 +1,24 @@
-# forms.py
-
 from django import forms
-from .models import RequestInfo, SampleInfo, Request, ExperimentInfo, AdditionalInfo, DiscountInfo
+from django.forms import modelformset_factory
+from .models import *
 
 class RequestInfoForm(forms.ModelForm):
     class Meta:
         model = RequestInfo
-        fields = ['experiment', 'description']  # حذف فیلد user
-
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)
-        super(RequestInfoForm, self).__init__(*args, **kwargs)
-
-    def save(self, commit=True):
-        instance = super(RequestInfoForm, self).save(commit=False)
-        instance.user = self.user  # تنظیم کاربر به کاربر جاری
-        if commit:
-            instance.save()
-        return instance
-
+        fields = ['description']  # فقط فیلد توضیحات را وارد می‌کنیم
 class SampleInfoForm(forms.ModelForm):
     class Meta:
         model = SampleInfo
-        fields = ['sample_type', 'sample_amount', 'sample_unit', 'additional_info', 
-                  'is_perishable', 'expiration_date', 'sample_return', 
-                  'storage_duration', 'storage_unit']
+        fields = '__all__'
+        # fields = ['sample_type', 'sample_amount', 'sample_unit', 'additional_info', 'is_perishable', 'expiration_date', 'sample_return', 'storage_duration', 'storage_unit']
+        widgets = {
+            'expiration_date': forms.DateInput(attrs={'type': 'date'}),
+            'storage_duration': forms.NumberInput(attrs={'min': 0}),
+        }
 
-class ExperimentInfoForm(forms.ModelForm):
-    class Meta:
-        model = ExperimentInfo
-        fields = '__all__'  # Replace with specific fields if necessary
-
-class AdditionalInfoForm(forms.ModelForm):
-    class Meta:
-        model = AdditionalInfo
-        fields = '__all__'  # Replace with specific fields if necessary
-
-class DiscountInfoForm(forms.ModelForm):
-    class Meta:
-        model = DiscountInfo
-        fields = ['is_faculty_member', 'is_student_or_staff', 
-                  'is_affiliated_with_institution', 'discount_institution_name']
+SampleInfoFormSet = modelformset_factory(
+    SampleInfo,
+    form=SampleInfoForm,
+    extra=3,  # تعداد فرم‌های خالی اضافی که نمایش داده می‌شود
+    can_delete=True  # امکان حذف فرم‌ها توسط کاربر
+)

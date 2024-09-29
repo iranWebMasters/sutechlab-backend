@@ -1,9 +1,0 @@
-<!-- templates/request_confirm_delete.html -->
-
-<h2>Are you sure you want to delete this request?</h2>
-<p>{{ object.RequestInfo.user }} - {{ object.RequestInfo.experiment }}</p>
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Confirm Delete</button>
-</form>
-<a href="{% url 'request_list' %}">Cancel</a>

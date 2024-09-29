@@ -38,22 +38,22 @@ function stripClass(element, className) {
     }
 }
 
-function gotoPage(pageNum) {
-    activePage = pageNum
-    for (let page of document.querySelectorAll(".request-page")) {
-        if (page.dataset.index == activePage)
-            page.style.display = "";
-        else
-            page.style.display = "none";
-    }
-    for (let step of document.querySelectorAll(".stepper .step")) {
-        if (step.dataset.index == activePage)
-            ensureClass(step, "active");
-        else
-            stripClass(step, "active");
-    }
+// function gotoPage(pageNum) {
+//     activePage = pageNum
+//     for (let page of document.querySelectorAll(".request-page")) {
+//         if (page.dataset.index == activePage)
+//             page.style.display = "";
+//         else
+//             page.style.display = "none";
+//     }
+//     for (let step of document.querySelectorAll(".stepper .step")) {
+//         if (step.dataset.index == activePage)
+//             ensureClass(step, "active");
+//         else
+//             stripClass(step, "active");
+//     }
 
-}
+// }
 
 document.querySelectorAll(".stepper .step").forEach(function (item) {
     item.addEventListener("click", function () {

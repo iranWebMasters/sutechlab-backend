@@ -1,0 +1,18 @@
+
+<h2>اطلاعات نمونه</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <h3>نمونه‌ها:</h3>
+    {% for sample in samples %}
+        <div>
+            <label>{{ sample.name }}</label>
+            <input type="checkbox" name="sample_ids" value="{{ sample.id }}">
+        </div>
+    {% endfor %}
+
+    <button type="submit">ارسال</button>
+</form>
+

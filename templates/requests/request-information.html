@@ -5,7 +5,7 @@
 <div class="container p-4 request-page" data-index="1" dir="rtl">
     <div class="bg-white p-4 rounded shadow-lg">
         <h5 class="mb-4 text-primary">آزمایشگاه : {{ experiment.laboratory.name }} </h5>
-        <form action="{% url 'orders:request-create' pk=experiment.id %}" method="post">
+        <form action="{% url 'orders:request_info' experiment.id %}" method="post">
             {% csrf_token %}
             <div class="row g-3 mb-3">
                 <div class="col-md-4">
@@ -19,7 +19,7 @@
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">توضیحات</label>
-                <textarea class="form-control" id="description" rows="2"></textarea>
+                <textarea  name="description" class="form-control" id="description" rows="2"></textarea>
             </div>
             <div class="text-center">
                 <button type="submit" data-index="1" class="page-btn forward-btn btn btn-success px-4 me-2">ثبت و مرحله بعد</button>

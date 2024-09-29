@@ -1,22 +1,21 @@
 from django.db import models
-from accounts.models import Profile
+from accounts.models import User
 from services.models import Experiment
+from django.conf import settings
 
 
 class RequestInfo(models.Model):
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name='کاربر')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='کاربر') 
     experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE)
     submission_date = models.DateField(auto_now_add=True, verbose_name='تاریخ ثبت درخواست')
     description = models.TextField(blank=True, null=True, verbose_name='توضیحات')
-    
-    class Meta:
-        unique_together = ('user', 'experiment')
 
 class Request(models.Model):
-    RequestInfo = models.OneToOneField('RequestInfo', on_delete=models.CASCADE, null=True, blank=True, verbose_name='اطلاعات درخواست')
-    SampleInfo = models.OneToOneField('SampleInfo', on_delete=models.CASCADE, null=True, blank=True, verbose_name='اطلاعات نمونه')
-    ExperimentInfo = models.OneToOneField('ExperimentInfo', on_delete=models.CASCADE, null=True, blank=True, verbose_name='اطلاعات آزمایش')
-    AdditionalInfo = models.OneToOneField('AdditionalInfo', on_delete=models.CASCADE, null=True, blank=True, verbose_name='اطلاعات تکمیلی')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='کاربر')
+    requestinfo = models.OneToOneField('RequestInfo', on_delete=models.CASCADE, null=True, blank=True, verbose_name='اطلاعات درخواست')
+    sample_info = models.ManyToManyField('SampleInfo', related_name='requests', verbose_name='اطلاعات نمونه')
+    experimentinfo = models.OneToOneField('ExperimentInfo', on_delete=models.CASCADE, null=True, blank=True, verbose_name='اطلاعات آزمایش')
+    additional_info = models.OneToOneField('AdditionalInfo', on_delete=models.CASCADE, null=True, blank=True, verbose_name='اطلاعات تکمیلی')
 # -------------------------------
 
 class SampleInfo(models.Model):
@@ -33,7 +32,7 @@ class SampleInfo(models.Model):
         ('LB', 'پوند'),
         ('OZ', 'اونس'),
     ]
-
+    request = models.ForeignKey('Request', on_delete=models.CASCADE, related_name='sample_infos', verbose_name='درخواست')
     sample_type = models.CharField(max_length=50, choices=SAMPLE_TYPE_CHOICES, verbose_name='نوع نمونه')
     sample_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='مقدار نمونه')
     sample_unit = models.CharField(max_length=50, choices=WEIGHT_CHOICES, verbose_name='واحد اندازه‌گیری')
