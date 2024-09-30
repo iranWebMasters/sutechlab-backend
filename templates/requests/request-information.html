@@ -9,12 +9,12 @@
             {% csrf_token %}
             <div class="row g-3 mb-3">
                 <div class="col-md-4">
-                    <label for="customerName" class="form-label">نام مشتری</label>
+                    <label for="customerName" class="form-label">نام مشتری:</label>
                     <input type="text" class="form-control bg-light" id="customerName" value="{{full_name}}" readonly>
                 </div>
                 <div class="col-md-4">
-                    <label for="requestDate" class="form-label">تاریخ ثبت درخواست</label>
-                    <input type="text" class="form-control bg-light" id="requestDate" value="{{today_jalali}}" readonly>
+                    <label for="requestDate" class="form-label">تاریخ ثبت درخواست:</label>
+                    <input type="text" class="form-control bg-light" id="requestDate" value="{{jalali_date}}" readonly>
                 </div>
             </div>
             <div class="mb-3">

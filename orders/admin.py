@@ -7,7 +7,7 @@ class RequestInfoAdmin(admin.ModelAdmin):
 class RequestAdmin(admin.ModelAdmin):
     ...
 class SampleInfoAdmin(admin.ModelAdmin):
-    list_display = ('sample_type', 'sample_amount', 'sample_unit', 'is_perishable', 'expiration_date')
+    list_display = ('sample_type', 'sample_count', 'sample_unit', 'is_perishable', 'expiration_date')
     search_fields = ('sample_type', 'additional_info')
 
 class ExperimentInfoAdmin(admin.ModelAdmin):

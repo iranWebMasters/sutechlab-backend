@@ -5,7 +5,7 @@ from django.conf import settings
 
 
 class RequestInfo(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='کاربر') 
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='کاربر')
     experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE)
     submission_date = models.DateField(auto_now_add=True, verbose_name='تاریخ ثبت درخواست')
     description = models.TextField(blank=True, null=True, verbose_name='توضیحات')
@@ -19,29 +19,31 @@ class Request(models.Model):
 # -------------------------------
 
 class SampleInfo(models.Model):
-    SAMPLE_TYPE_CHOICES = [
-        ('vacuum_oven', 'Vacuum Oven'),
-        ('oven', 'Oven'),
-        ('sieve_sample', 'نمونه دانه بندی (الک)'),
-    ]
 
-    WEIGHT_CHOICES = [
-        ('KG', 'کیلوگرم'),
-        ('G', 'گرم'),
-        ('MG', 'میلی‌گرم'),
-        ('LB', 'پوند'),
-        ('OZ', 'اونس'),
-    ]
-    request = models.ForeignKey('Request', on_delete=models.CASCADE, related_name='sample_infos', verbose_name='درخواست')
-    sample_type = models.CharField(max_length=50, choices=SAMPLE_TYPE_CHOICES, verbose_name='نوع نمونه')
-    sample_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='مقدار نمونه')
-    sample_unit = models.CharField(max_length=50, choices=WEIGHT_CHOICES, verbose_name='واحد اندازه‌گیری')
-    additional_info = models.TextField(blank=True, null=True, verbose_name='توضیحات اضافی')
-    is_perishable = models.BooleanField(default=False, verbose_name='نمونه فاسدشدنی است')
-    expiration_date = models.DateField(null=True, blank=True, verbose_name='تاریخ انقضا')
-    sample_return = models.BooleanField(default=False, verbose_name='نمونه برگشت داده شده بشود')
-    storage_duration = models.IntegerField(null=True, blank=True, verbose_name='مدت زمان نگهداری (به روز)')
-    storage_unit = models.CharField(max_length=10, choices=[('D', 'روز'), ('W', 'هفته'), ('M', 'ماه')], verbose_name='واحد مدت زمان نگهداری')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='کاربر')
+    experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE)
+    
+    # Required fields
+    sample_type = models.CharField(max_length=50,verbose_name='نوع نمونه')  # Sample type
+    customer_sample_name = models.CharField(max_length=255, verbose_name='نام نمونه مشتری')  # Customer sample name
+    sample_count = models.PositiveIntegerField(verbose_name='تعداد نمونه')  # Sample count
+
+    # Optional fields
+    sample_unit = models.CharField(null=True, blank=True,max_length=50, verbose_name='واحد اندازه‌گیری')  # Measurement unit
+    additional_info = models.TextField(blank=True, null=True, verbose_name='توضیحات اضافی')  # Additional info
+    is_perishable = models.BooleanField(null=True, blank=True,default=False, verbose_name='نمونه فاسدشدنی است')  # Is perishable
+    expiration_date = models.DateField(null=True, blank=True, verbose_name='تاریخ انقضا')  # Expiration date
+    sample_return = models.BooleanField(null=True, blank=True,default=False, verbose_name='نمونه برگشت داده شده بشود')  # Sample return
+    storage_duration = models.PositiveIntegerField(null=True, blank=True, verbose_name='مدت زمان نگهداری (به روز)')  # Storage duration in days
+    storage_duration_unit = models.CharField(null=True, blank=True,max_length=32,verbose_name='واحد مدت زمان نگهداری')  # Storage duration unit
+
+    # New fields to match the form
+    storage_conditions = models.TextField(blank=True, null=True, verbose_name='شرایط نگهداری')  # Storage conditions
+    sample_description = models.TextField(blank=True, null=True, verbose_name='توضیحات نمونه')  # Sample description
+    file_upload = models.FileField(upload_to='sample_files/', blank=True, null=True, verbose_name='فایل تکمیلی نمونه')  # File upload
+
+    def __str__(self):
+        return f"{self.customer_sample_name} - {self.sample_type} ({self.sample_count})"
     
 class ExperimentInfo(models.Model):
     ...

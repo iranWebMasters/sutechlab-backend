@@ -1,24 +1,43 @@
 from django import forms
 from django.forms import modelformset_factory
-from .models import *
+from .models import  RequestInfo,SampleInfo
 
 class RequestInfoForm(forms.ModelForm):
     class Meta:
         model = RequestInfo
         fields = ['description']  # فقط فیلد توضیحات را وارد می‌کنیم
-class SampleInfoForm(forms.ModelForm):
+
+
+class SampleForm(forms.ModelForm):
     class Meta:
         model = SampleInfo
-        fields = '__all__'
-        # fields = ['sample_type', 'sample_amount', 'sample_unit', 'additional_info', 'is_perishable', 'expiration_date', 'sample_return', 'storage_duration', 'storage_unit']
+        fields = [
+            'sample_type',
+            'customer_sample_name',
+            'sample_count',
+            'is_perishable',
+            'expiration_date',
+            'storage_duration',
+            'storage_duration_unit',
+            'sample_description',
+            'storage_conditions',
+            'file_upload'
+        ]
         widgets = {
-            'expiration_date': forms.DateInput(attrs={'type': 'date'}),
-            'storage_duration': forms.NumberInput(attrs={'min': 0}),
+            'expiration_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'sample_description': forms.Textarea(attrs={'rows': 4, 'class': 'form-control'}),
+            'storage_conditions': forms.Textarea(attrs={'rows': 4, 'class': 'form-control'}),
+            'file_upload': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
-
-SampleInfoFormSet = modelformset_factory(
-    SampleInfo,
-    form=SampleInfoForm,
-    extra=3,  # تعداد فرم‌های خالی اضافی که نمایش داده می‌شود
-    can_delete=True  # امکان حذف فرم‌ها توسط کاربر
-)
+        labels = {
+            'sample_type': 'نوع نمونه',
+            'customer_sample_name': 'نام نمونه مشتری',
+            'sample_count': 'تعداد نمونه',
+            'is_perishable': 'نمونه فاسدشدنی است',
+            'expiration_date': 'تاریخ انقضا',
+            'storage_duration': 'مدت زمان نگهداری',
+            'storage_duration_unit': 'واحد مدت زمان نگهداری',
+            'sample_description': 'توضیحات نمونه',
+            'storage_conditions': 'شرایط نگهداری',
+            'file_upload': 'فایل تکمیلی نمونه',
+        }
