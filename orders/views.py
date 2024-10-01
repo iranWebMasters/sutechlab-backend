@@ -100,7 +100,13 @@ class SampleEditView(UpdateView):
 class SampleDeleteView(DeleteView):
     model = SampleInfo
     template_name = 'requests/sample_confirm_delete.html'
-    success_url = reverse_lazy('orders:sample_list')  # یا هر آدرس URL دیگری که می‌خواهید کاربر به آن هدایت شود
+    
+    def get_success_url(self):
+        # اطمینان از وجود experiment_id در kwargs
+        experiment_id = self.kwargs.get('experiment_id')
+        if experiment_id:
+            return reverse_lazy('orders:sample_info_create', kwargs={'experiment_id': experiment_id})
+        return reverse_lazy('orders:sample_list')  # در صورت عدم وجود experiment_id به صفحه لیست برگردید
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

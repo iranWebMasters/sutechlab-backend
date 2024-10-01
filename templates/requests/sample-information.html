@@ -108,7 +108,7 @@
                             <!-- لینک‌ها یا دکمه‌های مربوط به اقدامات -->
                             <a href="{% url 'orders:sample_detail' sample.id %}" class="btn btn-info">جزئیات</a>
                             <a href="{% url 'orders:sample_edit' sample.id %}" class="btn btn-warning">ویرایش</a>
-                            <form action="{% url 'orders:sample_delete' sample.id %}" method="post" style="display:inline;">
+                            <form action="{% url 'orders:sample_delete' experiment_id=sample.experiment.id pk=sample.id %}" method="post" style="display:inline;">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-danger">حذف</button>
                             </form>
