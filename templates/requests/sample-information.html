@@ -123,9 +123,9 @@
             </table>
         </div>
         <div class="text-center">
-            <a href="{% url 'previous_step' %}" class="page-btn backward-btn btn btn-outline-primary px-4 me-2">مرحله قبل</a>
-            <a href="{% url 'next_step_url_name' %}" class="page-btn forward-btn btn btn-success px-4 me-2">ثبت و مرحله بعد</a>
-            <a href="{% url 'cancel_url_name' %}" class="btn btn-danger px-4">انصراف</a>
+            <a href="{% url 'orders:request_info' experiment.id %}" class="page-btn backward-btn btn btn-outline-primary px-4 me-2">مرحله قبل</a>
+            <a href="{% url 'orders:test_information' experiment.id %}" class="page-btn forward-btn btn btn-success px-4 me-2">ثبت و مرحله بعد</a>
+            <a href="" class="btn btn-danger px-4">انصراف</a>
         </div>
     </div>
 </div>

@@ -91,7 +91,8 @@ class SampleDetailView(DetailView):
 class SampleEditView(UpdateView):
     model = SampleInfo
     form_class = SampleForm
-    template_name = 'requests/sample_edit.html'
+    # template_name = 'requests/sample_edit.html'
+    template_name = 'requests/sample-information.html'
     context_object_name = 'sample'
 
     def get_success_url(self):
@@ -111,4 +112,16 @@ class SampleDeleteView(DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['sample'] = self.object  # برای نمایش اطلاعات نمونه در قالب
+        return context
+    
+class TestInformationView(FormView):
+    template_name = 'requests/test-information.html'
+    def get_context_data(self, **kwargs):
+        experiment_id = self.kwargs['experiment_id']
+        experiment = get_object_or_404(Experiment,id = experiment_id)
+        tests = experiment.tests.all()
+        context = {
+            'tests': tests,
+            'experiment': experiment,
+        }
         return context

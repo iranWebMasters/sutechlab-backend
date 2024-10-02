@@ -1,6 +1,6 @@
 from django.db import models
 from accounts.models import User
-from services.models import Experiment
+from services.models import Experiment,Sample,Test
 from django.conf import settings
 
 
@@ -55,3 +55,17 @@ class DiscountInfo(models.Model):
     is_student_or_staff = models.BooleanField(default=False)  # آیا کاربر دانشجو یا کارکنان دانشگاه است؟
     is_affiliated_with_institution = models.BooleanField(default=False)  # آیا کاربر متقاضی استفاده از تخفیف نهادهای طرف قرارداد است؟
     discount_institution_name = models.CharField(max_length=255, blank=True)  # نام نهاد تخفیف
+
+
+class TestInformation(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='کاربر')
+    experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE)
+    sample = models.ForeignKey(Sample, on_delete=models.CASCADE, verbose_name='شناسه نمونه آزمایش')  # کلید خارجی به مدل Sample
+    test = models.ForeignKey(Test, blank=True, null=True, on_delete=models.CASCADE, verbose_name='عنوان آزمایش')  # کلید خارجی به مدل Test
+
+    repeat_count_test = models.PositiveIntegerField(verbose_name='تعداد تکرار آزمون')  # تعداد تکرار آزمون
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')  # تاریخ ایجاد
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='تاریخ به‌روزرسانی')  # تاریخ به‌روزرسانی
+
+    def __str__(self):
+        return f"Request ID: {self.id} - Sample ID: {self.sample.id}"
