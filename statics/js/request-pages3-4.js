@@ -20,44 +20,42 @@ const testsData = [
             }
         ]
     },
-    // Add more tests as needed
+    {
+        id: 2,
+        name: 'کوره',
+        standards: [
+            {
+                id: 3,
+                name: 'ASTM D1234',
+                parameters: [
+                    { id: 4, name: 'دمای بالا', unit: 'درجه سانتی گراد ( C )', testUnit: 'ساعت ( h )', tariff: '20000 (ریال)' }
+                ]
+            }
+        ]
+    }
 ];
 
-function createTestElement(test) {
-    const testDiv = document.createElement('div');
-    testDiv.className = 'mb-4';
-    testDiv.innerHTML = `
+function createRadioButtons(items, name, onChange) {
+    return items.map(item => `
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="test${test.id}" onchange="toggleStandards(${test.id})">
-                <label class="form-check-label" for="test${test.id}">${test.name}</label>
+                <input class="form-check-input" type="radio" name="${name}" id="${name}${item.id}" value="${item.id}" onchange="${onChange}(${item.id})">
+                <label class="form-check-label" for="${name}${item.id}">${item.name}</label>
             </div>
-            <div id="standards${test.id}" class="ms-4 mt-2" style="display: none;">
-                ${test.standards.map(standard => `
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="standard${test.id}" id="standard${standard.id}" onchange="showParameters(${test.id}, ${standard.id})">
-                        <label class="form-check-label" for="standard${standard.id}">${standard.name}</label>
-                    </div>
-                `).join('')}
-            </div>
-            <div id="parameters${test.id}" class="ms-5 mt-2"></div>
-        `;
-    return testDiv;
+        `).join('');
 }
 
-function toggleStandards(testId) {
-    const standardsDiv = document.getElementById(`standards${testId}`);
-    standardsDiv.style.display = standardsDiv.style.display === 'none' ? 'block' : 'none';
-    if (standardsDiv.style.display === 'none') {
-        document.getElementById(`parameters${testId}`).innerHTML = '';
-    }
-}
-
-function showParameters(testId, standardId) {
+function showStandards(testId) {
     const test = testsData.find(t => t.id === testId);
+    const standardsContainer = document.getElementById('standardsContainer');
+    standardsContainer.innerHTML = createRadioButtons(test.standards, 'standard', 'showParameters');
+    document.getElementById('parametersContainer').innerHTML = '';
+}
+
+function showParameters(standardId) {
+    const test = testsData.find(t => t.standards.some(s => s.id === standardId));
     const standard = test.standards.find(s => s.id === standardId);
-    const parametersDiv = document.getElementById(`parameters${testId}`);
-    parametersDiv.innerHTML = `
-            <h6 class="mb-2">پارامتر های آزمون</h6>
+    const parametersContainer = document.getElementById('parametersContainer');
+    parametersContainer.innerHTML = `
             <table class="table table-bordered">
                 <thead class="table-primary">
                     <tr>
@@ -86,36 +84,32 @@ function showParameters(testId, standardId) {
 function updateSelectedTests() {
     const selectedTestsTable = document.getElementById('selectedTestsTable');
     selectedTestsTable.innerHTML = '';
-    testsData.forEach(test => {
-        const testCheckbox = document.getElementById(`test${test.id}`);
-        if (testCheckbox.checked) {
-            const selectedStandard = test.standards.find(s => document.querySelector(`input[name="standard${test.id}"]:checked`));
-            if (selectedStandard) {
-                const selectedParams = selectedStandard.parameters.filter((_, index) =>
-                    document.querySelector(`#parameters${test.id} input[type="checkbox"]:nth-of-type(${index + 1})`).checked
-                );
-                selectedParams.forEach(param => {
-                    const row = selectedTestsTable.insertRow();
-                    row.innerHTML = `
-                            <td></td>
-                            <td>${test.name}</td>
-                            <td>${selectedStandard.name}</td>
-                            <td>${param.name}</td>
-                            <td></td>
-                            <td>${param.tariff}</td>
-                            <td></td>
-                            <td>${param.testUnit}</td>
-                            <td></td>
-                            <td><button class="btn btn-sm btn-danger">حذف</button></td>
-                        `;
-                });
-            }
-        }
-    });
+    const selectedTestId = document.querySelector('input[name="test"]:checked')?.value;
+    const selectedStandardId = document.querySelector('input[name="standard"]:checked')?.value;
+    if (selectedTestId && selectedStandardId) {
+        const test = testsData.find(t => t.id === parseInt(selectedTestId));
+        const standard = test.standards.find(s => s.id === parseInt(selectedStandardId));
+        const selectedParams = standard.parameters.filter((_, index) =>
+            document.querySelector(`#parametersContainer input[type="checkbox"]:nth-of-type(${index + 1})`).checked
+        );
+        selectedParams.forEach((param, index) => {
+            const row = selectedTestsTable.insertRow();
+            row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${test.name}</td>
+                    <td>${standard.name}</td>
+                    <td>${param.name}</td>
+                    <td></td>
+                    <td>${param.tariff}</td>
+                    <td></td>
+                    <td>${param.testUnit}</td>
+                    <td></td>
+                    <td><button class="btn btn-sm btn-danger">حذف</button></td>
+                `;
+        });
+    }
 }
 
 // Initialize the tests
 const testsContainer = document.getElementById('testsContainer');
-testsData.forEach(test => {
-    testsContainer.appendChild(createTestElement(test));
-});
+testsContainer.innerHTML = createRadioButtons(testsData, 'test', 'showStandards');

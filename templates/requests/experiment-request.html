@@ -36,6 +36,7 @@
     </div>
 </div>
 
+
 <div class="position-fixed top-0 start-0 p-3" style="z-index: 213">
     <div id="step-warning" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000"
         data-bs-animation="false">
@@ -78,17 +79,12 @@
 
 <div class="container p-4 request-page" data-index="1" dir="rtl" style="display: none;">
     <div class="bg-white p-4 rounded shadow-lg">
-        <h5 class="mb-4 text-primary">آزمایشگاه : آزمایشگاه سرامیک</h5>
+        <h5 class="mb-4 text-primary lab-name">آزمایشگاه : آزمایشگاه سرامیک</h5>
         <form>
             <div class="row g-3 mb-3">
                 <div class="col-md-4">
                     <label for="customerName" class="form-label">نام مشتری</label>
                     <input type="text" class="form-control bg-light" data-field id="customerName" value="علیرضا انصاری"
-                        readonly>
-                </div>
-                <div class="col-md-4">
-                    <label for="requestType" class="form-label">نوع درخواست</label>
-                    <input type="text" class="form-control bg-light" data-field id="requestType" value="بدون امکان سنجی"
                         readonly>
                 </div>
                 <div class="col-md-4">
@@ -115,7 +111,7 @@
         <form id="sample-form">
             <div class="row mb-3">
                 <div class="col-md-4">
-                    <label for="sampleType" class="form-label">نام نمونه</label>
+                    <label for="sampleType" class="form-label">نوع نمونه</label>
                     <select class="form-select" data-field id="sampleType">
                         <option value="" selected disabled>انتخاب کنید...</option>
                     </select>
@@ -123,7 +119,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <label for="sampleName" class="form-label">نام نمونه مشتری</label>
+                    <label for="sampleName" class="form-label">نام نمونه</label>
                     <input type="text" class="form-control" data-field id="sampleName">
                     <div class="messages"></div>
                 </div>
@@ -137,7 +133,6 @@
 
             <div class="card mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">ویژگی های نمونه</h5>
                     <div class="form-check mb-3">
                         <input class="form-check-input" type="checkbox" id="sample-isPerishable" data-field>
                         <label class="form-check-label" for="sample-isPerishable">
@@ -247,7 +242,13 @@
         </div>
 
         <h6 class="mb-3">آزمون ها</h6>
-        <div id="testsContainer"></div>
+        <div id="testsContainer" class="mb-4"></div>
+
+        <h6 class="mb-3">استاندارد های آزمون</h6>
+        <div id="standardsContainer" class="mb-4"></div>
+
+        <h6 class="mb-3">پارامتر های آزمون</h6>
+        <div id="parametersContainer" class="mb-4"></div>
 
         <div class="mb-3">
             <label class="form-label">مدت زمان (دقیقه)</label>
@@ -348,6 +349,7 @@
 
 <script src="js\persian-date.min.js"></script>
 <script src="js\persian-datepicker.min.js"></script>
+
 <script src="js/request-pages1-2.js"></script>
 <script src="js/request-pages3-4.js"></script>
 
