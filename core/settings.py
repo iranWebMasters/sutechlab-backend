@@ -26,7 +26,6 @@ INSTALLED_APPS = [
     'orders',
     'gateway',
     
-    'drf_yasg',
     'rest_framework',
     "azbankgateways",
     'decouple',

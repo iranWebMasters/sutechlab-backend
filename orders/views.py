@@ -16,13 +16,13 @@ class RequestInfoCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('orders:sample_info_create')
     
     def get_success_url(self):
-        experiment_id = self.kwargs['experiment_id']
+        experiment_id = self.kwargs['pk']
         return reverse_lazy('orders:sample_info_create', kwargs={'experiment_id': experiment_id})
 
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        experiment_id = self.kwargs['experiment_id']
+        experiment_id = self.kwargs['pk']
         experiment = get_object_or_404(Experiment, id=experiment_id)
         
         jalali_date = jdatetime.datetime.now().strftime('%Y/%m/%d')
@@ -38,11 +38,44 @@ class RequestInfoCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         request_info = form.save(commit=False)
-        experiment_id = self.kwargs['experiment_id']
+        experiment_id = self.kwargs['pk']
         request_info.experiment = get_object_or_404(Experiment, id=experiment_id)
         request_info.user = self.request.user
         request_info.save()
         return super().form_valid(form)
+
+class RequestInfoUpdateView(LoginRequiredMixin, UpdateView):
+    model = RequestInfo
+    form_class = RequestInfoUpdateForm
+    template_name = 'requests/update-request-information.html' 
+    context_object_name = 'request_info'
+    def form_valid(self, form):
+        logger.info(f"Form is valid. Description: {form.cleaned_data.get('description')}")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        logger.error(f"Form is invalid. Errors: {form.errors}")
+        return super().form_invalid(form)
+
+    def get_success_url(self):
+        experiment_id = self.kwargs['pk']
+        return reverse_lazy('orders:sample_info_create', kwargs={'experiment_id': experiment_id})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        experiment = self.object.experiment
+        
+        profile = self.request.user.profile
+        full_name = f"{profile.first_name} {profile.last_name}"
+
+        context['experiment'] = experiment
+        context['full_name'] = full_name
+        context['description'] = self.object.description  # Current description for editing
+        context['laboratory_name'] = experiment.laboratory.name  # Name of the associated laboratory
+        context['jalali_date'] = jdatetime.datetime.now().strftime('%Y/%m/%d')  # Jalali date
+        
+        return context
 
 
 class SampleInfoCreateView(FormView):

@@ -5,7 +5,12 @@ from .models import  RequestInfo,SampleInfo
 class RequestInfoForm(forms.ModelForm):
     class Meta:
         model = RequestInfo
-        fields = ['description']  # فقط فیلد توضیحات را وارد می‌کنیم
+        fields = ['description']
+        
+class RequestInfoUpdateForm(forms.ModelForm):
+    class Meta:
+        model = RequestInfo
+        fields = ['description']
 
 
 class SampleForm(forms.ModelForm):
