@@ -1,0 +1,82 @@
+{% extends 'userpanel/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container p-4">
+    <h2 class="mb-4">ویرایش نمونه</h2>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        
+        <h4 class="mt-4">اطلاعات نمونه</h4>
+        <hr>
+        
+        <div class="row mb-3">
+            <div class="col">
+                <label for="sample_type" class="form-label">نوع نمونه</label>
+                {{ form.sample_type }}
+            </div>
+            <div class="col">
+                <label for="customer_sample_name" class="form-label">نام نمونه مشتری</label>
+                {{ form.customer_sample_name }}
+            </div>
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col">
+                <label for="sample_count" class="form-label">تعداد نمونه</label>
+                {{ form.sample_count }}
+            </div>
+            <div class="col">
+                <label for="is_perishable" class="form-label">آیا نمونه فاسدشدنی است؟</label>
+                {{ form.is_perishable }}
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <label for="additional_info" class="form-label">توضیحات اضافی</label>
+            {{ form.additional_info }}
+        </div>
+        
+        <div class="mb-3">
+            <label for="expiration_date" class="form-label">تاریخ انقضا</label>
+            {{ form.expiration_date }}
+        </div>
+        
+        <div class="mb-3">
+            <label for="sample_return" class="form-label">نمونه برگشت داده شود</label>
+            {{ form.sample_return }}
+        </div>
+        
+        <div class="mb-3">
+            <label for="storage_duration" class="form-label">مدت زمان نگهداری (به روز)</label>
+            {{ form.storage_duration }}
+        </div>
+        
+        <div class="mb-3">
+            <label for="storage_conditions" class="form-label">شرایط نگهداری</label>
+            {{ form.storage_conditions }}
+        </div>
+        
+        <div class="mb-3">
+            <label for="sample_description" class="form-label">توضیحات نمونه</label>
+            {{ form.sample_description }}
+        </div>
+        
+        <div class="mb-3">
+            <label for="file_upload" class="form-label">آپلود فایل</label>
+            {{ form.file_upload }}
+        </div>
+        
+        <!-- بخش نمایش تصویر -->
+        {% if form.file_upload.value %}
+            <div class="uploaded-image mt-3">
+                <h4 class="mb-2">تصویر آپلود شده:</h4>
+                <img src="{{ form.file_upload.value.url }}" alt="Uploaded Image" class="img-fluid" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            </div>
+        {% endif %}
+        
+        <button type="submit" class="btn btn-primary mt-4">به‌روزرسانی نمونه</button>
+    </form>
+</div>
+{% endblock %}

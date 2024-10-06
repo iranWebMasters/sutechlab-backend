@@ -124,12 +124,15 @@ class SampleDetailView(DetailView):
 class SampleEditView(UpdateView):
     model = SampleInfo
     form_class = SampleForm
-    # template_name = 'requests/sample_edit.html'
-    template_name = 'requests/sample-information.html'
+    template_name = 'requests/sample-information-update.html'
     context_object_name = 'sample'
 
     def get_success_url(self):
-        return self.request.path  # به همان صفحه برمی‌گردد
+        # Get the related experiment from the sample instance
+        experiment = self.object.experiment  # Use the foreign key relationship
+        return reverse_lazy('orders:sample_info_create', kwargs={'experiment_id': experiment.id})
+
+
     
 class SampleDeleteView(DeleteView):
     model = SampleInfo

@@ -29,7 +29,6 @@ class SampleInfo(models.Model):
     sample_count = models.PositiveIntegerField(verbose_name='تعداد نمونه')  # Sample count
 
     # Optional fields
-    sample_unit = models.CharField(null=True, blank=True,max_length=50, verbose_name='واحد اندازه‌گیری')  # Measurement unit
     additional_info = models.TextField(blank=True, null=True, verbose_name='توضیحات اضافی')  # Additional info
     is_perishable = models.BooleanField(null=True, blank=True,default=False, verbose_name='نمونه فاسدشدنی است')  # Is perishable
     expiration_date = models.DateField(null=True, blank=True, verbose_name='تاریخ انقضا')  # Expiration date
