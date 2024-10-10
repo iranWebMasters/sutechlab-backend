@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import modelformset_factory
-from .models import  RequestInfo,SampleInfo
+from .models import  RequestInfo,SampleInfo,TestInfo
 
 class RequestInfoForm(forms.ModelForm):
     class Meta:
@@ -40,4 +40,16 @@ class SampleForm(forms.ModelForm):
             'sample_description': 'توضیحات نمونه',
             'storage_conditions': 'شرایط نگهداری',
             'file_upload': 'فایل تکمیلی نمونه',
+        }
+
+class TestInfoForm(forms.ModelForm):
+    class Meta:
+        model = TestInfo
+        fields = ['user_sample', 'test', 'repeat_count_test', 'parameter', 'parameter_value']  # حذف فیلدهای user و experiment
+        widgets = {
+            'sample': forms.Select(attrs={'class': 'form-control'}),
+            'test': forms.Select(attrs={'class': 'form-control'}),
+            'repeat_count_test': forms.NumberInput(attrs={'class': 'form-control'}),
+            'parameter': forms.Select(attrs={'class': 'form-control'}),
+            'parameter_value': forms.TextInput(attrs={'class': 'form-control'}),
         }

@@ -208,3 +208,68 @@
         background-color: #fff;
     }
 
+
+/* yaser added */
+
+
+
+.tests-table-container {
+    max-height: 250px; /* Set the desired height */
+    overflow-y: scroll; /* Enable vertical scrolling */
+}
+
+.tests-table{
+    width: 100%;
+}
+
+.tests-table thead th {
+    background-color: #e5d7f5; /* Light purple background for headers */
+}
+
+.tests-table thead tr:first-child th:first-child {
+    margin-left: 1rem;
+    width: 50px;
+}
+.tests-table tbody tr {
+    background-color: #f5eaff; /* Light purple background for rows */
+    padding: 0.5rem auto;
+}
+
+.tests-table tbody tr:hover {
+    background-color: #e8e1f8; /* Slightly darker on hover */
+}
+
+.tests-table td.text-center {
+    padding: 8px; /* Add some padding */
+    text-align: center; /* Horizontally center the content */
+    vertical-align: middle; /* Ensure the content is vertically aligned in a normal table cell manner */
+    margin-left: 1rem;
+}
+
+/* Customizing the scrollbar */
+.tests-table-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.tests-table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.tests-table-container::-webkit-scrollbar-thumb {
+    background-color: #a9a9a9;
+    border-radius: 10px;
+}
+
+.tests-table-container::-webkit-scrollbar-thumb:hover {
+    background-color: #888;
+}
+
+#parameterValue{
+    background-color: #f5eaff;
+    border: none;
+}
+
+.input-group:has(#parameterValue) span{
+    background-color: #e5d7f5;
+    border: none;
+}

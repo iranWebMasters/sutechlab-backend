@@ -3,21 +3,12 @@ from accounts.models import Profile
 from devices.models import Device
 
 class UnitAmount(models.Model):
-    UNIT_CHOICES = [
-        ('C', 'سانتی گراد'),
-        ('F', 'فارنهایت'),
-        ('K', 'کلوین'),
-        ('H', 'ساعت'),
-        ('MIN', 'دقیقه'),
-        ('S', 'ثانیه'),
-    ]
-    
     amount = models.CharField(max_length=50, verbose_name='مقدار')
-    unit = models.CharField(max_length=50, choices=UNIT_CHOICES, verbose_name='واحد اندازه‌گیری')
-
+    unit = models.CharField(max_length=50, verbose_name='واحد اندازه‌گیری')
+    
     def __str__(self):
-        return f"{self.amount} {self.get_unit_display()}"
-
+        return f"{self.amount} {self.unit}"
+    
 class UnitPrice(models.Model):
     CURRENCY_CHOICES = [
         ('IRR', 'ریال'),
@@ -31,23 +22,14 @@ class UnitPrice(models.Model):
         return f"{self.unit_price} {self.get_currency_display()}"
 
 class Parameters(models.Model):
-    UNIT_CHOICES = [
-        ('C', 'سانتی گراد'),
-        ('F', 'فارنهایت'),
-        ('K', 'کلوین'),
-        ('H', 'ساعت'),
-        ('MIN', 'دقیقه'),
-        ('S', 'ثانیه'),
-    ]
-
     name = models.CharField(max_length=255, verbose_name='نام پارامتر')
-    unit = models.CharField(max_length=50, choices=UNIT_CHOICES, verbose_name='واحد اندازه‌گیری')
+    unit = models.CharField(max_length=50, verbose_name='واحد اندازه‌گیری')
     laboratory = models.ForeignKey('Laboratory', on_delete=models.CASCADE, related_name='tests', verbose_name='آزمایشگاه')
     unit_amount = models.ForeignKey('UnitAmount', on_delete=models.CASCADE, related_name='parameters', verbose_name='مقدار واحد')
     unit_price = models.ForeignKey('UnitPrice', on_delete=models.CASCADE, related_name='parameters', verbose_name='مبلغ واحد')
 
     def __str__(self):
-        return f"{self.name} ({self.get_unit_display()}) - {self.unit_amount} - {self.unit_price}"
+        return f"{self.name} - {self.unit_amount} - {self.unit} - {self.unit_price}"
 
 class Laboratory(models.Model):
     name = models.CharField(max_length=255, verbose_name='نام آزمایشگاه')
