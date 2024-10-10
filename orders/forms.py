@@ -1,11 +1,10 @@
 from django import forms
-from django.forms import modelformset_factory
-from .models import  RequestInfo,SampleInfo,TestInfo
+from .models import  RequestInfo,SampleInfo,TestInfo,DiscountInfo
 
 class RequestInfoForm(forms.ModelForm):
     class Meta:
         model = RequestInfo
-        fields = ['description']  # فقط فیلد توضیحات را وارد می‌کنیم
+        fields = ['description']  
 
 
 class SampleForm(forms.ModelForm):
@@ -52,4 +51,16 @@ class TestInfoForm(forms.ModelForm):
             'repeat_count_test': forms.NumberInput(attrs={'class': 'form-control'}),
             'parameter': forms.Select(attrs={'class': 'form-control'}),
             'parameter_value': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+class DiscountInfoForm(forms.ModelForm):
+    class Meta:
+        model = DiscountInfo
+        fields = ['is_faculty_member', 'is_student_or_staff', 'is_affiliated_with_institution', 'discount_institution_name']
+        widgets = {
+            'is_faculty_member': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'is_student_or_staff': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'is_affiliated_with_institution': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'discount_institution_name': forms.TextInput(attrs={'class': 'form-control'}),
         }

@@ -176,11 +176,34 @@ class TestDetailView(DetailView):
 class TestUpdateView(UpdateView):
     model = TestInfo
     form_class = TestInfoForm
-    template_name = 'orders/test_edit.html'
+    template_name = 'requests/test_edit.html'
     context_object_name = 'test'
-
     def get_success_url(self):
-        return reverse_lazy('orders:test_detail', kwargs={'pk': self.object.id})
+        experiment_id = self.kwargs['experiment_id']
+        return reverse_lazy('orders:test_info_create',  kwargs={'experiment_id': experiment_id})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)  
+        experiment_id = self.kwargs['experiment_id']
+        test_pk = self.kwargs['pk']
+        experiment = get_object_or_404(Experiment, id=experiment_id)
+        current_user = self.request.user
+        
+        user_samples = SampleInfo.objects.filter(experiment=experiment, user=current_user)
+        
+        user_test = get_object_or_404(TestInfo, experiment=experiment, user=current_user, pk=test_pk)
+        
+        tests = experiment.tests.all()
+        
+        context.update({
+            'tests': tests,
+            'experiment': experiment,
+            'user_samples': user_samples,
+            'user_test': user_test,
+        })
+        
+        return context
+
 
 class TestDeleteView(DeleteView):
     model = TestInfo
@@ -193,7 +216,19 @@ class TestDeleteView(DeleteView):
             return reverse_lazy('orders:test_info_create', kwargs={'experiment_id': experiment_id})
         return reverse_lazy('orders:sample_list')
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['sample'] = self.object
-    #     return context
+class DiscountInfoFormView(FormView):
+    form_class = DiscountInfoForm
+    template_name = 'requsets/discount_info.html'
+
+    def form_valid(self, form):
+        request_info = form.save(commit=False)
+        experiment_id = self.kwargs['experiment_id']
+        request_info.experiment = get_object_or_404(Experiment, id=experiment_id)
+        request_info.user = self.request.user
+        request_info.save()
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        logger.error("Form is invalid.")
+        logger.error(form.errors)  # Log the form errors
+        return super().form_invalid(form)

@@ -72,6 +72,8 @@ class AdditionalInfo(models.Model):
     ...
 
 class DiscountInfo(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='کاربر')
+    experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE)
     is_faculty_member = models.BooleanField(default=False)  # آیا کاربر عضو هیات علمی است؟
     is_student_or_staff = models.BooleanField(default=False)  # آیا کاربر دانشجو یا کارکنان دانشگاه است؟
     is_affiliated_with_institution = models.BooleanField(default=False)  # آیا کاربر متقاضی استفاده از تخفیف نهادهای طرف قرارداد است؟

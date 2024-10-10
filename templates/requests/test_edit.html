@@ -1,13 +1,12 @@
 {% extends 'userpanel/base.html' %}
 {% load static %}
 {% block content %}
-{% include 'requests/request-head.html' %}
 <div class="container p-4 request-page" data-index="3" dir="rtl">
 
     <div class="bg-white p-4 rounded shadow-lg">
-        <h5 class="text-primary mb-4">انتخاب آزمون</h5>
+        <h5 class="text-primary mb-4">ویرایش آزمون</h5>
         
-        <form method="post" action="{% url 'orders:test_info_create' experiment.id %}">
+        <form method="post" action="{% url 'orders:test_edit' pk=user_test.id experiment_id=experiment.id %}">
             {% csrf_token %}
             <div class="row mb-3">
                 <div class="col-md-4">
@@ -82,56 +81,13 @@
             </div>
         </form>
         
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead class="table-primary">
-                    <tr>
-                        <th>ردیف</th>
-                        <th>نمونه</th>
-                        <th>نام آزمون</th>
-                        <th>تعداد نمونه</th>
-                        <th>پارامترها (تعرفه)</th>
-                        <th>تعداد تکرار</th>
-                        <th>نوع واحد</th>
-                        <th>هزینه آزمون</th>
-                        <th>اقدامات</th>
-                    </tr>
-                </thead>
-                <tbody id="selectedTestsTable">
-                    {% for test in user_tests %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td>{{ test.user_sample.customer_sample_name }}</td> <!-- نام نمونه -->
-                            <td>{{ test.test.name_fa}}</td> <!-- نام آزمون -->
-                            <td>{{ test.user_sample.sample_count }}</td> <!-- تعداد نمونه -->
-                            <td>{{ test.parameter.name }}</td> <!-- پارامتر -->
-                            <td>{{ test.repeat_count_test }}</td> <!-- تعداد تکرار / مقدار -->
-                            <td>{{ test.parameter.unit_amount.unit }}</td> <!-- نوع واحد پارامتر -->
-                            <td>{{ test.parameter.unit_price }}</td> <!-- هزینه آزمون -->
-                            <td>
-                                <a href="{% url 'orders:test_edit' pk=test.id experiment_id=experiment.id  %}" class="btn btn-sm btn-warning">ویرایش</a>
-                                <form action="{% url 'orders:test_delete' experiment_id=experiment.id pk=test.id %}" method="post" style="display:inline;">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-danger">حذف</button>
-                                </form>
-                            </td>
-                        </tr>
-                    {% empty %}
-                        <tr>
-                            <td colspan="9">هیچ آزمونی یافت نشد.</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        
-
-
-        <div class="text-center">
-            <button data-index="3" class="page-btn backward-btn btn btn-outline-primary px-4 me-2">مرحله قبل</button>
-            <button href="{% url 'orders:test_info_create' experiment.id %}" data-index="3" class="page-btn forward-btn btn btn-success px-4 me-2">ثبت و مرحله بعد</button>
+        <!-- <div class="text-center">
+            <button data-index="3" class="page-btn backward-btn btn btn-outline-primary px-4 me-2">مرحله
+                قبل</button>
+            <button data-index="3" class="page-btn forward-btn btn btn-success px-4 me-2">ثبت و مرحله
+                بعد</button>
             <button type="button" class="btn btn-danger px-4">انصراف</button>
-        </div>
+        </div> -->
     </div>
 </div>
 
