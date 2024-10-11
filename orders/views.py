@@ -218,8 +218,9 @@ class TestDeleteView(DeleteView):
 
 class DiscountInfoFormView(FormView):
     form_class = DiscountInfoForm
-    template_name = 'requsets/discount_info.html'
-
+    template_name = 'requests/discount_info.html'
+    def get_success_url(self):
+        return reverse_lazy('userpanel:index')
     def form_valid(self, form):
         request_info = form.save(commit=False)
         experiment_id = self.kwargs['experiment_id']
@@ -232,3 +233,4 @@ class DiscountInfoFormView(FormView):
         logger.error("Form is invalid.")
         logger.error(form.errors)  # Log the form errors
         return super().form_invalid(form)
+    

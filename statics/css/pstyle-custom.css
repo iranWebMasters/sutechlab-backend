@@ -273,3 +273,38 @@
     background-color: #e5d7f5;
     border: none;
 }
+
+
+
+.item-download {
+    display: inline-flex; /* استفاده از inline-flex برای قرار دادن آیکون */
+    align-items: center; /* تراز کردن آیکون در مرکز */
+    width: 30px; /* عرض لینک */
+    height: 30px; /* ارتفاع لینک */
+    color: #333; /* رنگ آیکون */
+    text-decoration: none; /* حذف زیرخط */
+    transition: color 0.3s; /* انیمیشن تغییر رنگ */
+}
+
+.download-icon {
+    width: 24px; /* عرض آیکون */
+    height: 24px; /* ارتفاع آیکون */
+    fill: currentColor; /* رنگ آیکون مطابق با رنگ متن */
+    transition: fill 0.3s; /* انیمیشن تغییر رنگ آیکون */
+}
+
+.item-download:hover {
+    color: #007bff; /* تغییر رنگ متن آیکون در حالت hover */
+}
+
+.item-download:hover .download-icon {
+    fill: #007bff; /* تغییر رنگ آیکون در حالت hover */
+}
+.operations {
+    display: flex; /* نمایش در یک خط */
+    align-items: center; /* تراز عمودی در وسط */
+}
+
+.operations a {
+    margin-left: 10px; /* فاصله بین لینک‌ها */
+}

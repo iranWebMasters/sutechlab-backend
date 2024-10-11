@@ -128,10 +128,11 @@
 
 
         <div class="text-center">
-            <button data-index="3" class="page-btn backward-btn btn btn-outline-primary px-4 me-2">مرحله قبل</button>
-            <button href="{% url 'orders:test_info_create' experiment.id %}" data-index="3" class="page-btn forward-btn btn btn-success px-4 me-2">ثبت و مرحله بعد</button>
-            <button type="button" class="btn btn-danger px-4">انصراف</button>
+            <a href="#" class="page-btn backward-btn btn btn-outline-primary px-4 me-2">مرحله قبل</a>
+            <a href="{% url 'orders:discount_info_form' experiment.id %}" class="page-btn forward-btn btn btn-success px-4 me-2">ثبت و مرحله بعد</a>
+            <a href="#" class="btn btn-danger px-4">انصراف</a>
         </div>
+        
     </div>
 </div>
 

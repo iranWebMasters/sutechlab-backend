@@ -4,61 +4,70 @@
     <div class="breadcrumb">
         <ul>
             <li><a href="{% url 'userpanel:index' %}" title="پیشخوان">پیشخوان</a></li>
-          </ul>
+        </ul>
     </div>
     <div class="main-content">
         <div class="row bg-white no-gutters font-size-13">
             <div class="title__row">
-                <p>تراکنش های اخیر شما</p>
-                <a class="all-reconcile-text margin-left-20 color-2b4a83">نمایش همه تراکنش ها</a>
+                <p>درخواست‌های اخیر شما</p>
+                <a class="all-reconcile-text margin-left-20 color-2b4a83" href="{% url 'userpanel:index' %}">نمایش همه درخواست‌ها</a>
             </div>
             <div class="table__box">
                 <table width="100%" class="table">
                     <thead role="rowgroup">
                     <tr role="row" class="title-row">
-                        <th>شناسه پرداخت</th>
-                        <th>ایمیل پرداخت کننده</th>
-                        <th>مبلغ (تومان)</th>
-                        <th>درامد شما</th>
-                        <th>درامد سایت</th>
-                        <th>نام دوره</th>
-                        <th>تاریخ و ساعت</th>
+                        <th>شناسه</th>
+                        <th>نام کاربر</th>
+                        <th>آزمون</th>
+                        <th>نوع نمونه</th>
+                        <th>تعداد نمونه</th>
+                        <th>تاریخ ثبت درخواست</th>
                         <th>وضعیت</th>
-                        <th>عملیات</th>
+                        <th>عملیات</th> <!-- فیلد جدا برای دانلود پیش فاکتور -->
+                        <th>فاکتور</th>
                     </tr>
                     </thead>
                     <tbody>
+                    {% for request in requests %}
                     <tr role="row">
-                        <td><a href=""> 1</a></td>
-                        <td><a href="">admin@netcopy.ir</a></td>
-                        <td><a href="">600,000</a></td>
-                        <td><a href="">400,000</a></td>
-                        <td><a href="">400,000</a></td>
-                        <td><a href="">خرید دوره - دوره متخصص php سطح مقدماتی</a></td>
-                        <td><a href=""> 22:14:48 1399/02/23</a></td>
-                        <td><a href="" class="text-success">پرداخت موفق</a></td>
-                        <td class="i__oprations">
-                            <a href="" class="item-delete margin-left-10" title="حذف"></a>
-                            <a href="edit-transaction.html" class="item-edit" title='ویرایش'></a>
+                        <td><a href="{% url 'userpanel:index' %}">{{ request.id }}</a></td>
+                        <td><a href="">{{ request.user.email }}</a></td>
+                        <td><a href="">{{ request.experiment.test_name }}</a></td>
+                        <td><a href="">{{ request.sample_info.first.sample_type }}</a></td>
+                        <td><a href="">{{ request.sample_info.first.sample_count }}</a></td>
+                        <td><a href="">{{ request.request_info.submission_date }}</a></td>
+                        <td>
+                            {% if request.status == 'successful' %}
+                                <span class="text-success">پرداخت موفق</span>
+                            {% elif request.status == 'failed' %}
+                                <span class="text-danger">پرداخت ناموفق</span>
+                            {% elif request.status == 'pending' %}
+                                <span class="text-warning">در حال بررسی</span>
+                            {% else %}
+                                <span class="text-secondary">وضعیت نامشخص</span>
+                            {% endif %}
+                        </td>
+                        <td > <!-- فیلد دانلود پیش فاکتور -->
+                            <!-- عملیات حذف و ویرایش -->
+                            <a href="{% url 'userpanel:delete_request' request.id %}" class="item-delete margin-left-10" title="حذف" onclick="return confirm('آیا از حذف این درخواست مطمئن هستید؟');"></a>
+                            <a href="{% url 'userpanel:edit_request' request.id %}" class="item-edit" title='ویرایش'></a>
+                        </td>
+                        <td >
+                            <a href="{% url 'userpanel:download_invoice' request.id %}" class="item-download" title="دانلود پیش فاکتور">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="download-icon">
+                                    <path d="M12 17l-5-5h3V3h4v9h3l-5 5zm0 4c-4.418 0-8-3.582-8-8h2c0 3.313 2.687 6 6 6s6-2.687 6-6h2c0 4.418-3.582 8-8 8z"/>
+                                </svg>
+                            </a>
                         </td>
                     </tr>
-                    <tr role="row">
-                        <td><a href=""> 1</a></td>
-                        <td><a href="">admin@netcopy.ir</a></td>
-                        <td><a href="">600,000</a></td>
-                        <td><a href="">400,000</a></td>
-                        <td><a href="">400,000</a></td>
-                        <td><a href="">خرید دوره - دوره متخصص php سطح مقدماتی</a></td>
-                        <td><a href=""> 22:14:48 1399/02/23</a></td>
-                        <td><a href="" class="text-error">پرداخت ناموفق</a></td>
-                        <td class="i__oprations">
-                            <a href="" class="item-delete margin-left-10" title="حذف"></a>
-                            <a href="edit-transaction.html" class="item-edit" title='ویرایش'></a>
-                        </td>
+                    {% empty %}
+                    <tr>
+                        <td colspan="9">هیچ درخواستی یافت نشد.</td> <!-- تعداد ستون‌ها به 9 تغییر کرد -->
                     </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-{% endblock content %}
+{% endblock content %}  

@@ -8,10 +8,13 @@ from django.views.generic import UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import redirect
+from django.views import View
 from django.urls import reverse_lazy
-from django.views.generic import ListView,DetailView
-from .forms import *
+from django.views.generic import ListView,DetailView,DeleteView
 from services.models import Experiment
+from orders.models import Request
+
+from .forms import *
 
 
 
@@ -27,12 +30,14 @@ class IndexView(TemplateView):
                 return redirect('update_profile')
         return super().dispatch(request, *args, **kwargs)
     
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
-            profile = Profile.objects.get(user = self.request.user)
+            profile = Profile.objects.get(user=self.request.user)
             context['profile'] = profile
             
+            context['requests'] = Request.objects.filter(user=self.request.user)
+        
         return context
     
 
@@ -81,3 +86,32 @@ class TestDetailView(DetailView):
         profile = Profile.objects.get(user=self.request.user)
         context['profile'] = profile
         return context
+
+
+
+
+class DownloadInvoiceView(View):
+    def get(self, request, request_id):
+        try:
+            request_instance = Request.objects.get(id=request_id)
+            response = HttpResponse(content_type='application/pdf')
+            response['Content-Disposition'] = f'attachment; filename="invoice_{request_id}.pdf"'
+            return response
+        except Request.DoesNotExist:
+            return HttpResponse("درخواست پیدا نشد.", status=404)
+
+
+class RequestDeleteView(DeleteView):
+    model = Request
+    template_name = 'userpanel/index.html'  # قالب تأیید حذف
+    success_url = reverse_lazy('userpanel:index')  # URL که بعد از موفقیت در حذف به آن هدایت می‌شود
+
+class RequestEditView(UpdateView):
+    model = Request
+    form_class = RequestUpdateForm  # فرم جدید را به اینجا اضافه کنید
+    template_name = 'userpanel/request_form.html'
+    success_url = reverse_lazy('userpanel:index')  # URL بعد از موفقیت در ویرایش
+
+    def form_valid(self, form):
+        # می‌توانید هر کدی که نیاز دارید را اینجا اضافه کنید
+        return super().form_valid(form)

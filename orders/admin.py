@@ -17,9 +17,10 @@ class SampleInfoAdmin(admin.ModelAdmin):
 
 
 class RequestAdmin(admin.ModelAdmin):
-    list_display = ('user', 'requestinfo','additional_info')
+    list_display = ('user', 'request_info','discount_info')
     search_fields = ('user__email',)
     ordering = ('user',)
+    filter_horizontal = ('sample_info','test_info',)
 
 
 class DiscountInfoAdmin(admin.ModelAdmin):
