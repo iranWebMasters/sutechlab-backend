@@ -32,12 +32,12 @@ def create_request(sender, instance, **kwargs):
         request.save()
 
 
-@receiver(post_delete, sender=Request)
-def delete_related_objects(sender, instance, **kwargs):
-    if instance.request_info:
-        instance.request_info.delete()
-    if instance.test_info:
-        instance.test_info.delete()
-    instance.sample_info.clear()
-    if instance.discount_info:
-        instance.discount_info.delete()
+# @receiver(post_delete, sender=Request)
+# def delete_related_objects(sender, instance, **kwargs):
+#     if instance.request_info:
+#         instance.request_info.delete()
+#     if instance.test_info:
+#         instance.test_info.delete()
+#     instance.sample_info.clear()
+#     if instance.discount_info:
+#         instance.discount_info.delete()

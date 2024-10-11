@@ -93,13 +93,23 @@ class TestDetailView(DetailView):
 class DownloadInvoiceView(View):
     def get(self, request, request_id):
         try:
+            # دریافت نمونه درخواست
             request_instance = Request.objects.get(id=request_id)
-            response = HttpResponse(content_type='application/pdf')
-            response['Content-Disposition'] = f'attachment; filename="invoice_{request_id}.pdf"'
-            return response
-        except Request.DoesNotExist:
-            return HttpResponse("درخواست پیدا نشد.", status=404)
 
+            # بررسی اینکه آیا فاکتور موجود است یا خیر
+            if not request_instance.invoice_pdf:
+                return HttpResponse("فاکتور موجود نیست.", status=404)
+
+            # ایجاد HttpResponse برای دانلود فایل PDF
+            response = HttpResponse(
+                request_instance.invoice_pdf.read(),
+                content_type='application/pdf'
+            )
+            response['Content-Disposition'] = f'attachment; filename="{request_instance.invoice_pdf.name}"'
+            return response
+
+        except Request.DoesNotExist:
+            raise Http404("درخواست پیدا نشد.")
 
 class RequestDeleteView(DeleteView):
     model = Request
