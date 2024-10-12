@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import RequestInfo, Request, SampleInfo, DiscountInfo, TestInfo
+from .models import RequestInfo, Request, SampleInfo, DiscountInfo, TestInfo,LaboratoryRequest
 
 
-class RequestInfoAdmin(admin.ModelAdmin):
+class RequestInfoAdmin(admin.ModelAdmin):   
     list_display = ('user', 'experiment', 'submission_date', 'description')
     search_fields = ('user__email', 'experiment__name', 'description')
     list_filter = ('submission_date', 'experiment')
@@ -35,9 +35,13 @@ class TestInformationAdmin(admin.ModelAdmin):
     list_filter = ('experiment', 'test', 'created_at')
     ordering = ('-created_at',)
 
+class LaboratoryRequestAdmin(admin.ModelAdmin):
+    ...
+
 
 # Registering the models with their admin classes
 admin.site.register(RequestInfo, RequestInfoAdmin)
+admin.site.register(LaboratoryRequest, LaboratoryRequestAdmin)
 admin.site.register(SampleInfo, SampleInfoAdmin)
 admin.site.register(Request, RequestAdmin)
 admin.site.register(DiscountInfo, DiscountInfoAdmin)
