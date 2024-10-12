@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from accounts.models import User
 from services.models import Experiment, Test, Parameters
+from .utils import generate_order_code
 
 
 class RequestInfo(models.Model):
@@ -9,9 +10,15 @@ class RequestInfo(models.Model):
     experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE)
     submission_date = models.DateField(auto_now_add=True, verbose_name='تاریخ ثبت درخواست')
     description = models.TextField(blank=True, null=True, verbose_name='توضیحات')
+    order_code = models.CharField(max_length=255, blank=True, unique=True, verbose_name='کد سفارش')
+
+    def save(self, *args, **kwargs):
+        if not self.order_code:
+            self.order_code = generate_order_code(self.user.customer_code)
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"RequestInfo(ID: {self.id}, User: {self.user.email}, Experiment: {self.experiment.test_name}, Date: {self.submission_date})"
+        return f"RequestInfo(ID: {self.id}, User: {self.user.email}, Experiment: {self.experiment.test_name}, Date: {self.submission_date}, Order Code: {self.order_code})"
 
 
 class SampleInfo(models.Model):
@@ -103,6 +110,7 @@ class LaboratoryRequest(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='کاربر', null=True, blank=True)
     experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE, verbose_name='آزمایش', null=True, blank=True)
+    order_code = models.CharField(max_length=255, blank=True, unique=True, verbose_name='کد سفارش')
     submission_date = models.DateField(auto_now_add=True, verbose_name='تاریخ ثبت درخواست', null=True, blank=True)
     description = models.TextField(blank=True, null=True, verbose_name='توضیحات')
 

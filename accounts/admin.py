@@ -1,29 +1,39 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User,Profile
+from .models import User, Profile
+
 class CustomUserAdmin(UserAdmin):
-    model=User
-    list_display=('email','is_superuser','is_active','last_login')
-    list_filter=('email','is_superuser','is_active')
-    search_fields=('email',)
-    ordering=('email',)
-    fieldsets = (
-        ('authentication', {"fields": ("email", "password")}),
-    )
+    model = User
+    list_display = ('email', 'customer_code', 'is_superuser', 'is_active', 'last_login')
+    list_filter = ('is_superuser', 'is_active')
+    search_fields = ('email', 'customer_code')
+    ordering = ('email',)
     
     fieldsets = (
-        ("Permissions", {"fields": ("is_staff", "is_active", "groups", "user_permissions")}),
+        ('Authentication Information', {
+            "fields": ("email", "password")
+        }),
+        ('Customer Information', {
+            "fields": ("customer_code",)  # نمایش کد مشتری
+        }),
+        ('Permissions', {
+            "fields": ("is_staff", "is_active", "is_superuser", "groups", "user_permissions")
+        }),
+        ('Important Dates', {
+            "fields": ("last_login",)
+        }),
     )
     
     add_fieldsets = (
         (None, {
             "classes": ("wide",),
             "fields": (
-                "email", "password1", "password2", "is_staff",
-                "is_active", "groups", "user_permissions"
-            )}
-        ),
+                "email", "password1", "password2", "is_staff", 
+                "is_active", "is_superuser", "groups", "user_permissions"
+            )
+        }),
     )
+
 class ProfileAdmin(admin.ModelAdmin):
     list_display = (
         'user', 
@@ -50,5 +60,5 @@ class ProfileAdmin(admin.ModelAdmin):
     ordering = ('user',)
     readonly_fields = ('created_date', 'updated_date')
 
+admin.site.register(User, CustomUserAdmin)
 admin.site.register(Profile, ProfileAdmin)
-admin.site.register(User,CustomUserAdmin)

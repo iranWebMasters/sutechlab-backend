@@ -54,13 +54,13 @@ def create_or_update_laboratory_request(sender, instance, created, **kwargs):
 
     try:
         with transaction.atomic():
-            # ایجاد یا به‌روزرسانی LaboratoryRequest بر اساس وضعیت ایجاد Request
             lab_request, created_lab_request = LaboratoryRequest.objects.get_or_create(
                 user=instance.user,
                 experiment=instance.experiment,
                 defaults={
                     'submission_date': instance.request_info.submission_date if instance.request_info else None,
                     'description': instance.request_info.description if instance.request_info else None,
+                    'order_code': instance.request_info.order_code if instance.request_info else None, 
                 }
             )
 
@@ -69,7 +69,6 @@ def create_or_update_laboratory_request(sender, instance, created, **kwargs):
             else:
                 print(f'LaboratoryRequest updated for Request ID: {instance.id}')
 
-            # پر کردن اطلاعات نمونه
             if instance.sample_info.exists():
                 sample = instance.sample_info.first()
                 lab_request.sample_type = sample.sample_type
@@ -89,7 +88,6 @@ def create_or_update_laboratory_request(sender, instance, created, **kwargs):
             else:
                 print(f"No sample information found for Request ID: {instance.id}")
 
-            # پر کردن اطلاعات تست
             if instance.test_info.exists():
                 test = instance.test_info.first()
                 lab_request.user_sample = str(test.user_sample.id) if test.user_sample else None
@@ -102,7 +100,6 @@ def create_or_update_laboratory_request(sender, instance, created, **kwargs):
             else:
                 print(f"No test information found for Request ID: {instance.id}")
 
-            # پر کردن اطلاعات تخفیف
             if instance.discount_info:
                 lab_request.is_faculty_member = instance.discount_info.is_faculty_member
                 lab_request.is_student_or_staff = instance.discount_info.is_student_or_staff
@@ -112,12 +109,11 @@ def create_or_update_laboratory_request(sender, instance, created, **kwargs):
             else:
                 print(f"No discount information found for Request ID: {instance.id}")
 
-            # مقداردهی وضعیت، تکمیل و فاکتور PDF
             lab_request.status = instance.status
             lab_request.is_complete = instance.is_complete
             lab_request.invoice_pdf = instance.invoice_pdf
 
-            lab_request.save()  # ذخیره نمونه LaboratoryRequest
+            lab_request.save()
             print(f'LaboratoryRequest ID {lab_request.id} saved.')
 
     except Exception as e:
