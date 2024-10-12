@@ -237,3 +237,26 @@ SWAGGER_SETTINGS = {
     'DOC_EXPANSION': 'none', 
     'DEFAULT_MODEL_RENDERING': 'example',
 }
+
+
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',  # یا INFO
+#         },
+#         'your_app_name': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#     },
+# }

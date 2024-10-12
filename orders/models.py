@@ -84,7 +84,8 @@ class Request(models.Model):
     test_info = models.ManyToManyField('TestInfo', verbose_name='اطلاعات آزمایش')
     discount_info = models.OneToOneField('DiscountInfo', on_delete=models.CASCADE, null=True, blank=True, verbose_name='اطلاعات تخفیف')
     
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', verbose_name='وضعیت')  # وضعیت پیش‌فرض "در حال بررسی"
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', verbose_name='وضعیت')
+    is_complete = models.BooleanField(default=False)
     invoice_pdf = models.FileField(upload_to='invoices/', null=True, blank=True, verbose_name='پیش فاکتور')
 
     def __str__(self):
