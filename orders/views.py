@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse
 from services.models import Test
 from django.views import View
+from accounts.models import Profile
 import logging
 import jdatetime
 
@@ -39,6 +40,8 @@ class RequestInfoCreateView(LoginRequiredMixin, CreateView):
         context['jalali_date'] = jalali_date
         context['experiment'] = experiment
         context['laboratory_name'] = experiment.laboratory.name
+        profile = Profile.objects.get(user=self.request.user)
+        context['profile'] = profile 
         
         return context
 
@@ -69,6 +72,8 @@ class SampleInfoCreateView(FormView):
         context['samples'] = experiment.samples.all()
         context['experiment'] = experiment
         context['formset'] = self.get_form()
+        profile = Profile.objects.get(user=self.request.user)
+        context['profile'] = profile 
         return context
         
     def form_valid(self, form):
@@ -91,6 +96,8 @@ class SampleDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        profile = Profile.objects.get(user=self.request.user)
+        context['profile'] = profile         
         # هر داده اضافی که نیاز دارید را می‌توانید به context اضافه کنید
         return context
 
@@ -133,8 +140,10 @@ class TestInfoCreateView(FormView):
         user_samples = SampleInfo.objects.filter(experiment=experiment, user=current_user)
         user_tests = TestInfo.objects.filter(experiment=experiment, user=current_user)
         tests = experiment.tests.all()
+        profile = Profile.objects.get(user=self.request.user)
         context = {
             'tests': tests,
+            'profile': profile,
             'experiment': experiment,
             'user_samples': user_samples,
             'user_tests': user_tests,
@@ -233,4 +242,10 @@ class DiscountInfoFormView(FormView):
         logger.error("Form is invalid.")
         logger.error(form.errors)  # Log the form errors
         return super().form_invalid(form)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = Profile.objects.get(user=self.request.user)
+        context['profile'] = profile 
+        return context
     

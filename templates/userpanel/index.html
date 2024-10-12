@@ -10,7 +10,7 @@
         <div class="row bg-white no-gutters font-size-13">
             <div class="title__row">
                 <p>درخواست‌های اخیر شما</p>
-                <a class="all-reconcile-text margin-left-20 color-2b4a83" href="{% url 'userpanel:index' %}">نمایش همه درخواست‌ها</a>
+                <!-- <a class="all-reconcile-text margin-left-20 color-2b4a83" href="{% url 'userpanel:index' %}">نمایش همه درخواست‌ها</a> -->
             </div>
             <div class="table__box">
                 <table width="100%" class="table">
@@ -33,9 +33,9 @@
                         <td><a href="{% url 'userpanel:index' %}">{{ request.id }}</a></td>
                         <td><a href="">{{ request.user.email }}</a></td>
                         <td><a href="">{{ request.experiment.test_name }}</a></td>
-                        <td><a href="">{{ request.sample_info.first.sample_type }}</a></td>
-                        <td><a href="">{{ request.sample_info.first.sample_count }}</a></td>
-                        <td><a href="">{{ request.request_info.submission_date }}</a></td>
+                        <td><a href="">{{ request.sample_type }}</a></td>
+                        <td><a href="">{{ request.sample_count }}</a></td>
+                        <td><a href="">{{ request.submission_date }}</a></td>
                         <td>
                             {% if request.status == 'successful' %}
                                 <span class="text-success">پرداخت موفق</span>
@@ -48,9 +48,8 @@
                             {% endif %}
                         </td>
                         <td > <!-- فیلد دانلود پیش فاکتور -->
-                            <!-- عملیات حذف و ویرایش -->
-                            <a href="{% url 'userpanel:delete_request' request.id %}" class="item-delete margin-left-10" title="حذف" onclick="return confirm('آیا از حذف این درخواست مطمئن هستید؟');"></a>
-                            <a href="{% url 'userpanel:edit_request' request.id %}" class="item-edit" title='ویرایش'></a>
+                            <a href="{% url 'userpanel:delete_request' request.id %}" class="item-delete margin-left-10" title="حذف"></a>
+                            <!-- <a href="{% url 'userpanel:edit_request' request.id %}" class="item-edit" title='ویرایش'></a> -->
                         </td>
                         <td >
                             <a href="{% url 'userpanel:download_invoice' request.id %}" class="item-download" title="دانلود پیش فاکتور">
@@ -70,4 +69,4 @@
             </div>
         </div>
     </div>
-{% endblock content %}  
+{% endblock content %}

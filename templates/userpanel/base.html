@@ -1,5 +1,6 @@
-<!DOCTYPE html>
 {% load static %}
+{% load humanize %}
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -29,7 +30,7 @@
     <link rel="stylesheet" href="css/rtl.css" />
 
     <link rel="stylesheet" href="css\persian-datepicker.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> -->
 
 
 </head>
@@ -65,7 +66,17 @@
             <div class="header__right d-flex flex-grow-1 item-center">
                 <span class="bars"></span>
             </div>
+
             <div class="header__left d-flex flex-end item-center margin-top-2">
+                <span class="account-balance font-size-12">
+                    {% if profile.wallet_balance == 0 %}
+                       اعتبار : صفر
+                    {% else %}
+                        موجودی: {{ profile.wallet_balance|intcomma }} تومان
+                    {% endif %}
+                </span>
+
+
                 <div class="notification margin-15">
                     <a class="notification__icon"></a>
                     <div class="dropdown__notification">

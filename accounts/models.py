@@ -62,6 +62,7 @@ class Profile(models.Model):
     address = models.TextField()
     postal_code = models.CharField(max_length=10)
     created_date = models.DateField(auto_now_add=True)
+    wallet_balance = models.DecimalField(max_digits=10,decimal_places=0, default=0.00,null=True,blank=True)
     updated_date = models.DateField(auto_now=True)
 
     def __str__(self):

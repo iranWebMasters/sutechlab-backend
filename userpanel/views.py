@@ -12,8 +12,9 @@ from django.views import View
 from django.urls import reverse_lazy
 from django.views.generic import ListView,DetailView,DeleteView
 from services.models import Experiment
-from orders.models import Request
-from django.http import Http404
+from orders.models import LaboratoryRequest
+from django.contrib import messages
+from django.http import HttpResponseRedirect,Http404
 
 
 from .forms import *
@@ -38,7 +39,7 @@ class IndexView(TemplateView):
             profile = Profile.objects.get(user=self.request.user)
             context['profile'] = profile
             
-            context['requests'] = Request.objects.filter(user=self.request.user)
+            context['requests'] = LaboratoryRequest.objects.filter(user=self.request.user)
         
         return context
     
@@ -95,14 +96,14 @@ class TestDetailView(DetailView):
 class DownloadInvoiceView(View):
     def get(self, request, request_id):
         try:
-            # دریافت نمونه درخواست
-            request_instance = Request.objects.get(id=request_id)
+            # Retrieve the LaboratoryRequest instance
+            request_instance = LaboratoryRequest.objects.get(id=request_id)
 
-            # بررسی اینکه آیا فاکتور موجود است یا خیر
+            # Check if the invoice PDF exists
             if not request_instance.invoice_pdf:
                 return HttpResponse("فاکتور موجود نیست.", status=404)
 
-            # ایجاد HttpResponse برای دانلود فایل PDF
+            # Create HttpResponse for downloading the PDF file
             response = HttpResponse(
                 request_instance.invoice_pdf.read(),
                 content_type='application/pdf'
@@ -110,13 +111,26 @@ class DownloadInvoiceView(View):
             response['Content-Disposition'] = f'attachment; filename="{request_instance.invoice_pdf.name}"'
             return response
 
-        except Request.DoesNotExist:
-            raise Http404("درخواست پیدا نشد.")
+        except LaboratoryRequest.DoesNotExist:
+            raise Http404("درخواست مربوط به فاکتور پیدا نشد.")
 
-class RequestDeleteView(DeleteView):
-    model = Request
-    template_name = 'userpanel/index.html'  # قالب تأیید حذف
-    success_url = reverse_lazy('userpanel:index')  # URL که بعد از موفقیت در حذف به آن هدایت می‌شود
+class LaboratoryRequestDeleteView(DeleteView):
+    model = LaboratoryRequest
+    template_name = 'userpanel/confirm_delete.html'  # Specify a template for confirmation
+    success_url = reverse_lazy('userpanel:index')  # URL to redirect after successful deletion
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['request'] = self.object
+        profile = Profile.objects.get(user=self.request.user)
+        context['profile'] = profile  # Pass the instance to the template for context
+        return context
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        messages.success(request, "درخواست با موفقیت حذف شد.")  # Success message
+        return HttpResponseRedirect(self.get_success_url())
 
 class RequestEditView(UpdateView):
     model = Request

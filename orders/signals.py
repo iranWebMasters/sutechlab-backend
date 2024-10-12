@@ -34,19 +34,9 @@ def create_request(sender, instance, **kwargs):
         request.save()
 
         # Check completeness and generate invoice if needed
-        if request.discount_info:
-            request.is_complete = True
-            # Generate invoice only if it's a new request or the invoice hasn't been generated yet
-            if created or not request.invoice_pdf:
-                pdf_file_path = generate_invoice(request)  # Call the function to generate the invoice
-                request.invoice_pdf = pdf_file_path
+  # Save changes to the request
 
-            request.save()  # Save changes to the request
 
-from django.db import transaction
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from .models import Request, LaboratoryRequest
 
 @receiver(post_save, sender=Request)
 def create_or_update_laboratory_request(sender, instance, created, **kwargs):
@@ -111,10 +101,19 @@ def create_or_update_laboratory_request(sender, instance, created, **kwargs):
 
             lab_request.status = instance.status
             lab_request.is_complete = instance.is_complete
-            lab_request.invoice_pdf = instance.invoice_pdf
+            # lab_request.invoice_pdf = instance.invoice_pdf
 
             lab_request.save()
             print(f'LaboratoryRequest ID {lab_request.id} saved.')
 
     except Exception as e:
         print(f'Error occurred: {str(e)}')
+
+
+@receiver(post_save, sender=LaboratoryRequest)
+def update_or_create_invoice(sender, instance, created, **kwargs):
+    # Only generate an invoice for newly created records
+    if created:
+        pdf_file_path = generate_invoice(instance)
+        instance.invoice_pdf = pdf_file_path
+        instance.save()

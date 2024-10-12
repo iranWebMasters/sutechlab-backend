@@ -93,8 +93,6 @@ class Request(models.Model):
     
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', verbose_name='وضعیت')
     is_complete = models.BooleanField(default=False)
-    invoice_pdf = models.FileField(upload_to='invoices/', null=True, blank=True, verbose_name='پیش فاکتور')
-
     def __str__(self):
         return f"Request(ID: {self.id}, User: {self.user.email}, Experiment: {self.experiment.test_name})"
 
@@ -110,7 +108,7 @@ class LaboratoryRequest(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='کاربر', null=True, blank=True)
     experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE, verbose_name='آزمایش', null=True, blank=True)
-    order_code = models.CharField(max_length=255, blank=True, unique=True, verbose_name='کد سفارش')
+    order_code = models.CharField(max_length=255, blank=True,null=True, unique=True, verbose_name='کد سفارش')
     submission_date = models.DateField(auto_now_add=True, verbose_name='تاریخ ثبت درخواست', null=True, blank=True)
     description = models.TextField(blank=True, null=True, verbose_name='توضیحات')
 
@@ -148,4 +146,5 @@ class LaboratoryRequest(models.Model):
 
     def __str__(self):
         return f"LaboratoryRequest(ID: {self.id}, User: {self.user.email if self.user else 'N/A'}, Experiment: {self.experiment.test_name if self.experiment else 'N/A'})"
+    
 
