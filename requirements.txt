@@ -1,7 +1,9 @@
+arabic-reshaper==3.0.0
 asgiref==3.8.1
 attrs==24.2.0
 az-iranian-bank-gateways==2.0.9
 certifi==2024.8.30
+chardet==5.2.0
 charset-normalizer==3.3.2
 Django==5.0.4
 django-ckeditor==6.7.1
@@ -23,9 +25,11 @@ platformdirs==4.3.3
 psycopg==3.1.18
 psycopg2==2.9.9
 pycryptodome==3.20.0
+python-bidi==0.6.0
 python-decouple==3.8
 pytz==2024.2
 PyYAML==6.0.2
+reportlab==4.2.5
 requests==2.32.3
 requests-file==2.1.0
 requests-toolbelt==1.0.0

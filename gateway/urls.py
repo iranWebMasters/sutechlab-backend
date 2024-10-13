@@ -3,7 +3,8 @@ from .views import *
 
 app_name = 'gateway'
 
+
 urlpatterns = [
-    path('go_to_gatway/', go_to_gateway_view, name='payment'),
-    path('callback/', callback_gateway_view, name='callback'),
+    path('payment/gateway/<int:payment_id>/', GoToGatewayView.as_view(), name='payment'),
+    path('payment/callback/<int:payment_id>/', CallbackGatewayView.as_view(), name='callback'), 
 ]

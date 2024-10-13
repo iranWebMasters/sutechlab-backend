@@ -15,6 +15,11 @@ from services.models import Experiment
 from orders.models import LaboratoryRequest
 from django.contrib import messages
 from django.http import HttpResponseRedirect,Http404
+from django.shortcuts import get_object_or_404
+from gateway.models import Payment 
+from azbankgateways import models as bank_models
+import uuid
+
 
 
 from .forms import *
@@ -141,3 +146,113 @@ class RequestEditView(UpdateView):
     def form_valid(self, form):
         # می‌توانید هر کدی که نیاز دارید را اینجا اضافه کنید
         return super().form_valid(form)
+    
+
+class LaboratoryRequestDetailView(DetailView):
+    model = LaboratoryRequest
+    template_name = 'userpanel/laboratory_request_detail.html'  # Specify your template
+
+    def get_object(self, queryset=None):
+        # Override to get the object based on the URL parameter
+        request_id = self.kwargs.get('pk')
+        return get_object_or_404(LaboratoryRequest, pk=request_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        laboratory_request = self.get_object()  # Get the current LaboratoryRequest instance
+        
+        # Add extra context if needed
+        context['experiment'] = laboratory_request.experiment  # Pass the related Experiment object
+        context['user'] = laboratory_request.user  # Pass the user who made the request
+        profile = Profile.objects.get(user=self.request.user)
+        context['profile'] = profile
+        # You can add more context variables as needed
+        return context
+    
+
+class PaymentPageView(DetailView):
+    model = LaboratoryRequest
+    template_name = 'userpanel/payment_page.html'  # Create this template for payment
+
+    def get_object(self, queryset=None):
+        # Get the object based on the request ID passed in the URL
+        request_id = self.kwargs.get('request_id')
+        return get_object_or_404(LaboratoryRequest, id=request_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Fetch the profile for the current user
+        profile = Profile.objects.get(user=self.request.user)
+        context['profile'] = profile
+        return context
+    
+
+class ProcessPaymentView(View):
+    def post(self, request, request_id):
+        laboratory_request = get_object_or_404(LaboratoryRequest, id=request_id)
+        final_amount = laboratory_request.final_price
+        use_wallet = request.POST.get('use_wallet') == 'true'
+        amount_to_process = final_amount
+
+        # اگر از کیف پول استفاده شود
+        if use_wallet:
+            profile = get_object_or_404(Profile, user=request.user)
+            wallet_balance = profile.wallet_balance
+
+            if wallet_balance >= final_amount:
+                amount_to_process = 0
+                profile.wallet_balance -= final_amount
+            else:
+                amount_to_process = final_amount - wallet_balance
+                profile.wallet_balance = 0
+
+            profile.save()
+
+        # اگر مبلغ قابل پرداخت صفر باشد، مستقیماً پرداخت را کامل کن
+        tracking_code = str(uuid.uuid4())[:12].replace('-', '').upper()
+
+        if amount_to_process == 0:
+            payment = Payment.objects.create(
+                laboratory_request=laboratory_request,
+                user=request.user,
+                amount=amount_to_process,
+                status='completed',
+                tracking_code=tracking_code  # تنظیم کد رهگیری
+            )
+            laboratory_request.status = 'successful'
+            laboratory_request.tracking_code = tracking_code  # ثبت کد رهگیری در درخواست آزمایش
+            laboratory_request.save()
+
+            messages.success(request, 'پرداخت با موفقیت از طریق کیف پول انجام شد.')
+            return redirect('userpanel:payment_success', tracking_code=tracking_code)
+
+        # در غیر این صورت، فرآیند پرداخت به درگاه ادامه پیدا می‌کند
+        payment = Payment.objects.create(
+            laboratory_request=laboratory_request,
+            user=request.user,
+            amount=amount_to_process,
+        )
+        return redirect('gateway:payment', payment_id=payment.id)
+
+    
+
+class PaymentSuccessView(DetailView):
+    model = Payment
+    template_name = 'userpanel/payment_success.html'
+    context_object_name = 'payment'
+    slug_field = 'tracking_code'  # استفاده از tracking_code برای پیدا کردن پرداخت
+    slug_url_kwarg = 'tracking_code'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Get the payment instance from the context
+        payment = self.get_object()  # This retrieves the Payment instance based on the slug
+        
+        # Use the payment instance to populate the context
+        context['tracking_code'] = payment.tracking_code
+        context['amount'] = payment.amount
+        # context['order_code'] = payment.laboratory_request.order_code if payment.laboratory_request else None
+        # context['order_id'] = payment.laboratory_request.id if payment.laboratory_request else None
+        
+        return context

@@ -1,63 +1,79 @@
 import logging
 from django.urls import reverse
-from django.shortcuts import  redirect
-
+from django.shortcuts import redirect, get_object_or_404
 from azbankgateways import bankfactories, models as bank_models, default_settings as settings
 from azbankgateways.exceptions import AZBankGatewaysException
-from django.http import HttpResponse, Http404
 from django.contrib import messages
+from django.views import View
+from orders.models import LaboratoryRequest
+from .models import Payment  # Import the Payment model
+from django.http import Http404
 
 
+class GoToGatewayView(View):
+    def get(self, request, payment_id):
+        payment = get_object_or_404(Payment, id=payment_id)
 
-def go_to_gateway_view(request):
-    # خواندن مبلغ از هر جایی که مد نظر است
-    amount= 5000000
-    # تنظیم شماره موبایل کاربر از هر جایی که مد نظر است
-    # user_mobile_number = '+989112221234'  # اختیاری
-    user_mobile_number = request.user.profile.phone_number if request.user.is_authenticated else None
-    # print(user_mobile_number)
+        user_mobile_number = request.user.profile.phone_number if request.user.is_authenticated else None
 
-    factory = bankfactories.BankFactory()
-    try:
-        bank = factory.auto_create() # or factory.create(bank_models.BankType.BMI) or set identifier
-        bank.set_request(request)
-        bank.set_amount(amount)
-        # یو آر ال بازگشت به نرم افزار برای ادامه فرآیند
-        bank.set_client_callback_url(reverse('gateway:callback'))
-        bank.set_mobile_number(user_mobile_number)  # اختیاری
-    
-        # در صورت تمایل اتصال این رکورد به رکورد فاکتور یا هر چیزی که بعدا بتوانید ارتباط بین محصول یا خدمات را با این
-        # پرداخت برقرار کنید. 
-        bank_record = bank.ready()
-        
-        # هدایت کاربر به درگاه بانک
-        return bank.redirect_gateway()
-    except AZBankGatewaysException as e:
-        logging.critical(e)
-        # TODO: redirect to failed page.
-        messages.error(request, "اتصال به درگاه پرداخت ناموفق بود ، لطفااتصال خود را به اینترنت برسی نمایید و  دوباره امتحان کنید")
-        return redirect('userpanel:index')
-        
+        factory = bankfactories.BankFactory()
+        try:
+            bank = factory.auto_create()
+            bank.set_request(request)
+            bank.set_amount(payment.amount)
+            print(payment.amount)
+            # bank.set_client_callback_url(reverse('gateway:callback'))
+            bank.set_client_callback_url(reverse('gateway:callback', kwargs={'payment_id': payment.id}))
+            
+            bank.set_mobile_number(user_mobile_number)
+
+            bank_record = bank.ready()
+
+            # Update the payment status to 'pending'
+            payment.status = 'pending'
+            payment.save()
+
+            return bank.redirect_gateway()  # This should handle payment redirection
+        except AZBankGatewaysException as e:
+            logging.critical(e)
+            messages.error(request, "اتصال به درگاه پرداخت ناموفق بود ، لطفا اتصال خود را به اینترنت بررسی نمایید و دوباره امتحان کنید")
+            return redirect('userpanel:index')
 
 
+class CallbackGatewayView(View):
+    def get(self, request, payment_id):  # Add payment_id as a parameter
+        tracking_code = request.GET.get(settings.TRACKING_CODE_QUERY_PARAM, None)
+        if not tracking_code:
+            logging.debug("این لینک معتبر نیست.")
+            raise Http404("Invalid tracking code.")
 
-def callback_gateway_view(request):
-    tracking_code = request.GET.get(settings.TRACKING_CODE_QUERY_PARAM, None)
-    if not tracking_code:
-        logging.debug("این لینک معتبر نیست.")
-        raise Http404
+        try:
+            bank_record = bank_models.Bank.objects.get(tracking_code=tracking_code)
+        except bank_models.Bank.DoesNotExist:
+            logging.debug("این لینک معتبر نیست.")
+            raise Http404("Invalid tracking code.")
 
-    try:
-        bank_record = bank_models.Bank.objects.get(tracking_code=tracking_code)
-    except bank_models.Bank.DoesNotExist:
-        logging.debug("این لینک معتبر نیست.")
-        raise Http404
+        # Use the payment_id passed in the URL
+        payment = get_object_or_404(Payment, id=payment_id)
 
-    # در این قسمت باید از طریق داده هایی که در بانک رکورد وجود دارد، رکورد متناظر یا هر اقدام مقتضی دیگر را انجام دهیم
-    if bank_record.is_success:
-        # پرداخت با موفقیت انجام پذیرفته است و بانک تایید کرده است.
-        # می توانید کاربر را به صفحه نتیجه هدایت کنید یا نتیجه را نمایش دهید.
-        # messages.success(request, 'پرداخت با موفقیت انجام شد.')
-        return redirect('orders:create')
-    messages.success(request, 'پرداخت با شکست مواجه شده است. اگر پول از حساب کم شده است ظرف مدت ۴۸ ساعت پول به حساب شما بازخواهد گشت.')
-    return redirect('website:home') 
+        # Update the payment status based on the bank record's success
+        if bank_record.is_success:
+            payment.status = 'completed'
+
+
+            # Update the laboratory request status
+            laboratory_request = payment.laboratory_request
+            laboratory_request.status = 'successful'
+            payment.tracking_code = tracking_code
+            
+            laboratory_request.save()
+            payment.save()
+
+            messages.success(request, 'پرداخت با موفقیت انجام شد.')
+            return redirect('userpanel:payment_success', tracking_code=tracking_code)  # Redirect to a success page
+        else:
+            payment.status = 'failed'
+            payment.save()
+
+            messages.error(request, 'پرداخت با شکست مواجه شده است. اگر پول از حساب کم شده است ظرف مدت ۴۸ ساعت پول به حساب شما بازخواهد گشت.')
+            return redirect('userpanel:index')  # Redirect to the main page

@@ -13,4 +13,11 @@ urlpatterns = [
     path('delete-request/<int:pk>/', LaboratoryRequestDeleteView.as_view(), name='delete_request'),
     path('edit-request/<int:pk>/', RequestEditView.as_view(), name='edit_request'),
 
+    path('requests/<int:pk>/', LaboratoryRequestDetailView.as_view(), name='laboratory_request_detail'),
+
+    path('payment/<int:request_id>/', PaymentPageView.as_view(), name='payment_page'),
+
+    path('payment/process/<int:request_id>/', ProcessPaymentView.as_view(), name='process_payment'),
+    path('payment/success/<slug:tracking_code>/', PaymentSuccessView.as_view(), name='payment_success'),
+
 ]

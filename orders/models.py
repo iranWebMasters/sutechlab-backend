@@ -104,6 +104,7 @@ class LaboratoryRequest(models.Model):
         ('successful', 'پرداخت موفق'),
         ('failed', 'پرداخت ناموفق'),
         ('canceled', 'لغو شده'),
+        ('ready_for_payment', 'آماده پرداخت'),
     ]
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='کاربر', null=True, blank=True)
@@ -143,6 +144,10 @@ class LaboratoryRequest(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', verbose_name='وضعیت', null=True, blank=True)
     is_complete = models.BooleanField(default=False, verbose_name='تکمیل شده', null=True, blank=True)
     invoice_pdf = models.FileField(upload_to='invoices/', null=True, blank=True, verbose_name='پیش فاکتور')
+
+    final_price = models.DecimalField(max_digits=10, decimal_places=0,default=0, verbose_name='قیمت نهایی', null=True, blank=True)
+    tracking_code = models.CharField(max_length=255,null=False, blank=False, verbose_name='Tracking Code')
+
 
     def __str__(self):
         return f"LaboratoryRequest(ID: {self.id}, User: {self.user.email if self.user else 'N/A'}, Experiment: {self.experiment.test_name if self.experiment else 'N/A'})"

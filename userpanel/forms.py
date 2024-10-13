@@ -13,3 +13,7 @@ class RequestUpdateForm(forms.ModelForm):
     class Meta:
         model = Request
         fields = '__all__'  # لیست فیلدهایی که می‌خواهید در فرم نمایش داده شوند
+
+
+class PaymentForm(forms.Form):
+    use_wallet = forms.BooleanField(required=False, label='از کیف پول استفاده شود')
