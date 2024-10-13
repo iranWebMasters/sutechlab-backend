@@ -252,7 +252,6 @@ class PaymentSuccessView(DetailView):
         # Use the payment instance to populate the context
         context['tracking_code'] = payment.tracking_code
         context['amount'] = payment.amount
-        # context['order_code'] = payment.laboratory_request.order_code if payment.laboratory_request else None
-        # context['order_id'] = payment.laboratory_request.id if payment.laboratory_request else None
-        
+        profile = Profile.objects.get(user=self.request.user)
+        context['profile'] = profile
         return context
