@@ -17,6 +17,12 @@ def reshape_text(text):
 
 def generate_invoice(req):
     # Path for the invoice PDF file
+    pdf_directory = os.path.join(settings.MEDIA_ROOT, 'invoices')
+    
+    # Check if the directory exists, if not, create it
+    if not os.path.exists(pdf_directory):
+        os.makedirs(pdf_directory)
+    # Path for the invoice PDF file
     pdf_file_path = os.path.join(settings.MEDIA_ROOT, 'invoices', f"invoice_{req.id}.pdf")
 
     # Create PDF
