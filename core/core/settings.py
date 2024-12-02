@@ -1,6 +1,6 @@
 
 from pathlib import Path
-from decouple import config
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -79,14 +79,14 @@ if DEBUG:
 else:
     DATABASES = {
         'default': {
-            'ENGINE':config('DB_ENGINE', default='django.db.backends.postgresql'),
-            'NAME':config('DB_NAME', default='postgres'),
-            'USER':config('DB_USER', default='postgres'),
-            'PASSWORD':config('PASSWORD', default='1'),
-            'HOST':config('HOST', default='127.0.0.1'),
-            'PORT':config('PORT', default='5432')
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('DATABASE_NAME', 'sutechla_db'),
+            'USER': os.environ.get('DATABASE_USER', 'sutechlab'),
+            'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'password123!'),
+            'HOST': os.environ.get('DATABASE_HOST', 'localhost'),
+            'PORT': os.environ.get('DATABASE_PORT', '5432'),
         }
-}
+    }
 
 # DATABASES_________________________________________
 AUTH_PASSWORD_VALIDATORS = [
@@ -130,27 +130,26 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # Https settings
-if config("USE_SSL_SETTINGS",default=False,cast=bool):
-    SECURE_BROWSER_XSS_FILTER = True
-    CSRF_COOKIE_SECURE =True
-    X_FRAME_OPTIONS = 'SAMEORIGIN'
-    SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+CSRF_COOKIE_SECURE =True
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+SECURE_CONTENT_TYPE_NOSNIFF = True
 
-    ## Strict-Transport-Security
-    SECURE_HSTS_SECONDS = 15768000
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
+## Strict-Transport-Security
+SECURE_HSTS_SECONDS = 15768000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
 
-    ## that requests over HTTP are redirected to HTTPS. aslo can config in webserver
-    SECURE_SSL_REDIRECT = True 
+## that requests over HTTP are redirected to HTTPS. aslo can config in webserver
+SECURE_SSL_REDIRECT = True 
 
-    # for more security
-    CSRF_COOKIE_SECURE = True
-    CSRF_USE_SESSIONS = True
-    CSRF_COOKIE_HTTPONLY = True
-    SESSION_COOKIE_SECURE = True
-    SESSION_COOKIE_SAMESITE = 'Strict'
-    
+# for more security
+CSRF_COOKIE_SECURE = True
+CSRF_USE_SESSIONS = True
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'Strict'
+
     
     
 # registration url redirects
