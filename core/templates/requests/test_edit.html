@@ -1,0 +1,133 @@
+{% extends 'userpanel/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container p-4 request-page" data-index="3" dir="rtl">
+
+    <div class="bg-white p-4 rounded shadow-lg">
+        <h5 class="text-primary mb-4">ویرایش آزمون</h5>
+        
+        <form method="post" action="{% url 'orders:test_edit' pk=user_test.id experiment_id=experiment.id %}">
+            {% csrf_token %}
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="sampleType" class="form-label">انتخاب نمونه</label>
+                    <select class="form-select" id="samples-dropdown" name="user_sample">
+                        <option value="" disabled selected>نمونه‌ای را انتخاب کنید</option>
+                        {% for sample in user_samples %}
+                        <option name="sample" value="{{ sample.id }}">{{ sample }}</option>
+                        {% endfor %}
+                    </select>                
+                    <div class="messages"></div>
+                </div>
+                <div class="col-md-4">
+                    <label for="sampleRepeats" class="form-label">تعداد تکرار آزمون</label>
+                    <input type="number" class="form-control" id="sampleRepeats" name="repeat_count_test" min="1" value="1">
+                </div>
+            </div>
+        
+            <div class="row mb-3">
+                <!-- آزمون‌ها -->
+                <div class="col-md-4">
+                    <div class="tests-table-container">
+                        <table class="tests-table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-center px-3">انتخاب</th>
+                                    <th>نام آزمون</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for test in tests %}
+                                <tr>
+                                    <td class="text-center">
+                                        <input class="form-check-input" name="test" type="radio" value="{{ test.id }}">
+                                    </td>
+                                    <td>{{ test.name_fa }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+        
+                <!-- پارامترها -->
+                <div class="col-md-4">
+                    <div class="tests-table-container">
+                        <table class="tests-table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-center px-3">انتخاب</th>
+                                    <th>نام پارامتر</th>
+                                </tr>
+                            </thead>
+                            <tbody id="parametersTableBody">
+                                <!-- Parameters will be dynamically added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+        
+                <!-- مقدار پارامتر -->
+                <div class="col-md-4">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">مقدار پارامتر</span>
+                        <input type="text" class="form-control" id="parameterValue" name="parameter_value">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mb-3">
+                <button type="submit" class="btn btn-secondary me-2">ثبت آزمون</button>
+            </div>
+        </form>
+        
+        <!-- <div class="text-center">
+            <button data-index="3" class="page-btn backward-btn btn btn-outline-primary px-4 me-2">مرحله
+                قبل</button>
+            <button data-index="3" class="page-btn forward-btn btn btn-success px-4 me-2">ثبت و مرحله
+                بعد</button>
+            <button type="button" class="btn btn-danger px-4">انصراف</button>
+        </div> -->
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const testRadios = document.querySelectorAll('input[name="test"]');
+        const parametersTableBody = document.querySelector('#parametersTableBody');
+        
+        testRadios.forEach(radio => {
+            radio.addEventListener('change', function () {
+                const testId = this.value; // دریافت شناسه تست از رادیو
+                const url = "{% url 'orders:get_test_parameters' test_id=0 %}".replace(/0/, testId); // جایگزینی شناسه تست در URL
+                fetch(url) // استفاده از URL داینامیک
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        parametersTableBody.innerHTML = ''; // پاک کردن پارامترهای فعلی
+                        data.parameters.forEach(parameter => {
+                            const row = `
+                                <tr>
+                                    <td class="text-center">
+                                        <input class="form-check-input" name="parameter" type="radio" value="${parameter.id}">
+                                    </td>
+                                    <td>${parameter.name}</td>
+                                </tr>
+                            `;
+                            parametersTableBody.innerHTML += row;
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching parameters:', error);
+                    });
+            });
+        });
+    });
+</script>
+
+
+{% endblock content %}

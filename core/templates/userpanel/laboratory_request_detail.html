@@ -1,0 +1,166 @@
+{% extends 'userpanel/base.html' %}  <!-- Adjust the base template as needed -->
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">جزئیات درخواست آزمایش</h2>
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-bordered table-striped">
+                <thead class="thead-light">
+                    <tr>
+                        <th>عنوان</th>
+                        <th>اطلاعات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>کد سفارش</th>
+                        <td>{{ object.order_code }}</td>
+                    </tr>
+                    <tr>
+                        <th>کاربر</th>
+                        <td>
+                            {% if object.user %}
+                                {{ object.user.email }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>آزمایش</th>
+                        <td>{{ object.experiment.name }}</td>
+                    </tr>
+                    <tr>
+                        <th>تاریخ ثبت درخواست</th>
+                        <td>{{ object.submission_date }}</td>
+                    </tr>
+                    <tr>
+                        <th>توضیحات</th>
+                        <td>{{ object.description }}</td>
+                    </tr>
+                    <tr>
+                        <th>نوع نمونه</th>
+                        <td>{{ object.sample_type }}</td>
+                    </tr>
+                    <tr>
+                        <th>نام نمونه مشتری</th>
+                        <td>{{ object.customer_sample_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>تعداد نمونه</th>
+                        <td>{{ object.sample_count }}</td>
+                    </tr>
+                    <tr>
+                        <th>توضیحات اضافی</th>
+                        <td>{{ object.additional_info }}</td>
+                    </tr>
+                    <tr>
+                        <th>نمونه فاسدشدنی است</th>
+                        <td>{{ object.is_perishable|yesno:"بله,خیر" }}</td>
+                    </tr>
+                    <tr>
+                        <th>تاریخ انقضا</th>
+                        <td>{{ object.expiration_date }}</td>
+                    </tr>
+                    <tr>
+                        <th>نمونه برگشت داده شده بشود</th>
+                        <td>{{ object.sample_return|yesno:"بله,خیر" }}</td>
+                    </tr>
+                    <tr>
+                        <th>مدت زمان نگهداری (به روز)</th>
+                        <td>{{ object.storage_duration }}</td>
+                    </tr>
+                    <tr>
+                        <th>واحد مدت زمان نگهداری</th>
+                        <td>{{ object.storage_duration_unit }}</td>
+                    </tr>
+                    <tr>
+                        <th>شرایط نگهداری</th>
+                        <td>{{ object.storage_conditions }}</td>
+                    </tr>
+                    <tr>
+                        <th>توضیحات نمونه</th>
+                        <td>{{ object.sample_description }}</td>
+                    </tr>
+                    <tr>
+                        <th>فایل تکمیلی نمونه</th>
+                        <td>
+                            {% if object.file_upload %}
+                                <a href="{{ object.file_upload.url }}" class="btn btn-link">دانلود فایل</a>
+                            {% else %}
+                                هیچ فایلی بارگذاری نشده است.
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>شناسه نمونه آزمایش</th>
+                        <td>{{ object.user_sample }}</td>
+                    </tr>
+                    <tr>
+                        <th>عنوان آزمایش</th>
+                        <td>{{ object.test.title }}</td>
+                    </tr>
+                    <tr>
+                        <th>تعداد تکرار آزمون</th>
+                        <td>{{ object.repeat_count_test }}</td>
+                    </tr>
+                    <tr>
+                        <th>پارامتر</th>
+                        <td>{{ object.parameter.name }}</td>
+                    </tr>
+                    <tr>
+                        <th>مقدار پارامتر</th>
+                        <td>{{ object.parameter_value }}</td>
+                    </tr>
+                    <tr>
+                        <th>آیا کاربر عضو هیات علمی است؟</th>
+                        <td>{{ object.is_faculty_member|yesno:"بله,خیر" }}</td>
+                    </tr>
+                    <tr>
+                        <th>آیا کاربر دانشجو یا کارکنان دانشگاه است؟</th>
+                        <td>{{ object.is_student_or_staff|yesno:"بله,خیر" }}</td>
+                    </tr>
+                    <tr>
+                        <th>آیا کاربر متقاضی استفاده از تخفیف نهادهای طرف قرارداد است؟</th>
+                        <td>{{ object.is_affiliated_with_institution|yesno:"بله,خیر" }}</td>
+                    </tr>
+                    <tr>
+                        <th>نام نهاد تخفیف</th>
+                        <td>{{ object.discount_institution_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>وضعیت</th>
+                        <td>{{ object.status }}</td>
+                    </tr>
+                    <tr>
+                        <th>تکمیل شده</th>
+                        <td>{{ object.is_complete|yesno:"بله,خیر" }}</td>
+                    </tr>
+                    <tr>
+                        <th>پیش فاکتور</th>
+                        <td>
+                            {% if object.invoice_pdf %}
+                                <a href="{{ object.invoice_pdf.url }}" class="btn btn-link">دانلود پیش فاکتور</a>
+                            {% else %}
+                                هیچ پیش فاکتوری بارگذاری نشده است.
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Conditional Button for "آماده پرداخت" Status -->
+            {% if object.status == 'ready_for_payment' %}
+                <div class="text-center mt-4">
+                    <a href="{% url 'userpanel:payment_page' object.id %}" class="btn btn-success">پرداخت</a>
+                </div>
+            {% endif %}
+
+            <div class="text-center mt-3">
+                <a href="{% url 'userpanel:index' %}" class="btn btn-primary">بازگشت به صفحه اصلی</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
