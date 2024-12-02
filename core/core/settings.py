@@ -141,7 +141,7 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
 ## that requests over HTTP are redirected to HTTPS. aslo can config in webserver
-SECURE_SSL_REDIRECT = True 
+SECURE_SSL_REDIRECT = False
 
 # for more security
 CSRF_COOKIE_SECURE = True
@@ -236,26 +236,3 @@ SWAGGER_SETTINGS = {
     'DOC_EXPANSION': 'none', 
     'DEFAULT_MODEL_RENDERING': 'example',
 }
-
-
-
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'handlers': {
-#         'console': {
-#             'class': 'logging.StreamHandler',
-#         },
-#     },
-#     'loggers': {
-#         'django': {
-#             'handlers': ['console'],
-#             'level': 'DEBUG',  # یا INFO
-#         },
-#         'your_app_name': {
-#             'handlers': ['console'],
-#             'level': 'DEBUG',
-#             'propagate': True,
-#         },
-#     },
-# }
