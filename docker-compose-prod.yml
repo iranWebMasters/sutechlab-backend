@@ -9,6 +9,19 @@ services:
       - my_network
     command: redis-server --save 60 1 --loglevel warning
 
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    networks:
+      - my_network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
   backend:
     build: .
     container_name: backend
@@ -23,12 +36,18 @@ services:
       - static_volume:/app/static
       - media_volume:/app/media
     environment:
-      - SECRET_KEY=django-insecure-w^@bj@s=-tx_rv-k^us_z3ox6jjtexq$q6hiy*!nhkzpr(wbhh
-      - DEBUG=True
-      - ALLOWED_HOSTS=*
-      - CELERY_BROKER_URL=redis://redis:6379/0
+      - SECRET_KEY=${SECRET_KEY}
+      - DEBUG=${DEBUG}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
     depends_on:
       - redis
+      - postgres 
     networks:
       - my_network
 
@@ -56,6 +75,7 @@ services:
     depends_on:
       - redis
       - backend
+      - postgres
     networks:
       - my_network
   
@@ -67,12 +87,14 @@ services:
     depends_on:
       - redis
       - backend
+      - postgres 
     networks:
       - my_network
 
 volumes:
   static_volume:
   media_volume:
+  postgres_data:
 
 networks:
   my_network:

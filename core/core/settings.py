@@ -4,9 +4,10 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY='django-insecure-95*u*w5%3ye=7fdga*u0*ur#2e^qnd^6^zlg0ptwj5gr+(02mb)'
-DEBUG=True
-ALLOWED_HOSTS = ['*',]
+
+SECRET_KEY = os.getenv('SECRET_KEY')
+DEBUG = os.getenv('DEBUG') == 'True'
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
 
 
 INSTALLED_APPS = [
@@ -69,24 +70,17 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 # DATABASES_________________________________________
 
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DATABASE_NAME', 'sutechla_db'),
+        'USER': os.environ.get('DATABASE_USER', 'sutechlab'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'password123!'),
+        'HOST': os.environ.get('DATABASE_HOST', 'localhost'),
+        'PORT': os.environ.get('DATABASE_PORT', '5432'),
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('DATABASE_NAME', 'sutechla_db'),
-            'USER': os.environ.get('DATABASE_USER', 'sutechlab'),
-            'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'password123!'),
-            'HOST': os.environ.get('DATABASE_HOST', 'localhost'),
-            'PORT': os.environ.get('DATABASE_PORT', '5432'),
-        }
-    }
+}
 
 # DATABASES_________________________________________
 AUTH_PASSWORD_VALIDATORS = [
