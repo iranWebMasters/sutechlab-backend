@@ -5,9 +5,9 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = os.getenv('SECRET_KEY')
-DEBUG = os.getenv('DEBUG') == 'True'
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
+SECRET_KEY = os.getenv('SECRET_KEY',)
+DEBUG = os.getenv('DEBUG',)
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
 
 INSTALLED_APPS = [
@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django_jalali',
     'django.contrib.sites',
+    # 'django_celery_beat',
+
     
 ]
 
@@ -74,11 +76,11 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DATABASE_NAME', 'sutechla_db'),
-        'USER': os.environ.get('DATABASE_USER', 'sutechlab'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'password123!'),
-        'HOST': os.environ.get('DATABASE_HOST', 'localhost'),
-        'PORT': os.environ.get('DATABASE_PORT', '5432'),
+        'NAME': os.environ.get('DATABASE_NAME',),
+        'USER': os.environ.get('DATABASE_USER',),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD',),
+        'HOST': os.environ.get('DATABASE_HOST',),
+        'PORT': os.environ.get('DATABASE_PORT',),
     }
 }
 

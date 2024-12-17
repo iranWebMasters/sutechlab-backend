@@ -1,13 +1,7 @@
 version: "3.9"
 
 services:
-  redis:
-    container_name: redis
-    image: redis
-    restart: always
-    networks:
-      - my_network
-    command: redis-server --save 60 1 --loglevel warning
+
 
   postgres:
     container_name: postgres
@@ -46,7 +40,7 @@ services:
       - DATABASE_PORT=5432
       - CELERY_BROKER_URL=${CELERY_BROKER_URL}
     depends_on:
-      - redis
+      # - redis
       - postgres 
     networks:
       - my_network
@@ -62,34 +56,42 @@ services:
       - static_volume:/home/app/static
       - media_volume:/home/app/media
     depends_on:
-      - redis
+      # - redis
       - backend
     networks:
       - my_network
 
-  worker:
-    build: .
-    command: celery -A core worker --loglevel=info
-    volumes:
-      - ./core:/app
-    depends_on:
-      - redis
-      - backend
-      - postgres
-    networks:
-      - my_network
+  # worker:
+  #   build: .
+  #   command: celery -A core worker --loglevel=info
+  #   volumes:
+  #     - ./core:/app
+  #   depends_on:
+  #     - redis
+  #     - backend
+  #     - postgres
+  #   networks:
+  #     - my_network
   
-  beat:
-    build: .
-    command: celery -A core beat --loglevel=info
-    volumes:
-      - ./core:/app
-    depends_on:
-      - redis
-      - backend
-      - postgres 
-    networks:
-      - my_network
+  # beat:
+  #   build: .
+  #   command: celery -A core beat --loglevel=info
+  #   volumes:
+  #     - ./core:/app
+  #   depends_on:
+  #     - redis
+  #     - backend
+  #     - postgres 
+  #   networks:
+  #     - my_network
+
+  # redis:
+  #   container_name: redis
+  #   image: redis
+  #   restart: always
+  #   networks:
+  #     - my_network
+  #   command: redis-server --save 60 1 --loglevel warning
 
 volumes:
   static_volume:
