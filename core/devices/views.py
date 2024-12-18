@@ -28,7 +28,7 @@ class DevicesListView(ListView):
 
 class DevicesDetailView(DetailView):
     model = Device
-    template_name = 'devices/service-single.html'
+    template_name = 'devices/device-single.html'
     context_object_name = 'devices'
 
 

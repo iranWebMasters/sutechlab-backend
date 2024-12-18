@@ -7,11 +7,13 @@
     </div>
     <div class="section-content">
     <div class="row">
-    {% for device in devices %}
+        {% for device in devices %}
         <div class="col-lg-4 col-md-6 col-sm-12 col-12">
             <div class="service-card-3">
                 <div class="service-card-img-3">
-                    <img src="{{ device.image.url }}" alt="{{ device.name }}">
+                    <a href="{% url 'devices:single' pk=device.id %}">
+                        <img src="{{ device.image.url }}" alt="{{ device.name }}">
+                    </a>
                 </div>
                 <div class="service-card-text-3">
                     <h4><a href="{% url 'devices:single' pk=device.id %}">{{ device.name }}</a></h4>
