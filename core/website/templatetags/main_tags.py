@@ -9,9 +9,8 @@ register = template.Library()
 
 @register.inclusion_tag('website/index-devices.html')
 def display_devices():
-    devices=Device.objects.filter(status=1)[0:6]
-    return {'devices':devices} 
-
+    devices = Device.objects.filter(display_option='show')[:6]
+    return {'devices': devices}
 @register.inclusion_tag('website/index-blog.html')
 def display_latest_posts():
     current_time = timezone.now()

@@ -15,7 +15,7 @@ urlpatterns = [
     path('userpanel/', include('userpanel.urls')),
     path('orders/', include('orders.urls')),
     path('services/', include('services.urls')),
-    path('ckeditor/', include('ckeditor_uploader.urls')),
+    # path('ckeditor/', include('ckeditor_uploader.urls')),
     path("bankgateways/", az_bank_gateways_urls()),
     path('gateway/',include('gateway.urls')),
     path('api-auth/', include('rest_framework.urls')),

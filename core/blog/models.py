@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 from taggit.managers import TaggableManager
 from django_jalali.db import models as jmodels
-from ckeditor.fields import RichTextField
+# from ckeditor.fields import RichTextField
 from django.contrib.auth import get_user_model
 
 
@@ -21,7 +21,7 @@ class Category(models.Model):
 class Post(models.Model):
     title = models.CharField("عنوان", max_length=255)
     slug = models.SlugField("اسلاگ", max_length=255, unique=True, blank=True)
-    content = RichTextField("محتوا")
+    content = models.TextField("محتوا")
     tags = TaggableManager("برچسب‌ها")
     published_date = jmodels.jDateField("تاریخ انتشار", null=True)
     status = models.BooleanField("نمایش در سایت", default=True)
