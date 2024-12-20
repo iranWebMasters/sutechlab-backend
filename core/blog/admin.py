@@ -7,7 +7,7 @@ from django_jalali.admin.filters import JDateFieldListFilter
 class PostAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_date'
     empty_value_display = '-empty-'
-    list_display = ('title', 'author', 'counted_views', 'status',
+    list_display = ('title', 'author', 'counted_views', 'status','display_option',
                     'published_date', 'created_date')
     # list_filter = ('status', 'author')
     list_filter = ('status', 'author', ('created_date', JDateFieldListFilter))
@@ -16,6 +16,8 @@ class PostAdmin(admin.ModelAdmin):
     readonly_fields = ('counted_comment',)
     exclude = ('counted_views',)
     prepopulated_fields = {"slug": ("title", "author")}
+    list_editable = ('display_option',)  # Make these fields editable in the list view
+
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('name', 'phone_number', 'post', 'approved', 'created_date', 'updated_date')
