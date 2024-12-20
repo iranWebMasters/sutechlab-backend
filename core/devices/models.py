@@ -14,12 +14,11 @@ class Device(models.Model):
 
     name = models.CharField("نام دستگاه", max_length=255)
     english_name = models.CharField("نام انگلیسی دستگاه", max_length=255, blank=True, null=True)
-    model = models.CharField("مدل دستگاه", max_length=255)
+    model = models.CharField("مدل دستگاه", max_length=255,blank=True, null=True)
     usage = models.CharField("کاربرد", max_length=255, blank=True, null=True)
     manufacturer = models.CharField("شرکت سازنده", max_length=255, blank=True, null=True)
     country = models.CharField("کشور سازنده", max_length=255, blank=True, null=True)
-    services_description = models.TextField("شرح خدمات", blank=True, null=True)
-    additional_details = models.TextField("توضیحات", blank=True, null=True)
+    description = models.TextField("توضیحات", blank=True, null=True)
     image = models.ImageField("تصویر", upload_to='services_images/')
     status = models.CharField("وضعیت", max_length=20, choices=STATUS_CHOICES, default='ready')
     

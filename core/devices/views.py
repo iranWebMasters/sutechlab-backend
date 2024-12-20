@@ -14,7 +14,7 @@ class DevicesListView(ListView):
     paginate_by = 6
 
     def get_queryset(self):
-        queryset = Device.objects.filter(status=True,)
+        queryset = Device.objects.filter(status='ready',)
 
         username = self.kwargs.get('username')
         if username:

@@ -1,9 +1,6 @@
-{% extends 'base.html' %}
-{% load blog_tags %}
-{% load static %}
-
+{% extends 'base.html' %} {% load blog_tags %} {% load static %} 
 {% block content %}
-<div class="uni-banner">
+<!-- <div class="uni-banner">
     <div class="container">
         <div class="uni-banner-text">
             <h1>{{ devices.name }}</h1>
@@ -13,66 +10,81 @@
             </ul>
         </div>
     </div>
-</div>
+</div> -->
 
 <div class="service details-page ptb-100">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-md-12 col-sm-12 col-12">
-                <div class="details-text-area pr-20">
-                    <div class="details-page-img">
-                        <img src="{{ devices.image.url }}" alt="{{ devices.name }}">
-                    </div>
-                    <h3>{{ devices.name }}</h3>
-                    
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-12 col-sm-12 col-12">
+        <div class="details-text-area pr-20">
+          <div class="details-page-img">
+            <img src="{{ devices.image.url }}" alt="{{ devices.name }}" />
+          </div>
+          {% if devices.description %}
+          <p><strong> توضیحات:</strong> {{ devices.description|safe }}</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-12 col-sm-12 col-12">
+        <div class="sidebar-content pt-30">
+            <div class="sidebar-card categories mt-30">
+                <h3>{{ devices.name }}</h3>
+                <ul>
                     {% if devices.english_name %}
-                    <p><strong>نام انگلیسی:</strong> {{ devices.english_name }}</p>
+                    <li>
+                        <i class="fas fa-angle-double-left"></i>
+                        <strong>نام انگلیسی:</strong> {{ devices.english_name }}
+                    </li>
                     {% endif %}
-                    
+    
                     {% if devices.model %}
-                    <p><strong>مدل:</strong> {{ devices.model }}</p>
+                    <li>
+                        <i class="fas fa-angle-double-left"></i>
+                        <strong>مدل:</strong> {{ devices.model }}
+                    </li>
                     {% endif %}
-                    
+    
                     {% if devices.usage %}
-                    <p><strong>کاربرد:</strong> {{ devices.usage }}</p>
+                    <li>
+                        <i class="fas fa-angle-double-left"></i>
+                        <strong>کاربرد:</strong> {{ devices.usage }}
+                    </li>
                     {% endif %}
-                    
+    
                     {% if devices.manufacturer %}
-                    <p><strong>شرکت سازنده:</strong> {{ devices.manufacturer }}</p>
+                    <li>
+                        <i class="fas fa-angle-double-left"></i>
+                        <strong>شرکت سازنده:</strong> {{ devices.manufacturer }}
+                    </li>
                     {% endif %}
-                    
+    
                     {% if devices.country %}
-                    <p><strong>کشور سازنده:</strong> {{ devices.country }}</p>
+                    <li>
+                        <i class="fas fa-angle-double-left"></i>
+                        <strong>کشور سازنده:</strong> {{ devices.country }}
+                    </li>
                     {% endif %}
-                    
-                    {% if devices.services_description %}
-                    <p><strong>شرح خدمات:</strong> {{ devices.services_description|safe }}</p>
-                    {% endif %}
-                    
-                    {% if devices.additional_details %}
-                    <p><strong>توضیحات اضافی:</strong> {{ devices.additional_details|safe }}</p>
-                    {% endif %}
-                    
+    
                     {% if devices.status %}
-                    <p><strong>وضعیت:</strong> {{ devices.get_status_display }}</p>
+                    <li>
+                        <i class="fas fa-angle-double-left"></i>
+                        <strong>وضعیت:</strong> {{ devices.get_status_display }}
+                    </li>
                     {% endif %}
-                    
-                </div>
+                </ul>
             </div>
-            <div class="col-lg-4 col-md-12 col-sm-12 col-12">
-                <div class="sidebar-content pt-30">
-                    {% postcategories %}
-                    {% include 'blog/blog-hours.html' %}
-                </div>
-            </div>
+    
+            <!-- {% include 'blog/blog-hours.html' %} -->
         </div>
     </div>
+    </div>
+  </div>
 </div>
 
 <div class="request-button-area pt-30">
-    <div class="container">
-        <a href="{% url 'devices:index' %}" class="default-button">ثبت درخواست</a>
-    </div>
+  <div class="container">
+    <a href="{% url 'devices:index' %}" class="default-button">ثبت درخواست</a>
+  </div>
 </div>
 
 {% endblock content %}

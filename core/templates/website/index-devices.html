@@ -10,21 +10,23 @@
         {% for device in devices %}
         <div class="col-lg-4 col-md-6 col-sm-12 col-12">
             <div class="service-card-3">
-                <div class="service-card-img-3">
-                    <a href="{% url 'devices:single' pk=device.id %}">
+                <a href="{% url 'devices:single' pk=device.id %}" class="service-card-link">
+                    <div class="service-card-img-3">
                         <img src="{{ device.image.url }}" alt="{{ device.name }}">
-                    </a>
-                </div>
-                <div class="service-card-text-3">
-                    <h4><a href="{% url 'devices:single' pk=device.id %}">{{ device.name }}</a></h4>
-                    <p><strong>مدل:</strong> {{ device.model }}</p>
-                    <p><strong>وضعیت:</strong> {{ device.get_status_display }}</p>
-                    <a class="read-more-btn" href="{% url 'devices:single' pk=device.id %}">بیشتر بدانید</a>
-                </div>
+                    </div>
+                    <div class="service-card-text-3">
+                        <h4>{{ device.name }}</h4>
+                        <p><strong>نام انگلیسی:</strong> {{ device.english_name }}</p>
+                        <p><strong>وضعیت:</strong> {{ device.get_status_display }}</p>
+                        <!-- <span class="read-more-btn">بیشتر بدانید</span> -->
+                    </div>
+                </a>
             </div>
         </div>
-    {% endfor %}
-    </div>
+        {% endfor %}
+    
+</div>
+<a class="default-button default-button-3 view-all-btn mt-30" href="{% url 'devices:index' %}"><span>مشاهده همه دستگاه ها</span></a>
     </div>
     </div>
     </div>
