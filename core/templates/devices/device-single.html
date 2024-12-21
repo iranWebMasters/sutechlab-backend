@@ -44,13 +44,6 @@
                     </li>
                     {% endif %}
     
-                    {% if devices.usage %}
-                    <li>
-                        <i class="fas fa-angle-double-left"></i>
-                        <strong>کاربرد:</strong> {{ devices.usage }}
-                    </li>
-                    {% endif %}
-    
                     {% if devices.manufacturer %}
                     <li>
                         <i class="fas fa-angle-double-left"></i>
@@ -62,6 +55,13 @@
                     <li>
                         <i class="fas fa-angle-double-left"></i>
                         <strong>کشور سازنده:</strong> {{ devices.country }}
+                    </li>
+                    {% endif %}
+
+                    {% if devices.capabilities %}
+                    <li>
+                        <i class="fas fa-angle-double-left"></i>
+                        <strong>قابلیت ها:</strong> {{ devices.capabilities }}
                     </li>
                     {% endif %}
     
