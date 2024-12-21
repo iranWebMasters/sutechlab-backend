@@ -7,4 +7,5 @@ urlpatterns = [
     path('', DevicesListView.as_view(), name='index'),
     path('<int:pk>/', DevicesDetailView.as_view(), name='single'),
     path('search/', DevicesSearchView.as_view(), name='search'),
+    path('devices/experiments/<int:device_id>/', DevicesExperimentListView.as_view(), name='experiments'),
 ]

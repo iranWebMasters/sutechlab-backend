@@ -3,7 +3,7 @@
 <!-- <div class="uni-banner">
     <div class="container">
         <div class="uni-banner-text">
-            <h1>{{ devices.name }}</h1>
+            <h1>{{ device.name }}</h1>
             <ul>
                 <li><a href="{% url 'website:index' %}">خانه</a></li>
                 <li>جزئیات خدمات</li>
@@ -18,72 +18,70 @@
       <div class="col-lg-8 col-md-12 col-sm-12 col-12">
         <div class="details-text-area pr-20">
           <div class="details-page-img">
-            <img src="{{ devices.image.url }}" alt="{{ devices.name }}" />
+            <img src="{{ device.image.url }}" alt="{{ device.name }}" />
           </div>
-          {% if devices.description %}
-          <p><strong> توضیحات:</strong> {{ devices.description|safe }}</p>
+          {% if device.description %}
+          <p><strong> توضیحات:</strong> {{ device.description|safe }}</p>
           {% endif %}
         </div>
       </div>
       <div class="col-lg-4 col-md-12 col-sm-12 col-12">
         <div class="sidebar-content pt-30">
             <div class="sidebar-card categories mt-30">
-                <h3>{{ devices.name }}</h3>
+                <h3>{{ device.name }}</h3>
                 <ul>
-                    {% if devices.english_name %}
+                    {% if device.english_name %}
                     <li>
                         <i class="fas fa-angle-double-left"></i>
-                        <strong>نام انگلیسی:</strong> {{ devices.english_name }}
+                        <strong>نام انگلیسی:</strong> {{ device.english_name }}
                     </li>
                     {% endif %}
     
-                    {% if devices.model %}
+                    {% if device.model %}
                     <li>
                         <i class="fas fa-angle-double-left"></i>
-                        <strong>مدل:</strong> {{ devices.model }}
+                        <strong>مدل:</strong> {{ device.model }}
                     </li>
                     {% endif %}
     
-                    {% if devices.manufacturer %}
+                    {% if device.manufacturer %}
                     <li>
                         <i class="fas fa-angle-double-left"></i>
-                        <strong>شرکت سازنده:</strong> {{ devices.manufacturer }}
+                        <strong>شرکت سازنده:</strong> {{ device.manufacturer }}
                     </li>
                     {% endif %}
     
-                    {% if devices.country %}
+                    {% if device.country %}
                     <li>
                         <i class="fas fa-angle-double-left"></i>
-                        <strong>کشور سازنده:</strong> {{ devices.country }}
+                        <strong>کشور سازنده:</strong> {{ device.country }}
                     </li>
                     {% endif %}
 
-                    {% if devices.capabilities %}
+                    {% if device.capabilities %}
                     <li>
                         <i class="fas fa-angle-double-left"></i>
-                        <strong>قابلیت ها:</strong> {{ devices.capabilities }}
+                        <strong>قابلیت ها:</strong> {{ device.capabilities }}
                     </li>
                     {% endif %}
     
-                    {% if devices.status %}
+                    {% if device.status %}
                     <li>
                         <i class="fas fa-angle-double-left"></i>
-                        <strong>وضعیت:</strong> {{ devices.get_status_display }}
+                        <strong>وضعیت:</strong> {{ device.get_status_display }}
                     </li>
                     {% endif %}
                 </ul>
             </div>
-    
+            <div class="sidebar-card calculate-area mt-30">
+              <h3>لیست آزمون</h3>
+              <a href="{% url 'devices:experiments' device.id %}" class="default-button default-button-3">مشاهده</a>
+
+              </div>
             <!-- {% include 'blog/blog-hours.html' %} -->
         </div>
     </div>
     </div>
-  </div>
-</div>
-
-<div class="request-button-area pt-30">
-  <div class="container">
-    <a href="{% url 'devices:index' %}" class="default-button">ثبت درخواست</a>
   </div>
 </div>
 

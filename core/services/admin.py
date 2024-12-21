@@ -86,6 +86,15 @@ class ExperimentAdmin(admin.ModelAdmin):
     readonly_fields = ('created_date', 'updated_date')
     ordering = ('-created_date',)
     list_per_page = 20
+    actions = ['duplicate_experiments']
+    list_editable = ('status','iso_17025',)
+
+    def duplicate_experiments(self, request, queryset):
+        for experiment in queryset:
+            experiment.duplicate_experiments()
+        self.message_user(request, "تعداد آزمایش‌های انتخابی دو برابر شد.")
+    
+    duplicate_experiments.short_description = "دو برابر کردن آزمایش‌های انتخاب شده"
 
 
 admin.site.register(Laboratory, LaboratoryAdmin)

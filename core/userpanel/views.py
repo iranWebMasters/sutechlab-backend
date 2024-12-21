@@ -18,6 +18,8 @@ from django.http import HttpResponseRedirect,Http404
 from django.shortcuts import get_object_or_404
 from gateway.models import Payment 
 from azbankgateways import models as bank_models
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 import uuid
 
 
@@ -83,11 +85,21 @@ class ExperimentListView(ListView):
         context['profile'] = profile
         return context
 
+@method_decorator(login_required, name='dispatch')
 class TestDetailView(DetailView):
     model = Experiment
     context_object_name = 'experiments'
     
     template_name = 'services/experiment-details.html'
+    
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        if request.user.is_authenticated:
+            profile = Profile.objects.get(user = request.user)
+            required_fields = [profile.first_name, profile.last_name, profile.national_id, 
+                           profile.phone_number, profile.address, profile.postal_code]
+            if not all(required_fields):
+                return redirect('update_profile')
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)

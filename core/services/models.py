@@ -94,3 +94,24 @@ class Experiment(models.Model):
 
     def __str__(self):
         return self.test_name
+    
+    def duplicate_experiments(self):
+        # ایجاد یک کپی از رکورد فعلی
+        new_experiment = Experiment.objects.create(
+            test_name=self.test_name,
+            laboratory=self.laboratory,
+            device=self.device,
+            operator=self.operator,
+            iso_17025=self.iso_17025,
+            status=self.status,
+            created_date=self.created_date,
+            updated_date=self.updated_date
+        )
+
+        # کپی کردن آزمون‌ها
+        new_experiment.tests.set(self.tests.all())
+
+        # کپی کردن نمونه‌ها
+        new_experiment.samples.set(self.samples.all())
+
+        return new_experiment
