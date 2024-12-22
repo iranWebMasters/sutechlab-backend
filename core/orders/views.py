@@ -1,6 +1,6 @@
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import RequestInfo, Experiment,SampleInfo,TestInfo
+from .models import RequestInfo, Experiment,SampleInfo,TestInfo,Parameters
 from django.views.generic import FormView,DetailView,UpdateView,DeleteView
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
@@ -10,6 +10,7 @@ from django.views import View
 from accounts.models import Profile
 import logging
 import jdatetime
+import json
 
 from .forms import *
 
@@ -124,7 +125,7 @@ class SampleDeleteView(DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['sample'] = self.object  # برای نمایش اطلاعات نمونه در قالب
+        context['sample'] = self.object
         return context
     
 class TestInfoCreateView(FormView):
@@ -155,12 +156,31 @@ class TestInfoCreateView(FormView):
         experiment_id = self.kwargs['experiment_id']
         request_info.experiment = get_object_or_404(Experiment, id=experiment_id)
         request_info.user = self.request.user
+
+        parameter_values = {}
+        for key, value in self.request.POST.items():
+            if key not in form.cleaned_data:
+                parameter_values[key] = value
+
+        # حذف توکن CSRF از parameter_values
+        if 'csrfmiddlewaretoken' in parameter_values:
+            del parameter_values['csrfmiddlewaretoken']
+
+        # پرینت برای بررسی مقادیر parameter_values
+        print("Collected parameter values without CSRF token:", parameter_values)
+
+        # ذخیره مقادیر به عنوان JSON
+        request_info.parameter_values = json.dumps(parameter_values)
+
+        # پرینت برای بررسی مقدار parameter_values قبل از ذخیره
+        print("JSON parameter values to be saved:", request_info.parameter_values)
+
         request_info.save()
         return super().form_valid(form)
     
     def form_invalid(self, form):
         logger.error("Form is invalid.")
-        logger.error(form.errors)  # Log the form errors
+        logger.error(form.errors)
         return super().form_invalid(form)
 
 class TestParametersView(View):
@@ -172,6 +192,24 @@ class TestParametersView(View):
             return JsonResponse({'parameters': parameters_data})
         except Test.DoesNotExist:
             return JsonResponse({'error': 'Test not found'}, status=404)
+
+class ParameterValuesView(View):
+    def get(self,request,parameter_id,*args,**kwargs):
+        try:
+            parameter = Parameters.objects.get(id=parameter_id)
+            values = parameter.values.all()
+            values_data = [
+                {
+                    'id':value.id,
+                    'name':value.name,
+                    'default_value':value.default_value,
+                    'min_value':value.min_value,
+                    'max_value':value.max_value
+                    }
+                    for value in values]
+            return JsonResponse({'values':values_data})
+        except Parameters.DoesNotExist:
+            return JsonResponse({'error': 'Parameter not found'},status=404)
         
 class TestDetailView(DetailView):
     model = TestInfo

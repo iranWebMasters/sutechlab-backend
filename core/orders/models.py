@@ -3,6 +3,7 @@ from django.db import models
 from accounts.models import User
 from services.models import Experiment, Test, Parameters
 from .utils import generate_order_code
+import json
 
 
 class RequestInfo(models.Model):
@@ -58,7 +59,13 @@ class TestInfo(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name='تاریخ به‌روزرسانی')
 
     parameter = models.ForeignKey(Parameters, on_delete=models.CASCADE, verbose_name='پارامتر')
-    parameter_value = models.CharField(max_length=255, verbose_name='مقدار پارامتر')
+    parameter_values = models.JSONField(verbose_name='مقادیر پارامتر') 
+
+    def get_parameter_values_dict(self):
+        try:
+            return json.loads(self.parameter_values)  # تبدیل رشته JSON به دیکشنری
+        except json.JSONDecodeError:
+            return {}
 
     def __str__(self):
         return f"TestInfo(ID: {self.id}, User: {self.user.email}, Experiment: {self.experiment.test_name}, Sample ID: {self.user_sample.id}, Test: {self.test.name_fa if self.test else 'N/A'})"

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import RequestInfo, Request, SampleInfo, DiscountInfo, TestInfo,LaboratoryRequest
-
+from django.utils.html import format_html
 
 class RequestInfoAdmin(admin.ModelAdmin):   
     list_display = ('user', 'experiment', 'submission_date', 'description')
@@ -29,11 +29,38 @@ class DiscountInfoAdmin(admin.ModelAdmin):
     list_filter = ('is_faculty_member', 'is_student_or_staff', 'is_affiliated_with_institution')
 
 
+
 class TestInformationAdmin(admin.ModelAdmin):
     list_display = ('user', 'experiment', 'user_sample', 'test', 'repeat_count_test', 'created_at', 'updated_at')
     search_fields = ('user__email', 'experiment__name', 'user_sample__customer_sample_name', 'test__name')
     list_filter = ('experiment', 'test', 'created_at')
     ordering = ('-created_at',)
+
+    def get_readonly_fields(self, request, obj=None):
+        # اگر شیء وجود داشته باشد، فیلدهای فقط خواندنی را برمی‌گرداند
+        if obj is not None:
+            return super().get_readonly_fields(request, obj) + ('parameter_values_display',)
+        return super().get_readonly_fields(request, obj)
+
+    def parameter_values_display(self, obj):
+        if obj:
+            param_dict = obj.get_parameter_values_dict()  # فرض بر این است که متد get_parameter_values_dict در مدل وجود دارد
+            return format_html('<br><br>'.join([f"<strong>{key}:</strong> {value}" for key, value in param_dict.items()]))  # نمایش به صورت HTML
+        return "No parameter values available"
+    
+    parameter_values_display.short_description = 'Parameter Values'  # عنوان برای نمایش در پنل
+
+    # def get_fieldsets(self, request, obj=None):
+    #     # اضافه کردن فیلد سفارشی به بخش جزئیات
+    #     fieldsets = super().get_fieldsets(request, obj)
+    #     if obj is not None:
+    #         # اضافه کردن فیلد نمایش پارامترها به بخش جزئیات
+    #         fieldsets += (
+    #             (None, {
+    #                 'fields': ('parameter_values_display',),
+    #             }),
+    #         )
+    #     return fieldsets
 
 class LaboratoryRequestAdmin(admin.ModelAdmin):
     ...

@@ -61,14 +61,14 @@ class SampleAdmin(admin.ModelAdmin):
     list_per_page = 20
 
 class ParameterValueAdmin(admin.ModelAdmin):
-    list_display = ('value', 'min_value', 'max_value')
-    list_editable = ('min_value', 'max_value')
-    search_fields = ('value',)
+    list_display = ('name', 'default_value', 'min_value', 'max_value')
+    list_editable = ('default_value', 'min_value', 'max_value')
+    search_fields = ('name', 'default_value')
     list_filter = ('min_value', 'max_value')
-    ordering = ('value',)
+    ordering = ('name',)
     fieldsets = (
         (None, {
-            'fields': ('value', 'min_value', 'max_value')
+            'fields': ('name', 'default_value', 'min_value', 'max_value')
         }),
     )
 class ExperimentAdmin(admin.ModelAdmin):

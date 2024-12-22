@@ -47,15 +47,15 @@ class Parameters(models.Model):
         verbose_name_plural = 'پارامترها'
 
 
-from django.db import models
 
 class ParameterValue(models.Model):    
-    value = models.CharField(max_length=255, verbose_name='مقدار پیش فرض' )
-    min_value = models.FloatField(verbose_name='حداقل مقدار',null=True, blank=True)
-    max_value = models.FloatField(verbose_name='حداکثر مقدار',null=True, blank=True)
+    name = models.CharField(max_length=255, verbose_name='نام مقدار')
+    default_value = models.CharField(max_length=255, verbose_name='مقدار پیش فرض')
+    min_value = models.FloatField(verbose_name='حداقل مقدار', null=True, blank=True)
+    max_value = models.FloatField(verbose_name='حداکثر مقدار', null=True, blank=True)
 
     def __str__(self):
-        return self.value
+        return self.name
 
     class Meta:
         verbose_name = 'مقدار پارامتر'

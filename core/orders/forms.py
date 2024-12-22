@@ -1,6 +1,6 @@
 from django import forms
 from .models import  RequestInfo,SampleInfo,TestInfo,DiscountInfo
-
+from services.models import Parameters, ParameterValue
 class RequestInfoForm(forms.ModelForm):
     class Meta:
         model = RequestInfo
@@ -44,14 +44,9 @@ class SampleForm(forms.ModelForm):
 class TestInfoForm(forms.ModelForm):
     class Meta:
         model = TestInfo
-        fields = ['user_sample', 'test', 'repeat_count_test', 'parameter', 'parameter_value']  # حذف فیلدهای user و experiment
-        widgets = {
-            'sample': forms.Select(attrs={'class': 'form-control'}),
-            'test': forms.Select(attrs={'class': 'form-control'}),
-            'repeat_count_test': forms.NumberInput(attrs={'class': 'form-control'}),
-            'parameter': forms.Select(attrs={'class': 'form-control'}),
-            'parameter_value': forms.TextInput(attrs={'class': 'form-control'}),
-        }
+        fields = ['user_sample', 'test', 'repeat_count_test', 'parameter',]
+
+
 
 
 class DiscountInfoForm(forms.ModelForm):
