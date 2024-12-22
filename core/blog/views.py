@@ -92,7 +92,6 @@ class BlogDetailView(DetailView):
     def get_initial_data(self):
         initial_data = {}
         if self.request.user.is_authenticated:
-            initial_data['name'] = self.request.user.username
             initial_data['email'] = self.request.user.email
         return initial_data
     

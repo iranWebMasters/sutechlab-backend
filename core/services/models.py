@@ -8,7 +8,12 @@ class UnitAmount(models.Model):
     
     def __str__(self):
         return f"{self.amount} {self.unit}"
-    
+
+    class Meta:
+        verbose_name = 'مقدار واحد'
+        verbose_name_plural = 'مقادیر واحد'
+
+
 class UnitPrice(models.Model):
     CURRENCY_CHOICES = [
         ('IRR', 'ریال'),
@@ -21,23 +26,55 @@ class UnitPrice(models.Model):
     def __str__(self):
         return f"{self.unit_price} {self.get_currency_display()}"
 
+    class Meta:
+        verbose_name = 'قیمت واحد'
+        verbose_name_plural = 'قیمت‌های واحد'
+
+
 class Parameters(models.Model):
     name = models.CharField(max_length=255, verbose_name='نام پارامتر')
     unit = models.CharField(max_length=50, verbose_name='واحد اندازه‌گیری')
-    laboratory = models.ForeignKey('Laboratory', on_delete=models.CASCADE, related_name='tests', verbose_name='آزمایشگاه')
     unit_amount = models.ForeignKey('UnitAmount', on_delete=models.CASCADE, related_name='parameters', verbose_name='مقدار واحد')
     unit_price = models.ForeignKey('UnitPrice', on_delete=models.CASCADE, related_name='parameters', verbose_name='مبلغ واحد')
+    
+    values = models.ManyToManyField('ParameterValue', related_name='parameters', verbose_name='مقادیر')
 
     def __str__(self):
         return f"{self.name} - {self.unit_amount} - {self.unit} - {self.unit_price}"
 
+    class Meta:
+        verbose_name = 'پارامتر'
+        verbose_name_plural = 'پارامترها'
+
+
+from django.db import models
+
+class ParameterValue(models.Model):    
+    value = models.CharField(max_length=255, verbose_name='مقدار پیش فرض' )
+    min_value = models.FloatField(verbose_name='حداقل مقدار',null=True, blank=True)
+    max_value = models.FloatField(verbose_name='حداکثر مقدار',null=True, blank=True)
+
+    def __str__(self):
+        return self.value
+
+    class Meta:
+        verbose_name = 'مقدار پارامتر'
+        verbose_name_plural = 'مقادیر پارامترها'
+
+
+
 class Laboratory(models.Model):
     name = models.CharField(max_length=255, verbose_name='نام آزمایشگاه')
-    faculty = models.ForeignKey('Faculty', on_delete=models.CASCADE, related_name='experiments', verbose_name='دانشکده')
+    faculty = models.ForeignKey('Faculty', on_delete=models.CASCADE, related_name='experiments', verbose_name='دانشکده', null=True, blank=True)
     technical_manager = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='managed_laboratories', verbose_name='مدیر فنی')
     
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = 'آزمایشگاه'
+        verbose_name_plural = 'آزمایشگاه‌ها'
+
 
 class Faculty(models.Model):
     LOCATION_CHOICES = [
@@ -50,27 +87,38 @@ class Faculty(models.Model):
     def __str__(self):
         return f"{self.name} ({self.get_location_display()})"
 
+    class Meta:
+        verbose_name = 'دانشکده'
+        verbose_name_plural = 'دانشکده‌ها'
+
+
 class Test(models.Model):
     name_fa = models.CharField(max_length=255, verbose_name='نام فارسی آزمون')
-    name_en = models.CharField(max_length=255, verbose_name='نام انگلیسی آزمون')
-    operating_range = models.TextField(verbose_name='گستره کاری')
-    description = models.TextField(verbose_name='توصیف آزمون')
-    # add returable sample --- alireza
+    name_en = models.CharField(max_length=255, verbose_name='نام انگلیسی آزمون', null=True, blank=True)
+    operating_range = models.TextField(verbose_name='گستره کاری', null=True, blank=True)
+    description = models.TextField(verbose_name='توصیف آزمون', null=True, blank=True)
     parameters = models.ManyToManyField('Parameters', related_name='standards', verbose_name='پارامترها')
-
 
     def __str__(self):
         return f"{self.name_fa} / {self.name_en}"
 
+    class Meta:
+        verbose_name = 'آزمون'
+        verbose_name_plural = 'آزمون‌ها'
+
 
 class Sample(models.Model):
-    name = models.CharField(max_length=100, verbose_name='نام نمونه')
-    description = models.TextField(verbose_name='توصیف نمونه')
+    type = models.CharField(max_length=100, verbose_name='نوع نمونه')
+    description = models.TextField(verbose_name='توصیف نمونه', blank=True, null=True)
     is_returnable = models.BooleanField(default=False, verbose_name='نمونه برگشت پذیر است؟')
 
-
     def __str__(self):
-        return self.name
+        return self.type
+
+    class Meta:
+        verbose_name = 'نمونه'
+        verbose_name_plural = 'نمونه‌ها'
+
 
 class Experiment(models.Model):
     STATUS_CHOICES = [
@@ -96,7 +144,6 @@ class Experiment(models.Model):
         return self.test_name
     
     def duplicate_experiments(self):
-        # ایجاد یک کپی از رکورد فعلی
         new_experiment = Experiment.objects.create(
             test_name=self.test_name,
             laboratory=self.laboratory,
@@ -108,10 +155,11 @@ class Experiment(models.Model):
             updated_date=self.updated_date
         )
 
-        # کپی کردن آزمون‌ها
         new_experiment.tests.set(self.tests.all())
-
-        # کپی کردن نمونه‌ها
         new_experiment.samples.set(self.samples.all())
 
         return new_experiment
+
+    class Meta:
+        verbose_name = 'آزمایش'
+        verbose_name_plural = 'آزمایش‌ها'
