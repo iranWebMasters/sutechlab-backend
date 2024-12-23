@@ -84,7 +84,7 @@ def create_or_update_laboratory_request(sender, instance, created, **kwargs):
                 lab_request.test = test.test
                 lab_request.repeat_count_test = test.repeat_count_test
                 lab_request.parameter = test.parameter
-                lab_request.parameter_value = test.parameter_value
+                lab_request.parameter_values = test.parameter_values
                 print("Test information populated.")
 
             else:

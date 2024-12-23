@@ -139,7 +139,8 @@ class LaboratoryRequest(models.Model):
     test = models.ForeignKey(Test, blank=True, null=True, on_delete=models.CASCADE, verbose_name='عنوان آزمایش')
     repeat_count_test = models.PositiveIntegerField(verbose_name='تعداد تکرار آزمون', null=True, blank=True)
     parameter = models.ForeignKey(Parameters, on_delete=models.CASCADE, verbose_name='پارامتر', null=True, blank=True)
-    parameter_value = models.CharField(max_length=255, verbose_name='مقدار پارامتر', blank=True, null=True)
+    parameter_values = models.JSONField(verbose_name='مقادیر پارامتر')
+
     
     # Discount information fields
     is_faculty_member = models.BooleanField(default=False, verbose_name='آیا کاربر عضو هیات علمی است؟', null=True, blank=True)

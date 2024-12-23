@@ -1,14 +1,15 @@
 {% extends 'userpanel/base.html' %}
 {% load static %}
 {% block content %}
+{% include 'requests/request-head.html' %}
 <div class="container p-4 request-page" data-index="3" dir="rtl">
 
     <div class="bg-white p-4 rounded shadow-lg">
-        <h5 class="text-primary mb-4">ویرایش آزمون</h5>
+        <h5 class="text-primary mb-4">انتخاب آزمون</h5>
         
-        <form method="post" action="{% url 'orders:test_edit' pk=user_test.id experiment_id=experiment.id %}">
+        <form method="post" action="{% url 'orders:test_info_create' experiment.id %}">
             {% csrf_token %}
-            <div class="row mb-3">
+            <div class="row mb-4">
                 <div class="col-md-4">
                     <label for="sampleType" class="form-label">انتخاب نمونه</label>
                     <select class="form-select" id="samples-dropdown" name="user_sample">
@@ -25,7 +26,7 @@
                 </div>
             </div>
         
-            <div class="row mb-3">
+            <div class="row mb-4">
                 <!-- آزمون‌ها -->
                 <div class="col-md-4">
                     <div class="tests-table-container">
@@ -69,25 +70,27 @@
         
                 <!-- مقدار پارامتر -->
                 <div class="col-md-4">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">مقدار پارامتر</span>
-                        <input type="text" class="form-control" id="parameterValue" name="parameter_value">
+                    <div id="parameterValuesContainer" class="parameter-values-container">
+                        <!-- مقادیر پارامتر به صورت کارت‌ها نمایش داده می‌شوند -->
                     </div>
                 </div>
             </div>
             
             <div class="text-center mb-3">
-                <button type="submit" class="btn btn-secondary me-2">ثبت آزمون</button>
+                <button type="submit" class="btn btn-secondary btn-sm me-2">ثبت آزمون</button>
+                <!-- دکمه بازنشانی فرم -->
+                <button type="button" id="resetButton" class="btn btn-danger btn-sm">حذف انتخاب</button>
             </div>
         </form>
         
-        <!-- <div class="text-center">
-            <button data-index="3" class="page-btn backward-btn btn btn-outline-primary px-4 me-2">مرحله
-                قبل</button>
-            <button data-index="3" class="page-btn forward-btn btn btn-success px-4 me-2">ثبت و مرحله
-                بعد</button>
-            <button type="button" class="btn btn-danger px-4">انصراف</button>
-        </div> -->
+
+
+        <div class="text-center">
+            <a href="#" class="page-btn backward-btn btn btn-outline-primary btn-sm px-4 me-2">مرحله قبل</a>
+            <a href="{% url 'orders:discount_info_form' experiment.id %}" class="page-btn forward-btn btn btn-success btn-sm px-4 me-2">ثبت و مرحله بعد</a>
+            <a href="#" class="btn btn-danger btn-sm px-4">انصراف</a>
+        </div>
+        
     </div>
 </div>
 
@@ -95,11 +98,15 @@
     document.addEventListener("DOMContentLoaded", function () {
         const testRadios = document.querySelectorAll('input[name="test"]');
         const parametersTableBody = document.querySelector('#parametersTableBody');
+        const parameterValuesContainer = document.querySelector('#parameterValuesContainer'); // Container for displaying parameter values
+        const resetButton = document.getElementById('resetButton');
         
+        // مدیریت انتخاب تست
         testRadios.forEach(radio => {
             radio.addEventListener('change', function () {
                 const testId = this.value; // دریافت شناسه تست از رادیو
                 const url = "{% url 'orders:get_test_parameters' test_id=0 %}".replace(/0/, testId); // جایگزینی شناسه تست در URL
+    
                 fetch(url) // استفاده از URL داینامیک
                     .then(response => {
                         if (!response.ok) {
@@ -108,7 +115,8 @@
                         return response.json();
                     })
                     .then(data => {
-                        parametersTableBody.innerHTML = ''; // پاک کردن پارامترهای فعلی
+                        // پاک کردن پارامترهای فعلی
+                        parametersTableBody.innerHTML = ''; 
                         data.parameters.forEach(parameter => {
                             const row = `
                                 <tr>
@@ -120,14 +128,135 @@
                             `;
                             parametersTableBody.innerHTML += row;
                         });
+    
+                        // اضافه کردن رویداد به دکمه‌های رادیویی جدید
+                        const parameterRadios = document.querySelectorAll('input[name="parameter"]');
+                        parameterRadios.forEach(paramRadio => {
+                            paramRadio.addEventListener('change', function () {
+                                const parameterId = this.value;
+                                const paramUrl = "{% url 'orders:parameter_values' parameter_id=0 %}".replace(/0/, parameterId);
+    
+                                fetch(paramUrl)
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error('Network response was not ok');
+                                        }
+                                        return response.json();
+                                    })
+                                    .then(data => {
+                                        if (data.values && data.values.length > 0) {
+                                            // نمایش تمام مقادیر پارامتر به همراه اطلاعات مورد نیاز
+                                            let tableContent = '';
+                                            data.values.forEach(value => {
+                                                tableContent += `
+                                                    <div class="parameter-value-card">
+                                                        <h6 class="card-title">${value.name}</h6>
+                                                        <input type="text" name="${value.name}" class="form-control" value="${value.default_value}" placeholder="مقدار دلخواه را وارد کنید">
+                                                        <div class="d-flex justify-content-between mt-2">
+                                                            <span>حداقل: ${value.min_value}</span>
+                                                            <span>حداکثر: ${value.max_value}</span>
+                                                        </div>
+                                                    </div>
+                                                `;
+                                                
+                                                // اضافه کردن فیلد hidden برای ارسال داده‌ها
+                                                // tableContent += `
+                                                //     <input type="hidden" name="parameter_value_${value.id}" value="${value.default_value}">
+                                                // `;
+                                            });
+                                            parameterValuesContainer.innerHTML = tableContent;
+                                        } else {
+                                            parameterValuesContainer.innerHTML = '<p>مقداری برای این پارامتر یافت نشد.</p>';
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error fetching parameter values:', error);
+                                    });
+                            });
+                        });
                     })
                     .catch(error => {
                         console.error('Error fetching parameters:', error);
                     });
             });
         });
+
+        // بازنشانی فرم با کلیک روی دکمه
+        resetButton.addEventListener('click', function () {
+            // Reset all radio buttons
+            const radioButtons = document.querySelectorAll('input[type="radio"]');
+            radioButtons.forEach(radio => {
+                radio.checked = false;
+            });
+
+            // Reset the select dropdown
+            const selectDropdown = document.getElementById('samples-dropdown');
+            selectDropdown.selectedIndex = 0;
+
+            // Reset the number input
+            const numberInput = document.getElementById('sampleRepeats');
+            numberInput.value = 1;
+
+            // Clear parameter values section
+            const parameterValuesContainer = document.querySelector('#parameterValuesContainer');
+            parameterValuesContainer.innerHTML = '';
+        });
     });
 </script>
 
+<style>
+    /* Unified styling for all elements */
+    .tests-table-container {
+        margin-bottom: 20px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        padding: 10px; /* Smaller padding */
+    }
+    
+    .tests-table td {
+        vertical-align: middle;
+    }
 
-{% endblock content %}
+    .tests-table th {
+        text-align: center;
+    }
+    
+    .parameter-value-card {
+        background-color: #f1e0f3;
+        border: 1px solid #dddddd;
+        border-radius: 8px;
+        padding: 8px; /* Smaller padding */
+        margin-bottom: 8px; /* Smaller margin */
+    }
+
+    .parameter-value-card input {
+        width: 100%;
+        font-size: 15px; /* Smaller font size */
+        padding: 6px; /* Smaller padding */
+    }
+
+    .parameter-values-container {
+        display: flex;
+        flex-direction: column;
+        gap: 8px; /* Smaller gap */
+    }
+
+    .parameter-value-card h6 {
+        font-size: 14px; /* Smaller title font */
+        margin-bottom: 6px; /* Smaller margin */
+    }
+    
+    .btn {
+        border-radius: 5px;
+        font-size: 16px; /* Smaller button font */
+    }
+
+    .page-btn {
+        margin: 5px;
+    }
+
+    .backward-btn, .forward-btn {
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
