@@ -42,7 +42,8 @@ class RequestInfoCreateView(LoginRequiredMixin, CreateView):
         context['experiment'] = experiment
         context['laboratory_name'] = experiment.laboratory.name
         profile = Profile.objects.get(user=self.request.user)
-        context['profile'] = profile 
+        context['profile'] = profile
+        context['current_step'] = 1
         
         return context
 
@@ -75,6 +76,8 @@ class SampleInfoCreateView(FormView):
         context['formset'] = self.get_form()
         profile = Profile.objects.get(user=self.request.user)
         context['profile'] = profile 
+        context['current_step'] = 2
+
         return context
         
     def form_valid(self, form):
@@ -148,6 +151,8 @@ class TestInfoCreateView(FormView):
             'experiment': experiment,
             'user_samples': user_samples,
             'user_tests': user_tests,
+            'current_step': 3
+
         }
         return context
     
@@ -284,6 +289,8 @@ class DiscountInfoFormView(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         profile = Profile.objects.get(user=self.request.user)
-        context['profile'] = profile 
+        context['profile'] = profile
+        context['current_step']= 4
+
         return context
     

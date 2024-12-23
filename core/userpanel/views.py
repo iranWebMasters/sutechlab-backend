@@ -86,9 +86,9 @@ class ExperimentListView(ListView):
         return context
 
 @method_decorator(login_required, name='dispatch')
-class TestDetailView(DetailView):
+class ExperimentDetailView(DetailView):
     model = Experiment
-    context_object_name = 'experiments'
+    context_object_name = 'experiment'
     
     template_name = 'services/experiment-details.html'
     

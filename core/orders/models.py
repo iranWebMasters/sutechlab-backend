@@ -74,13 +74,23 @@ class TestInfo(models.Model):
 class DiscountInfo(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='کاربر')
     experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE)
+    
+    send_cost = models.BooleanField(default=False)  # تمایل به پرداخت هزینه ارسال نمونه و فاکتور
     is_faculty_member = models.BooleanField(default=False)  # آیا کاربر عضو هیات علمی است؟
     is_student_or_staff = models.BooleanField(default=False)  # آیا کاربر دانشجو یا کارکنان دانشگاه است؟
+    # Existing fields
     is_affiliated_with_institution = models.BooleanField(default=False)  # آیا کاربر متقاضی استفاده از تخفیف نهادهای طرف قرارداد است؟
     discount_institution_name = models.CharField(max_length=255, blank=True)  # نام نهاد تخفیف
+    
+    # New fields
+    contract_party_file = models.FileField(upload_to='contract_party_files/', blank=True, null=True)  # فایل نهاد تخفیف
+    has_labs_net_grant = models.BooleanField(default=False)  # آیا کاربر دارای گرنت شبکه آزمایشگاهی است؟
+    labs_net_file = models.FileField(upload_to='labs_net_files/', blank=True, null=True)  # فایل گرنت شبکه آزمایشگاهی
+    has_research_grant = models.BooleanField(default=False)  # آیا کاربر دارای گرنت پژوهشی است؟
+    research_grant_withdrawal_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)  # میزان استفاده از گرنت پژوهشی
 
     def __str__(self):
-        return f"RequestInfo(ID: {self.id}, User: {self.user.email}, Experiment: {self.experiment.test_name},)"
+        return f"DiscountInfo(ID: {self.id}, User: {self.user.email}, Experiment: {self.experiment.test_name},)"
 
 class Request(models.Model):
     STATUS_CHOICES = [

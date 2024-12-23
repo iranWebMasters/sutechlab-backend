@@ -47,15 +47,30 @@ class TestInfoForm(forms.ModelForm):
         fields = ['user_sample', 'test', 'repeat_count_test', 'parameter',]
 
 
-
-
 class DiscountInfoForm(forms.ModelForm):
     class Meta:
         model = DiscountInfo
-        fields = ['is_faculty_member', 'is_student_or_staff', 'is_affiliated_with_institution', 'discount_institution_name']
+        fields = [
+            'is_faculty_member', 
+            'is_student_or_staff', 
+            'is_affiliated_with_institution', 
+            'discount_institution_name',
+            'send_cost',  # New field for sending costs
+            'contract_party_file',  # New field for contract party file
+            'has_labs_net_grant',  # New field for Labs Network grant
+            'labs_net_file',  # New field for Labs Network file
+            'has_research_grant',  # New field for research grant
+            'research_grant_withdrawal_amount'  # New field for withdrawal amount
+        ]
         widgets = {
             'is_faculty_member': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'is_student_or_staff': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'is_affiliated_with_institution': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'discount_institution_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'send_cost': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'contract_party_file': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'has_labs_net_grant': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'labs_net_file': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'has_research_grant': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'research_grant_withdrawal_amount': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'میزان استفاده (ریال)'}),
         }

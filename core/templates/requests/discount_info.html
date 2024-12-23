@@ -4,41 +4,136 @@
 {% block content %}
 {% include 'requests/request-head.html' %}
 
-<div class="container my-5">
-  <div class="card shadow-lg border-0 rounded-3">
-    <div class="card-header bg-gradient-primary text-white text-center py-4 rounded-top">
-      <h2 class="mb-0">فرم اطلاعات تخفیف</h2>
+<div class="container p-4 request-page" data-index="4" dir="rtl">
+    <div class="bg-white p-4 rounded shadow-lg">
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h6 class="card-title">هزینه ارسال فاکتور و نمونه</h6>
+                    <div class="form-check ">
+                        <input class="form-check-input" type="checkbox" id="sendCost" name="send_cost">
+                        <label class="form-check-label" for="sendCost">
+                            تمایل به پرداخت هزینه ارسال نمونه و فاکتور، بعد از انجام آزمون را دارم
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h6 class="card-title ">اطلاعات تخفیف ها</h6>
+
+                    <div class="row">
+                        <div class="form-check col-md-6">
+                            <input class="form-check-input" type="radio" name="discountInfo" value="facultyMember" id="facultyMember">
+                            <label class="form-check-label" for="facultyMember">
+                                عضو هیات علمی دانشگاه هستم
+                            </label>
+                            <input type="hidden" name="is_faculty_member" value="True">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-check col-md-6">
+                            <input class="form-check-input" type="radio" name="discountInfo" value="student" id="student">
+                            <label class="form-check-label" for="student">
+                                دانشجو هستم
+                            </label>
+                            <input type="hidden" name="is_student_or_staff" value="True">
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="form-check col-md-6">
+                            <input class="form-check-input" type="radio" name="discountInfo" value="contractParty" id="contractParty">
+                            <label class="form-check-label" for="contractParty">
+                                متقاضی استفاده از تخفیف نهاد های طرف قرارداد هستم
+                            </label>
+                            <input type="hidden" name="is_affiliated_with_institution" value="True">
+                        </div>
+                        <div class="col-md-6" id="contractPartyFileSection" style="display:none">
+                            <div class="input-group">
+                                <input type="file" class="form-control" name="contract_party_file">
+                            </div>
+                            <small class="text-muted">نام فایل باید حاوی حروف A-Z باشد</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h6 class="card-title ">اطلاعات گرنت ها</h6>
+                    <div class="row">
+                        <div class="col-md-6 form-check">
+                            <input class="form-check-input" type="checkbox" name="has_labs_net_grant" id="labsNetGrant">
+                            <label class="form-check-label" for="labsNetGrant">
+                                دارای گرنت شبکه آزمایشگاهی فناوری های راهبردی هستم
+                            </label>
+                        </div>
+                        <div class="col-md-6" id="labsNetFileSection" style="display:none">
+                            <div class="input-group">
+                                <input type="file" class="form-control" name="labs_net_file">
+                            </div>
+                            <small class="text-muted">نام فایل باید حاوی حروف A-Z باشد</small>
+                        </div>
+                    </div>
+                    <div class="row" id="researchGrantInfo" style="display: none;">
+                        <div class="form-check col-md-6">
+                            <input class="form-check-input" type="checkbox" name="has_research_grant" id="researchGrant">
+                            <label class="form-check-label" for="researchGrant">
+                                دارای گرنت پژوهشی دانشگاه صنعتی شریف هستم
+                            </label>
+                        </div>
+
+                        <div class="col researchGrantWithdrawalAmountInputs" style="display: none;">
+                            <input type="number" class="form-control" name="research_grant_withdrawal_amount" placeholder="میزان استفاده (ریال)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button type="button" data-index="4" class="page-btn backward-btn btn btn-outline-primary px-4 me-2">مرحله قبل</button>
+                <button type="submit" data-index="4" class="page-btn complete-btn btn btn-success px-4 me-2">اتمام و ثبت درخواست</button>
+                <button type="button" class="btn btn-danger px-4">انصراف</button>
+            </div>
+        </form>
     </div>
-    <div class="card-body p-5">
-      <form method="post" class="needs-validation" novalidate>
-        {% csrf_token %}
-
-        <div class="form-check mb-4">
-          {{ form.is_faculty_member }}
-          <label class="form-check-label" for="{{ form.is_faculty_member.id_for_label }}">عضو هیئت علمی هستید؟</label>
-        </div>
-
-        <div class="form-check mb-4">
-          {{ form.is_student_or_staff }}
-          <label class="form-check-label" for="{{ form.is_student_or_staff.id_for_label }}">دانشجو یا کارمند دانشگاه هستید؟</label>
-        </div>
-
-        <div class="form-check mb-4">
-          {{ form.is_affiliated_with_institution }}
-          <label class="form-check-label" for="{{ form.is_affiliated_with_institution.id_for_label }}">متقاضی استفاده از تخفیف نهادهای طرف قرارداد هستید؟</label>
-        </div>
-
-        <div class="form-floating mb-4">
-          {{ form.discount_institution_name }}
-          <label for="{{ form.discount_institution_name.id_for_label }}">نام نهاد تخفیف</label>
-        </div>
-
-        <div class="text-center">
-          <button type="submit" class="btn btn-lg btn-success rounded-pill px-5 py-2 shadow-sm">ثبت</button>
-          <a href="#" class="btn btn-lg btn-outline-danger rounded-pill px-5 py-2 shadow-sm ms-3">انصراف</a>
-        </div>
-      </form>
-    </div>
-  </div>
 </div>
+
+<script>
+    (function () {
+        var lastDiscountPlan;
+        $("input[name='discountInfo']").on("click", function () {
+            if (lastDiscountPlan == this.value) {
+                $("input[name='discountInfo']").prop("checked", false);
+                lastDiscountPlan = undefined;
+            } else lastDiscountPlan = this.value;
+            if (["facultyMember", "student"].includes(lastDiscountPlan)) {
+                $("#contractPartyFileSection").slideUp(200).delay(200);
+                $("#researchGrantInfo").slideDown(200);
+            } else if (["contractParty"].includes(lastDiscountPlan)) {
+                $("#researchGrantInfo").slideUp(200).delay(200);
+                $("#contractPartyFileSection").slideDown(200);
+            } else {
+                $("#contractPartyFileSection").slideUp(200);
+                $("#researchGrantInfo").slideUp(200);
+            }
+        });
+    })();
+
+    $("input[name='has_research_grant']").on("change", function () {
+        if ($(this).prop("checked"))
+            $(".researchGrantWithdrawalAmountInputs").slideDown(200);
+        else $(".researchGrantWithdrawalAmountInputs").slideUp(200);
+    });
+
+    $("input[name='has_labs_net_grant']").on("change", function () {
+        if ($(this).prop("checked")) $("#labsNetFileSection").slideDown(200);
+        else $("#labsNetFileSection").slideUp(200);
+    });
+</script>
+
 {% endblock %}

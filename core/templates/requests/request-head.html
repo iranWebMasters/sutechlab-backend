@@ -1,5 +1,5 @@
 <div class="stepper">
-    <div class="step" data-index="1">
+    <div class="step {% if current_step == 1 %}active{% endif %}" data-index="1">
         <div class="circle">
             <span class="completed-mark">✔</span>
             <span class="num">1</span>
@@ -7,7 +7,7 @@
         <p>اطلاعات درخواست</p>
     </div>
     <div class="line" data-index="1"></div>
-    <div class="step" data-index="2">
+    <div class="step {% if current_step == 2 %}active{% endif %}" data-index="2">
         <div class="circle">
             <span class="completed-mark">✔</span>
             <span class="num">2</span>
@@ -15,7 +15,7 @@
         <p>اطلاعات نمونه</p>
     </div>
     <div class="line" data-index="2"></div>
-    <div class="step" data-index="3">
+    <div class="step {% if current_step == 3 %}active{% endif %}" data-index="3">
         <div class="circle">
             <span class="completed-mark">✔</span>
             <span class="num">3</span>
@@ -23,7 +23,7 @@
         <p>اطلاعات آزمون</p>
     </div>
     <div class="line" data-index="3"></div>
-    <div class="step" data-index="4">
+    <div class="step {% if current_step == 4 %}active{% endif %}" data-index="4">
         <div class="circle">
             <span class="completed-mark">✔</span>
             <span class="num">4</span>
