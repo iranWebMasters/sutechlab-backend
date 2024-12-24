@@ -24,10 +24,31 @@ class RequestAdmin(admin.ModelAdmin):
 
 
 class DiscountInfoAdmin(admin.ModelAdmin):
-    list_display = ('is_faculty_member', 'is_student_or_staff', 'is_affiliated_with_institution', 'discount_institution_name')
-    search_fields = ('discount_institution_name',)
-    list_filter = ('is_faculty_member', 'is_student_or_staff', 'is_affiliated_with_institution')
-
+    list_display = (
+        'user',  # Assuming you want to display the user email
+        'experiment',  # Assuming you want to display the experiment name
+        'send_cost',
+        'is_faculty_member',
+        'is_student_or_staff',
+        'is_affiliated_with_institution',
+        'has_labs_net_grant',
+        'has_research_grant',
+        'research_grant_withdrawal_amount',
+    )
+    
+    search_fields = (
+        'user__email',  # Assuming you want to search by user email
+        'experiment__test_name',  # Assuming you want to search by experiment name
+        # Optional: Add new fields if necessary
+    )
+    
+    list_filter = (
+        'is_faculty_member',
+        'is_student_or_staff',
+        'is_affiliated_with_institution',
+        'has_labs_net_grant',
+        'has_research_grant',
+    )
 
 
 class TestInformationAdmin(admin.ModelAdmin):
