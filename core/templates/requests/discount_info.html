@@ -97,7 +97,7 @@
             <div class="text-center">
                 <button type="button" data-index="4" class="page-btn backward-btn btn btn-outline-primary px-4 me-2">مرحله قبل</button>
                 <button type="submit" data-index="4" class="page-btn complete-btn btn btn-success px-4 me-2">اتمام و ثبت درخواست</button>
-                <button type="button" class="btn btn-danger px-4">انصراف</button>
+                <a href="{% url 'orders:confirm_cancel' user_id=request.user.id experiment_id=experiment.id %}" class="btn btn-danger px-4">انصراف</a>
             </div>
         </form>
     </div>

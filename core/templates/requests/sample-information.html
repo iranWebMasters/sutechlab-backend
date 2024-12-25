@@ -125,7 +125,8 @@
         <div class="text-center">
             <a href="{% url 'orders:request_info' experiment.id %}" class="page-btn backward-btn btn btn-outline-primary px-4 me-2">مرحله قبل</a>
             <a href="{% url 'orders:test_info_create' experiment.id %}" class="page-btn forward-btn btn btn-success px-4 me-2">ثبت و مرحله بعد</a>
-            <a href="" class="btn btn-danger px-4">انصراف</a>
+            <a href="{% url 'orders:confirm_cancel' user_id=request.user.id experiment_id=experiment.id %}" class="btn btn-danger px-4">انصراف</a>
+
         </div>
     </div>
 </div>

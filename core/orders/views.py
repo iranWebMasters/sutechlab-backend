@@ -2,12 +2,15 @@ from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import RequestInfo, Experiment,SampleInfo,TestInfo,Parameters
 from django.views.generic import FormView,DetailView,UpdateView,DeleteView
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404,redirect,render
 from django.urls import reverse_lazy
+from django.urls import reverse
+from django.contrib import messages
 from django.http import JsonResponse
 from services.models import Test
 from django.views import View
 from accounts.models import Profile
+from accounts.models import User
 import logging
 import jdatetime
 import json
@@ -294,3 +297,29 @@ class DiscountInfoFormView(FormView):
 
         return context
     
+
+class UserOrderExperimentCancelView(View):
+    template_name = 'userpanel/order_confirm_cancel.html'
+    success_url = reverse_lazy('userpanel:experiments-list')
+
+    def get(self, request, user_id, experiment_id):
+        user = get_object_or_404(User, id=user_id)
+        experiment = get_object_or_404(Experiment, id=experiment_id)
+        profile = Profile.objects.get(user=self.request.user)
+        referer = request.META.get('HTTP_REFERER', reverse('userpanel:index'))  # Default to index if no referer
+        return render(request, self.template_name, {
+            'user': user,
+            'experiment': experiment,
+            'profile': profile,
+            'referer': referer
+        })
+        
+    def post (self,request,user_id,experiment_id):
+        user = get_object_or_404(User,id=user_id)
+        experiment = get_object_or_404(Experiment,id=experiment_id)
+
+        RequestInfo.objects.filter(user=user, experiment=experiment).delete()
+        SampleInfo.objects.filter(user=user,experiment=experiment).delete()
+        TestInfo.objects.filter(user=user,experiment=experiment)
+        DiscountInfo.objects.filter(user=user,experiment=experiment)
+        return redirect(self.success_url)

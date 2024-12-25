@@ -71,17 +71,6 @@ class TestInformationAdmin(admin.ModelAdmin):
     
     parameter_values_display.short_description = 'Parameter Values'  # عنوان برای نمایش در پنل
 
-    # def get_fieldsets(self, request, obj=None):
-    #     # اضافه کردن فیلد سفارشی به بخش جزئیات
-    #     fieldsets = super().get_fieldsets(request, obj)
-    #     if obj is not None:
-    #         # اضافه کردن فیلد نمایش پارامترها به بخش جزئیات
-    #         fieldsets += (
-    #             (None, {
-    #                 'fields': ('parameter_values_display',),
-    #             }),
-    #         )
-    #     return fieldsets
 
 class LaboratoryRequestAdmin(admin.ModelAdmin):
     ...

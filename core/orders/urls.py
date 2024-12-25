@@ -19,5 +19,6 @@ urlpatterns = [
     path('experiment/<int:experiment_id>/test/<int:pk>/delete/', TestDeleteView.as_view(), name='test_delete'),
 
     path('discount-info/<int:experiment_id>/', DiscountInfoFormView.as_view(), name='discount_info_form'),
+    path('confirm_cancel/<int:user_id>/<int:experiment_id>/',UserOrderExperimentCancelView.as_view(),name='confirm_cancel')
 
 ]

@@ -22,10 +22,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 import uuid
 
-
-
 from .forms import *
-
 
 
 class IndexView(TemplateView):
@@ -70,7 +67,6 @@ class ProfileUpdatePanelView(LoginRequiredMixin,UpdateView):
         response = super().form_invalid(form)
         return response
     
-
 
 class ExperimentListView(ListView):
     model = Experiment
@@ -133,7 +129,7 @@ class DownloadInvoiceView(View):
 
 class LaboratoryRequestDeleteView(DeleteView):
     model = LaboratoryRequest
-    template_name = 'userpanel/confirm_delete.html'  # Specify a template for confirmation
+    template_name = 'userpanel/order_confirm_delete.html'  # Specify a template for confirmation
     success_url = reverse_lazy('userpanel:index')  # URL to redirect after successful deletion
 
     def get_context_data(self, **kwargs):
@@ -181,7 +177,6 @@ class LaboratoryRequestDetailView(DetailView):
         # You can add more context variables as needed
         return context
     
-
 class PaymentPageView(DetailView):
     model = LaboratoryRequest
     template_name = 'userpanel/payment_page.html'  # Create this template for payment
