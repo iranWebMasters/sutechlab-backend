@@ -29,7 +29,8 @@ class BlogListView(ListView):
 
     def get_queryset(self):
         current_time = timezone.now()
-        queryset = Post.objects.filter(status=True, published_date__lte=current_time).order_by('-published_date')
+        # queryset = Post.objects.filter(status=True, published_date__lte=current_time).order_by('-published_date')
+        queryset = Post.objects.filter(status=True,published_date__lte=current_time).prefetch_related('tags').order_by('-published_date')
 
         cat_name = self.kwargs.get('cat_name')
         if cat_name:

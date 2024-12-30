@@ -1,26 +1,24 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .invoices import generate_invoice
 from django.db import transaction
-from .models import *
+from .models import RequestInfo, SampleInfo, TestInfo, DiscountInfo, Request, LaboratoryRequest
 
 @receiver(post_save, sender=RequestInfo)
 @receiver(post_save, sender=SampleInfo)
 @receiver(post_save, sender=TestInfo)
 @receiver(post_save, sender=DiscountInfo)
 def create_request(sender, instance, **kwargs):
-    # Check if the instance has a user and experiment
     if not instance.user or not instance.experiment:
-        return  # Avoid processing if user or experiment is missing
+        return
 
     with transaction.atomic():
-        # Create or retrieve the related Request
+        # Get or create the request
         request, created = Request.objects.get_or_create(
             user=instance.user,
             experiment=instance.experiment,
         )
-
-        # Update fields based on instance type
+        
+        # Update the request with the instance information
         if isinstance(instance, RequestInfo):
             request.request_info = instance
         elif isinstance(instance, SampleInfo):
@@ -29,91 +27,63 @@ def create_request(sender, instance, **kwargs):
             request.test_info.add(instance)
         elif isinstance(instance, DiscountInfo):
             request.discount_info = instance
-
-        # Save the Request only if there are changes
+            request.is_complete = True
+        
+        # Save the request
         request.save()
 
-        # Check completeness and generate invoice if needed
-  # Save changes to the request
-
-
+        # Debugging logs (optional)
+        print(f"Request ID: {request.id}, is_complete: {request.is_complete}")
 
 @receiver(post_save, sender=Request)
-def create_or_update_laboratory_request(sender, instance, created, **kwargs):
-    print('Signal received for Request ID:', instance.id)
+def create_laboratory_request(sender, instance, created, **kwargs):
+    if instance.is_complete:
+        # ایجاد یک شیء جدید از LaboratoryRequest
+        laboratory_request = LaboratoryRequest.objects.create(
+            user=instance.user,
+            experiment=instance.experiment,
+            order_code=instance.request_info.order_code,
+            submission_date=instance.request_info.submission_date,
+            description=instance.request_info.description,
+            status='pending',  # یا هر وضعیت دیگری که بخواهید
+            is_complete=instance.is_complete,
+            invoice_pdf=None,
+            final_price=0,
+        )
 
-    try:
-        with transaction.atomic():
-            lab_request, created_lab_request = LaboratoryRequest.objects.get_or_create(
-                user=instance.user,
-                experiment=instance.experiment,
-                defaults={
-                    'submission_date': instance.request_info.submission_date if instance.request_info else None,
-                    'description': instance.request_info.description if instance.request_info else None,
-                    'order_code': instance.request_info.order_code if instance.request_info else None, 
-                }
-            )
+        # کپی‌برداری از اطلاعات نمونه‌ها
+        for sample_info in instance.sample_info.all():
+            laboratory_request.sample_type = sample_info.sample_type
+            laboratory_request.customer_sample_name = sample_info.customer_sample_name
+            laboratory_request.sample_count = sample_info.sample_count
+            laboratory_request.additional_info = sample_info.sample_description
+            laboratory_request.is_perishable = sample_info.is_perishable
+            laboratory_request.expiration_date = sample_info.expiration_date
+            laboratory_request.sample_return = sample_info.sample_return
+            laboratory_request.storage_duration = sample_info.storage_duration
+            laboratory_request.storage_duration_unit = sample_info.storage_duration_unit
+            laboratory_request.storage_conditions = sample_info.storage_conditions
+            laboratory_request.file_upload = sample_info.file_upload
 
-            if created_lab_request:
-                print(f'LaboratoryRequest created with ID: {lab_request.id}')
-            else:
-                print(f'LaboratoryRequest updated for Request ID: {instance.id}')
+        # کپی‌برداری از اطلاعات آزمایش‌ها
+        for test_info in instance.test_info.all():
+            laboratory_request.user_sample = test_info.user_sample
+            laboratory_request.test = test_info.test
+            laboratory_request.repeat_count_test = test_info.repeat_count_test
+            laboratory_request.parameter = test_info.parameter
+            laboratory_request.parameter_values = test_info.parameter_values
 
-            if instance.sample_info.exists():
-                sample = instance.sample_info.first()
-                lab_request.sample_type = sample.sample_type
-                lab_request.customer_sample_name = sample.customer_sample_name
-                lab_request.sample_count = sample.sample_count
-                lab_request.additional_info = sample.additional_info
-                lab_request.is_perishable = sample.is_perishable
-                lab_request.expiration_date = sample.expiration_date
-                lab_request.sample_return = sample.sample_return
-                lab_request.storage_duration = sample.storage_duration
-                lab_request.storage_duration_unit = sample.storage_duration_unit
-                lab_request.storage_conditions = sample.storage_conditions
-                lab_request.sample_description = sample.sample_description
-                lab_request.file_upload = sample.file_upload
-                print("Sample information populated.")
+        # کپی‌برداری از اطلاعات تخفیف
+        if instance.discount_info:
+            laboratory_request.send_cost = instance.discount_info.send_cost
+            laboratory_request.is_faculty_member = instance.discount_info.is_faculty_member
+            laboratory_request.is_student_or_staff = instance.discount_info.is_student_or_staff
+            laboratory_request.is_affiliated_with_institution = instance.discount_info.is_affiliated_with_institution
+            laboratory_request.contract_party_file = instance.discount_info.contract_party_file
+            laboratory_request.has_labs_net_grant = instance.discount_info.has_labs_net_grant
+            laboratory_request.labs_net_file = instance.discount_info.labs_net_file
+            laboratory_request.has_research_grant = instance.discount_info.has_research_grant
+            laboratory_request.research_grant_withdrawal_amount = instance.discount_info.research_grant_withdrawal_amount
 
-            else:
-                print(f"No sample information found for Request ID: {instance.id}")
-
-            if instance.test_info.exists():
-                test = instance.test_info.first()
-                lab_request.user_sample = str(test.user_sample.id) if test.user_sample else None
-                lab_request.test = test.test
-                lab_request.repeat_count_test = test.repeat_count_test
-                lab_request.parameter = test.parameter
-                lab_request.parameter_values = test.parameter_values
-                print("Test information populated.")
-
-            else:
-                print(f"No test information found for Request ID: {instance.id}")
-
-            if instance.discount_info:
-                lab_request.is_faculty_member = instance.discount_info.is_faculty_member
-                lab_request.is_student_or_staff = instance.discount_info.is_student_or_staff
-                lab_request.is_affiliated_with_institution = instance.discount_info.is_affiliated_with_institution
-                lab_request.discount_institution_name = instance.discount_info.discount_institution_name
-                print("Discount information populated.")
-            else:
-                print(f"No discount information found for Request ID: {instance.id}")
-
-            lab_request.status = instance.status
-            lab_request.is_complete = instance.is_complete
-            # lab_request.invoice_pdf = instance.invoice_pdf
-
-            lab_request.save()
-            print(f'LaboratoryRequest ID {lab_request.id} saved.')
-
-    except Exception as e:
-        print(f'Error occurred: {str(e)}')
-
-
-@receiver(post_save, sender=LaboratoryRequest)
-def update_or_create_invoice(sender, instance, created, **kwargs):
-    # Only generate an invoice for newly created records
-    if created:
-        pdf_file_path = generate_invoice(instance)
-        instance.invoice_pdf = pdf_file_path
-        instance.save()
+        # ذخیره LaboratoryRequest
+        laboratory_request.save()

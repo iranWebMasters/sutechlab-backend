@@ -1,0 +1,40 @@
+{% extends 'userpanel/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container mt-5">
+    <h2 class="mb-4">جزئیات نمونه</h2>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">{{ sample.customer_sample_name }}</h5>
+        </div>
+        <div class="card-body">
+            <h6 class="card-subtitle mb-2 text-muted">نوع نمونه: {{ sample.sample_type }}</h6>
+            <p><strong>تعداد نمونه:</strong> {{ sample.sample_count }}</p>
+            <p><strong>شرایط نگهداری:</strong> {{ sample.storage_conditions|default:"اطلاعاتی موجود نیست." }}</p>
+            <p><strong>توضیحات نمونه:</strong> {{ sample.sample_description|default:"اطلاعاتی موجود نیست." }}</p>
+            
+            {% if sample.file_upload %}
+                <p><strong>فایل تکمیلی:</strong> <a href="{{ sample.file_upload.url }}" target="_blank">دانلود فایل</a></p>
+            {% else %}
+                <p><strong>فایل تکمیلی:</strong> <span>فایلی بارگذاری نشده است.</span></p>
+            {% endif %}
+        </div>
+        <div class="card-footer text-muted">
+            <p>ایجاد شده توسط: {{ sample.user.username }}</p>
+            <p>تاریخ ایجاد: {{ sample.created_at|date:"Y-m-d H:i:s" }}</p> <!-- فرض بر این است که فیلد created_at در مدل وجود دارد -->
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="{% url 'orders:sample_edit' sample.id %}" class="btn btn-warning">ویرایش</a>
+        <form action="{% url 'orders:sample_delete' experiment_id=sample.experiment.id pk=sample.id %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">حذف</button>
+        </form>
+        <a href="{% url 'orders:sample_info_create'  %}" class="btn btn-secondary">بازگشت به لیست نمونه‌ها</a>
+    </div>
+</div>
+
+{% endblock content %}

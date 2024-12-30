@@ -10,10 +10,8 @@ class RequestInfoAdmin(admin.ModelAdmin):
 
 
 class SampleInfoAdmin(admin.ModelAdmin):
-    list_display = ('customer_sample_name', 'sample_type', 'sample_count', 'is_perishable', 'expiration_date')
+    list_display = ('customer_sample_name', 'sample_type',)
     search_fields = ('customer_sample_name', 'sample_type')
-    list_filter = ('is_perishable', 'expiration_date')
-    ordering = ('-expiration_date',)
 
 
 class RequestAdmin(admin.ModelAdmin):
