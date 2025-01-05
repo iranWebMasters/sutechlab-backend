@@ -27,7 +27,7 @@
                 </div>
             </div>
 
-            {% comment %} <div class="card mb-3">
+            <div class="card mb-3">
                 <div class="card-body">
                     <h5 class="card-title">ویژگی های نمونه</h5>
                     <div class="form-check mb-3">
@@ -58,7 +58,7 @@
                         </div>
                     </div>
                 </div>
-            </div> {% endcomment %}
+            </div>
 
             <div class="row mb-3">
                 <div class="col-md-6">
@@ -83,26 +83,31 @@
 
         <h3 class="mt-5 mb-3">جدول نمونه ها</h3>
         <div class="table-responsive">
-            <table class="table table-bordered table-large-text">
+            <table class="table table-bordered">
                 <thead class="table-primary">
                     <tr>
                         <th>ردیف</th>
                         <th>نام نمونه</th>
                         <th>نام نمونه مشتری</th>
                         <th>تعداد نمونه</th>
+                        <th>نمونه فاسدشدنی است؟</th>
+                        <th>تاریخ تحویل نمونه</th>
                         <th>اقدامات</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for sample in user_samples %}
                     <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ sample.sample_type }}</td>
-                        <td>{{ sample.customer_sample_name }}</td>
-                        <td>{{ sample.sample_count }}</td>
+                        <td>{{ forloop.counter }}</td> <!-- شماره ردیف -->
+                        <td>{{ sample.sample_type }}</td> <!-- نوع نمونه -->
+                        <td>{{ sample.customer_sample_name }}</td> <!-- نام نمونه مشتری -->
+                        <td>{{ sample.sample_count }}</td> <!-- تعداد نمونه -->
+                        <td>{{ sample.is_perishable|yesno:"بله,خیر" }}</td> <!-- وضعیت فاسدشدنی -->
+                        <td>{{ sample.expiration_date }}</td> <!-- تاریخ انقضا -->
                         <td>
-                            {% comment %} <a href="{% url 'orders:sample_detail' sample.id %}" class="btn btn-info">جزئیات</a>
-                            <a href="{% url 'orders:sample_edit' sample.id %}" class="btn btn-warning">ویرایش</a> {% endcomment %}
+                            <!-- لینک‌ها یا دکمه‌های مربوط به اقدامات -->
+                            <a href="{% url 'orders:sample_detail' sample.id %}" class="btn btn-info">جزئیات</a>
+                            <a href="{% url 'orders:sample_edit' sample.id %}" class="btn btn-warning">ویرایش</a>
                             <form action="{% url 'orders:sample_delete' experiment_id=sample.experiment.id pk=sample.id %}" method="post" style="display:inline;">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-danger">حذف</button>
@@ -111,7 +116,7 @@
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="5" class="text-center">هیچ نمونه‌ای وجود ندارد.</td>
+                        <td colspan="7" class="text-center">هیچ نمونه‌ای وجود ندارد.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -125,20 +130,4 @@
         </div>
     </div>
 </div>
-<style>
-.table-large-text th,
-.table-large-text td {
-    font-size: 1rem; 
-    padding: 12px; 
-}
-
-.table-large-text th {
-    background-color: #f8f9fa;
-    font-weight: bold; 
-}
-
-.table-large-text td {
-    border-bottom: 1px solid #dee2e6; 
-}
-</style>
 {% endblock content %}

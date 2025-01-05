@@ -105,6 +105,7 @@ class SampleDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         profile = Profile.objects.get(user=self.request.user)
         context['profile'] = profile         
+        # هر داده اضافی که نیاز دارید را می‌توانید به context اضافه کنید
         return context
 
 class SampleEditView(UpdateView):
@@ -113,13 +114,6 @@ class SampleEditView(UpdateView):
     # template_name = 'requests/sample_edit.html'
     template_name = 'requests/sample-information.html'
     context_object_name = 'sample'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['experiment'] = self.object.experiment
-        profile = Profile.objects.get(user=self.request.user)
-        context['profile'] = profile    
-        return 
 
     def get_success_url(self):
         return self.request.path  # به همان صفحه برمی‌گردد
@@ -297,8 +291,6 @@ class DiscountInfoFormView(FormView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        experiment_id = self.kwargs.get('experiment_id')
-        context['experiment'] = get_object_or_404(Experiment,id = experiment_id)
         profile = Profile.objects.get(user=self.request.user)
         context['profile'] = profile
         context['current_step']= 4

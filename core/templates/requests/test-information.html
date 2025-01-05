@@ -91,9 +91,9 @@
                         <th>نمونه</th>
                         <th>نام آزمون</th>
                         <th>تعداد نمونه</th>
-                        <th>مقدار پارامترها </th>
-                        <th>نوع واحد</th>
+                        <th>پارامترها (تعرفه)</th>
                         <th>تعداد تکرار</th>
+                        <th>نوع واحد</th>
                         <th>هزینه آزمون</th>
                         <th>اقدامات</th>
                     </tr>
@@ -103,22 +103,14 @@
                         <tr>
                             <td>{{ forloop.counter }}</td>
                             <td>{{ test.user_sample.customer_sample_name }}</td> <!-- نام نمونه -->
-                            <td>{{ test.test.name_fa }}</td> <!-- نام آزمون -->
+                            <td>{{ test.test.name_fa}}</td> <!-- نام آزمون -->
                             <td>{{ test.user_sample.sample_count }}</td> <!-- تعداد نمونه -->
-                            <td>
-                                {% with parameter_values=test.get_parameter_values_dict %}
-                                    {% for key, value in parameter_values.items %}
-                                        <strong>{{ key }}:</strong> {{ value }}<br>
-                                    {% empty %}
-                                        هیچ پارامتر موجود نیست.
-                                    {% endfor %}
-                                {% endwith %}
-                            </td> <!-- پارامترها -->
+                            <td>{{ test.parameter.name }}</td> <!-- پارامتر -->
+                            <td>{{ test.repeat_count_test }}</td> <!-- تعداد تکرار / مقدار -->
                             <td>{{ test.parameter.unit_amount.unit }}</td> <!-- نوع واحد پارامتر -->
-                            <td>{{ test.repeat_count_test }}</td> <!-- تعداد تکرار -->
                             <td>{{ test.parameter.unit_price }}</td> <!-- هزینه آزمون -->
                             <td>
-                                {% comment %} <a href="{% url 'orders:test_edit' pk=test.id experiment_id=experiment.id %}" class="btn btn-sm btn-warning">ویرایش</a> {% endcomment %}
+                                <a href="{% url 'orders:test_edit' pk=test.id experiment_id=experiment.id  %}" class="btn btn-sm btn-warning">ویرایش</a>
                                 <form action="{% url 'orders:test_delete' experiment_id=experiment.id pk=test.id %}" method="post" style="display:inline;">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-danger btn-sm">حذف</button>
@@ -133,6 +125,7 @@
                 </tbody>
             </table>
         </div>
+
         <div class="text-center">
             <a href="#" class="page-btn backward-btn btn btn-outline-primary btn-sm px-4 me-2">مرحله قبل</a>
             <a href="{% url 'orders:discount_info_form' experiment.id %}" class="page-btn forward-btn btn btn-success btn-sm px-4 me-2">ثبت و مرحله بعد</a>

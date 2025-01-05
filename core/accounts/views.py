@@ -47,7 +47,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('userpanel:index')
     
     def get_object(self):
-        return Profile.objects.select_related('user').get(user=self.request.user)
+        return Profile.objects.get(user=self.request.user)
     
     def form_valid(self, form):
         messages.success(self.request, "پروفایل شما با موفقیت بروز رسانی شد.")

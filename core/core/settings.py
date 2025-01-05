@@ -9,6 +9,7 @@ SECRET_KEY = os.getenv('SECRET_KEY',)
 DEBUG = os.getenv('DEBUG',)
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -33,8 +34,6 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django_jalali',
     'django.contrib.sites',
-
-    'debug_toolbar',
     # 'django_celery_beat',
 
     
@@ -43,7 +42,6 @@ INSTALLED_APPS = [
 SITE_ID = 2
 
 MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -124,6 +122,8 @@ STATIC_ROOT = BASE_DIR / 'static'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
+
+# CKEDITOR_UPLOAD_PATH='uploads/'
 
 STATICFILES_DIRS = [
     BASE_DIR / "statics",
@@ -210,20 +210,32 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_FILE_PATH = 'tmp/app-messages' 
 
 
-# Internal IPs for debugging (especially useful with debug toolbar)
-INTERNAL_IPS = [
-    # For example, for localhost
-    '127.0.0.1',
-    # If you are using Docker, you might need to include the following:
-    'localhost',
-    '0.0.0.0',
-]
+# REST Framework
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'rest_framework.authentication.SessionAuthentication',
+#         'rest_framework.authentication.BasicAuthentication',
+#     ],
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.AllowAny',
+#     ],
+#     'DEFAULT_RENDERER_CLASSES': [
+#         'rest_framework.renderers.JSONRenderer',
+#     ],
+# }
 
-# Caching configuration
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'unique-snowflake',
-    }
+# Swagger
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False, 
+    'LOGIN_URL': 'rest_framework:login',
+    'LOGOUT_URL': 'rest_framework:logout',
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    },
+    'DOC_EXPANSION': 'none', 
+    'DEFAULT_MODEL_RENDERING': 'example',
 }
-CACHE_TIMEOUT = 60*25
