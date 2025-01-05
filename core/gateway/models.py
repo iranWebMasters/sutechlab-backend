@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from orders.models import LaboratoryRequest
+from orders.models import Order
 
 class Payment(models.Model):
     STATUS_CHOICES = [
@@ -9,7 +9,7 @@ class Payment(models.Model):
         ('failed', 'ناموفق'),
     ]
 
-    laboratory_request = models.ForeignKey(LaboratoryRequest, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)    
     tracking_code = models.CharField(max_length=255,null=False, blank=False, verbose_name='Tracking Code')
     amount = models.DecimalField(max_digits=10, decimal_places=0)

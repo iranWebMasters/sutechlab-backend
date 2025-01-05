@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import RequestInfo, Request, SampleInfo, DiscountInfo, TestInfo,LaboratoryRequest
+from .models import TemporaryRequestInfo, TemporaryOrder, TemporarySampleInfo, DiscountInfo, TemporaryTestInfo
 from django.utils.html import format_html
 
 class RequestInfoAdmin(admin.ModelAdmin):   
@@ -70,14 +70,10 @@ class TestInformationAdmin(admin.ModelAdmin):
     parameter_values_display.short_description = 'Parameter Values'  # عنوان برای نمایش در پنل
 
 
-class LaboratoryRequestAdmin(admin.ModelAdmin):
-    ...
-
 
 # Registering the models with their admin classes
-admin.site.register(RequestInfo, RequestInfoAdmin)
-admin.site.register(LaboratoryRequest, LaboratoryRequestAdmin)
-admin.site.register(SampleInfo, SampleInfoAdmin)
-admin.site.register(Request, RequestAdmin)
+admin.site.register(TemporaryRequestInfo, RequestInfoAdmin)
+admin.site.register(TemporarySampleInfo, SampleInfoAdmin)
+admin.site.register(TemporaryOrder, RequestAdmin)
 admin.site.register(DiscountInfo, DiscountInfoAdmin)
-admin.site.register(TestInfo, TestInformationAdmin)
+admin.site.register(TemporaryTestInfo, TestInformationAdmin)

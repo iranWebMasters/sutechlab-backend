@@ -1,15 +1,15 @@
 from django import forms
-from .models import  RequestInfo,SampleInfo,TestInfo,DiscountInfo
+from .models import  TemporaryRequestInfo,TemporarySampleInfo,TemporaryTestInfo,TemporaryDiscountInfo
 from services.models import Parameters, ParameterValue
 class RequestInfoForm(forms.ModelForm):
     class Meta:
-        model = RequestInfo
+        model = TemporaryRequestInfo
         fields = ['description']  
 
 
 class SampleForm(forms.ModelForm):
     class Meta:
-        model = SampleInfo
+        model = TemporarySampleInfo
         fields = [
             'sample_type',
             'customer_sample_name',
@@ -43,13 +43,13 @@ class SampleForm(forms.ModelForm):
 
 class TestInfoForm(forms.ModelForm):
     class Meta:
-        model = TestInfo
+        model = TemporaryTestInfo
         fields = ['user_sample', 'test', 'repeat_count_test', 'parameter',]
 
 
 class DiscountInfoForm(forms.ModelForm):
     class Meta:
-        model = DiscountInfo
+        model = TemporaryDiscountInfo
         fields = [
             'is_faculty_member', 
             'is_student_or_staff', 

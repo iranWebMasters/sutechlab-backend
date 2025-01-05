@@ -10,7 +10,7 @@
         <div class="card-body">
             <p class="lead text-center">پرداخت شما با موفقیت انجام شد!</p>
             <p class="text-center">شماره پیگیری: <strong>{{ payment.tracking_code }}</strong></p>
-            <p class="text-center">کد درخواست: <strong>{{ payment.laboratory_request.order_code }}</strong></p>
+            <p class="text-center">کد درخواست: <strong>{{ payment.order.order_code }}</strong></p>
             <p class="text-center">مبلغ پرداخت شده: <strong>{{ payment.amount|intcomma }} تومان</strong></p>
             <div class="text-center">
                 <a href="{% url 'userpanel:index' %}" class="btn btn-secondary">بازگشت به صفحه اصلی</a>

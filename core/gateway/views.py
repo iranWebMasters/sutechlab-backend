@@ -5,9 +5,9 @@ from azbankgateways import bankfactories, models as bank_models, default_setting
 from azbankgateways.exceptions import AZBankGatewaysException
 from django.contrib import messages
 from django.views import View
-from orders.models import LaboratoryRequest
-from .models import Payment  # Import the Payment model
+from orders.models import Order
 from django.http import Http404
+from .models import Payment
 
 
 class GoToGatewayView(View):
@@ -62,11 +62,11 @@ class CallbackGatewayView(View):
 
 
             # Update the laboratory request status
-            laboratory_request = payment.laboratory_request
-            laboratory_request.status = 'successful'
+            order = payment.order
+            order.status = 'successful'
             payment.tracking_code = tracking_code
             
-            laboratory_request.save()
+            order.save()
             payment.save()
 
             messages.success(request, 'پرداخت با موفقیت انجام شد.')
