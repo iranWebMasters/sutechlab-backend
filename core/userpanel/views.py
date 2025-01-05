@@ -19,6 +19,9 @@ from orders.models import LaboratoryRequest
 from django.contrib import messages
 from django.http import HttpResponseRedirect,Http404
 from django.shortcuts import get_object_or_404
+<<<<<<< HEAD
+>>>>>>> parent of f4dc6a9 (✅ update in orders app and template)
+=======
 >>>>>>> parent of f4dc6a9 (✅ update in orders app and template)
 from gateway.models import Payment 
 from azbankgateways import models as bank_models
@@ -47,7 +50,13 @@ class IndexView(TemplateView):
             profile = Profile.objects.get(user=self.request.user)
             context['profile'] = profile
 <<<<<<< HEAD
+<<<<<<< HEAD
             context['requests'] = Order.objects.filter(user=self.request.user)
+=======
+            
+            context['requests'] = LaboratoryRequest.objects.filter(user=self.request.user)
+        
+>>>>>>> parent of f4dc6a9 (✅ update in orders app and template)
 =======
             
             context['requests'] = LaboratoryRequest.objects.filter(user=self.request.user)
@@ -118,12 +127,18 @@ class DownloadInvoiceView(View):
     def get(self, request, request_id):
         try:
 <<<<<<< HEAD
+<<<<<<< HEAD
             request_instance = Order.objects.get(id=request_id)
 =======
+=======
+>>>>>>> parent of f4dc6a9 (✅ update in orders app and template)
             # Retrieve the LaboratoryRequest instance
             request_instance = LaboratoryRequest.objects.get(id=request_id)
 
             # Check if the invoice PDF exists
+<<<<<<< HEAD
+>>>>>>> parent of f4dc6a9 (✅ update in orders app and template)
+=======
 >>>>>>> parent of f4dc6a9 (✅ update in orders app and template)
             if not request_instance.invoice_pdf:
                 return HttpResponse("فاکتور موجود نیست.", status=404)
@@ -141,9 +156,15 @@ class DownloadInvoiceView(View):
 
 class LaboratoryRequestDeleteView(DeleteView):
 <<<<<<< HEAD
+<<<<<<< HEAD
     model = Order
     template_name = 'userpanel/order_confirm_delete.html'
     success_url = reverse_lazy('userpanel:index')
+=======
+    model = LaboratoryRequest
+    template_name = 'userpanel/order_confirm_delete.html'  # Specify a template for confirmation
+    success_url = reverse_lazy('userpanel:index')  # URL to redirect after successful deletion
+>>>>>>> parent of f4dc6a9 (✅ update in orders app and template)
 =======
     model = LaboratoryRequest
     template_name = 'userpanel/order_confirm_delete.html'  # Specify a template for confirmation
@@ -165,8 +186,13 @@ class LaboratoryRequestDeleteView(DeleteView):
 
 class RequestEditView(UpdateView):
 <<<<<<< HEAD
+<<<<<<< HEAD
     model = TemporaryOrder
     form_class = RequestUpdateForm
+=======
+    model = Request
+    form_class = RequestUpdateForm  # فرم جدید را به اینجا اضافه کنید
+>>>>>>> parent of f4dc6a9 (✅ update in orders app and template)
 =======
     model = Request
     form_class = RequestUpdateForm  # فرم جدید را به اینجا اضافه کنید
@@ -186,6 +212,9 @@ class LaboratoryRequestDetailView(DetailView):
 =======
     model = LaboratoryRequest
     template_name = 'userpanel/laboratory_request_detail.html'  # Specify your template
+<<<<<<< HEAD
+>>>>>>> parent of f4dc6a9 (✅ update in orders app and template)
+=======
 >>>>>>> parent of f4dc6a9 (✅ update in orders app and template)
 
     def get_object(self, queryset=None):
@@ -196,15 +225,21 @@ class LaboratoryRequestDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 <<<<<<< HEAD
+<<<<<<< HEAD
         order = self.get_object()
         context['experiment'] = order.experiment
         context['user'] = order.user
 =======
+=======
+>>>>>>> parent of f4dc6a9 (✅ update in orders app and template)
         laboratory_request = self.get_object()  # Get the current LaboratoryRequest instance
         
         # Add extra context if needed
         context['experiment'] = laboratory_request.experiment  # Pass the related Experiment object
         context['user'] = laboratory_request.user  # Pass the user who made the request
+<<<<<<< HEAD
+>>>>>>> parent of f4dc6a9 (✅ update in orders app and template)
+=======
 >>>>>>> parent of f4dc6a9 (✅ update in orders app and template)
         profile = Profile.objects.get(user=self.request.user)
         context['profile'] = profile
@@ -213,8 +248,13 @@ class LaboratoryRequestDetailView(DetailView):
     
 class PaymentPageView(DetailView):
 <<<<<<< HEAD
+<<<<<<< HEAD
     model = Order
     template_name = 'userpanel/payment_page.html'
+=======
+    model = LaboratoryRequest
+    template_name = 'userpanel/payment_page.html'  # Create this template for payment
+>>>>>>> parent of f4dc6a9 (✅ update in orders app and template)
 =======
     model = LaboratoryRequest
     template_name = 'userpanel/payment_page.html'  # Create this template for payment

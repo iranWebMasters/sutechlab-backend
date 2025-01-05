@@ -21,7 +21,16 @@ class TemporaryRequestInfo(models.Model):
     def __str__(self):
         return f"TemporaryRequestInfo(ID: {self.id}, User: {self.user.email}, Experiment: {self.experiment.test_name}, Date: {self.submission_date}, Order Code: {self.order_code})"
 
+<<<<<<< HEAD
 class TemporarySampleInfo(models.Model):
+=======
+    class Meta:
+        verbose_name = 'اطلاعات درخواست'
+        verbose_name_plural = 'اطلاعات درخواست‌ها'
+
+
+class SampleInfo(models.Model):
+>>>>>>> parent of f4dc6a9 (✅ update in orders app and template)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='کاربر')
     experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE, verbose_name='آزمایش')
 
@@ -32,16 +41,21 @@ class TemporarySampleInfo(models.Model):
     sample_description = models.TextField(blank=True, null=True, verbose_name='توضیحات نمونه')
     file_upload = models.FileField(upload_to='sample_files/', blank=True, null=True, verbose_name='فایل تکمیلی نمونه')
 
-    # additional_info = models.TextField(blank=True, null=True, verbose_name='توضیحات اضافی')
-    # is_perishable = models.BooleanField(null=True, blank=True, default=False, verbose_name='نمونه فاسدشدنی است')
-    # expiration_date = models.DateField(null=True, blank=True, verbose_name='تاریخ انقضا')
-    # sample_return = models.BooleanField(null=True, blank=True, default=False, verbose_name='نمونه برگشت داده شده بشود')
-    # storage_duration = models.PositiveIntegerField(null=True, blank=True, verbose_name='مدت زمان نگهداری (به روز)')
-    # storage_duration_unit = models.CharField(null=True, blank=True, max_length=32, verbose_name='واحد مدت زمان نگهداری')
+    additional_info = models.TextField(blank=True, null=True, verbose_name='توضیحات اضافی')
+    is_perishable = models.BooleanField(null=True, blank=True, default=False, verbose_name='نمونه فاسدشدنی است')
+    expiration_date = models.DateField(null=True, blank=True, verbose_name='تاریخ انقضا')
+    sample_return = models.BooleanField(null=True, blank=True, default=False, verbose_name='نمونه برگشت داده شده بشود')
+    storage_duration = models.PositiveIntegerField(null=True, blank=True, verbose_name='مدت زمان نگهداری (به روز)')
+    storage_duration_unit = models.CharField(null=True, blank=True, max_length=32, verbose_name='واحد مدت زمان نگهداری')
 
 
     def __str__(self):
-        return f"{self.customer_sample_name} , تعداد: {self.sample_count}"
+        return f"SampleInfo(ID: {self.id}, Customer Sample: {self.customer_sample_name}, Type: {self.sample_type}, Count: {self.sample_count})"
+
+    class Meta:
+        verbose_name = 'اطلاعات نمونه'
+        verbose_name_plural = 'اطلاعات نمونه‌ها'
+
 
 class TemporaryTestInfo(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='کاربر')
@@ -176,6 +190,11 @@ class TestInfo(models.Model):
         verbose_name_plural = 'اطلاعات آزمایش‌ها'
 
 
+    class Meta:
+        verbose_name = 'اطلاعات آزمایش'
+        verbose_name_plural = 'اطلاعات آزمایش‌ها'
+
+
 class DiscountInfo(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='کاربر')
     experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE, verbose_name='آزمایش')
@@ -194,7 +213,19 @@ class DiscountInfo(models.Model):
     def __str__(self):
         return f"TemporaryDiscountInfo(ID: {self.id}, User: {self.user.email}, Experiment: {self.experiment.test_name,})"
 
+    class Meta:
+        verbose_name = 'اطلاعات تخفیف'
+        verbose_name_plural = 'اطلاعات تخفیف‌ها'
+
+
 class Request(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'در حال بررسی'),
+        ('successful', 'پرداخت موفق'),
+        ('failed', 'پرداخت ناموفق'),
+        ('canceled', 'لغو شده'),
+    ]
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='کاربر')
     experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE, verbose_name='آزمایش')
     
@@ -202,10 +233,18 @@ class Request(models.Model):
     sample_info = models.ManyToManyField('SampleInfo', related_name='requests', verbose_name='اطلاعات نمونه')
     test_info = models.ManyToManyField('TestInfo', verbose_name='اطلاعات آزمایش')
     discount_info = models.OneToOneField('DiscountInfo', on_delete=models.CASCADE, null=True, blank=True, verbose_name='اطلاعات تخفیف')
+    
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', verbose_name='وضعیت')
     is_complete = models.BooleanField(default=False, verbose_name='تکمیل شده')
 
     def __str__(self):
         return f"Request(ID: {self.id}, User: {self.user.email}, Experiment: {self.experiment.test_name})"
+
+    class Meta:
+        verbose_name = 'درخواست'
+        verbose_name_plural = 'درخواست‌ها'
+
+
 class LaboratoryRequest(models.Model):
     STATUS_CHOICES = [
         ('pending', 'در حال بررسی'),
@@ -238,25 +277,20 @@ class LaboratoryRequest(models.Model):
     test = models.ForeignKey(Test, blank=True, null=True, on_delete=models.CASCADE, verbose_name='عنوان آزمایش')
     repeat_count_test = models.PositiveIntegerField(verbose_name='تعداد تکرار آزمون', null=True, blank=True)
     parameter = models.ForeignKey(Parameters, on_delete=models.CASCADE, verbose_name='پارامتر', null=True, blank=True)
-    parameter_values = models.JSONField(verbose_name='مقادیر پارامتر', null=True, blank=True)
+    parameter_values = models.JSONField(verbose_name='مقادیر پارامتر')
 
-    send_cost = models.BooleanField(default=False, verbose_name='تمایل به پرداخت هزینه ارسال')
-    is_faculty_member = models.BooleanField(default=False, verbose_name='آیا کاربر عضو هیات علمی است؟')
-    is_student_or_staff = models.BooleanField(default=False, verbose_name='آیا کاربر دانشجو یا کارکنان دانشگاه است؟')
-    is_affiliated_with_institution = models.BooleanField(default=False, verbose_name='آیا کاربر متقاضی استفاده از تخفیف نهادهای طرف قرارداد است؟')
-    contract_party_file = models.FileField(upload_to='contract_party_files/', blank=True, null=True, verbose_name='فایل نهاد تخفیف')
-    
-    has_labs_net_grant = models.BooleanField(default=False, verbose_name='آیا کاربر دارای گرنت شبکه آزمایشگاهی است؟')
-    labs_net_file = models.FileField(upload_to='labs_net_files/', blank=True, null=True, verbose_name='فایل گرنت شبکه آزمایشگاهی')
-    has_research_grant = models.BooleanField(default=False, verbose_name='آیا کاربر دارای گرنت پژوهشی است؟')
-    research_grant_withdrawal_amount = models.PositiveIntegerField(blank=True, null=True, verbose_name='میزان استفاده از گرنت پژوهشی')
-    
+    is_faculty_member = models.BooleanField(default=False, verbose_name='آیا کاربر عضو هیات علمی است؟', null=True, blank=True)
+    is_student_or_staff = models.BooleanField(default=False, verbose_name='آیا کاربر دانشجو یا کارکنان دانشگاه است؟', null=True, blank=True)
+    is_affiliated_with_institution = models.BooleanField(default=False, verbose_name='آیا کاربر متقاضی استفاده از تخفیف نهادهای طرف قرارداد است؟', null=True, blank=True)
+    discount_institution_name = models.CharField(max_length=255, blank=True, verbose_name='نام نهاد تخفیف', null=True)
+
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', verbose_name='وضعیت', null=True, blank=True)
     is_complete = models.BooleanField(default=False, verbose_name='تکمیل شده', null=True, blank=True)
     invoice_pdf = models.FileField(upload_to='invoices/', null=True, blank=True, verbose_name='پیش فاکتور')
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', verbose_name='وضعیت', null=True, blank=True)
 
     def __str__(self):
+<<<<<<< HEAD
         return f"TemporaryOrder(ID: {self.id}, User: {self.user.email}, Experiment: {self.experiment.test_name})"
 
 # class LaboratoryRequest(models.Model):
@@ -313,6 +347,9 @@ class LaboratoryRequest(models.Model):
 
 #     def __str__(self):
 #         return f"LaboratoryRequest(ID: {self.id}, User: {self.user.email if self.user else 'N/A'}, Experiment: {self.experiment.test_name if self.experiment else 'N/A'})"
+=======
+        return f"LaboratoryRequest(ID: {self.id}, User: {self.user.email if self.user else 'N/A'}, Experiment: {self.experiment.test_name if self.experiment else 'N/A'})"
+>>>>>>> parent of f4dc6a9 (✅ update in orders app and template)
 
     class Meta:
         verbose_name = 'درخواست آزمایشگاهی'

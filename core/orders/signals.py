@@ -3,7 +3,11 @@ from django.dispatch import receiver
 from .invoices import generate_invoice
 from django.db import transaction
 <<<<<<< HEAD
+<<<<<<< HEAD
 from .models import TemporaryRequestInfo, TemporarySampleInfo, TemporaryTestInfo, TemporaryDiscountInfo, TemporaryOrder, Order
+=======
+from .models import *
+>>>>>>> parent of f4dc6a9 (✅ update in orders app and template)
 =======
 from .models import *
 >>>>>>> parent of f4dc6a9 (✅ update in orders app and template)
@@ -18,6 +22,7 @@ def create_request(sender, instance, **kwargs):
         return  # Avoid processing if user or experiment is missing
 
     with transaction.atomic():
+<<<<<<< HEAD
 <<<<<<< HEAD
         # Get or create the request
         request, created = TemporaryOrder.objects.get_or_create(
@@ -94,6 +99,69 @@ def create_or_update_laboratory_request(sender, instance, created, **kwargs):
                 lab_request.file_upload = sample.file_upload
                 print("Sample information populated.")
 
+=======
+        # Create or retrieve the related Request
+        request, created = Request.objects.get_or_create(
+            user=instance.user,
+            experiment=instance.experiment,
+        )
+
+        # Update fields based on instance type
+        if isinstance(instance, RequestInfo):
+            request.request_info = instance
+        elif isinstance(instance, SampleInfo):
+            request.sample_info.add(instance)
+        elif isinstance(instance, TestInfo):
+            request.test_info.add(instance)
+        elif isinstance(instance, DiscountInfo):
+            request.discount_info = instance
+
+        # Save the Request only if there are changes
+        request.save()
+
+        # Check completeness and generate invoice if needed
+  # Save changes to the request
+
+
+
+@receiver(post_save, sender=Request)
+def create_or_update_laboratory_request(sender, instance, created, **kwargs):
+    print('Signal received for Request ID:', instance.id)
+
+    try:
+        with transaction.atomic():
+            lab_request, created_lab_request = LaboratoryRequest.objects.get_or_create(
+                user=instance.user,
+                experiment=instance.experiment,
+                defaults={
+                    'submission_date': instance.request_info.submission_date if instance.request_info else None,
+                    'description': instance.request_info.description if instance.request_info else None,
+                    'order_code': instance.request_info.order_code if instance.request_info else None, 
+                }
+            )
+
+            if created_lab_request:
+                print(f'LaboratoryRequest created with ID: {lab_request.id}')
+            else:
+                print(f'LaboratoryRequest updated for Request ID: {instance.id}')
+
+            if instance.sample_info.exists():
+                sample = instance.sample_info.first()
+                lab_request.sample_type = sample.sample_type
+                lab_request.customer_sample_name = sample.customer_sample_name
+                lab_request.sample_count = sample.sample_count
+                lab_request.additional_info = sample.additional_info
+                lab_request.is_perishable = sample.is_perishable
+                lab_request.expiration_date = sample.expiration_date
+                lab_request.sample_return = sample.sample_return
+                lab_request.storage_duration = sample.storage_duration
+                lab_request.storage_duration_unit = sample.storage_duration_unit
+                lab_request.storage_conditions = sample.storage_conditions
+                lab_request.sample_description = sample.sample_description
+                lab_request.file_upload = sample.file_upload
+                print("Sample information populated.")
+
+>>>>>>> parent of f4dc6a9 (✅ update in orders app and template)
             else:
                 print(f"No sample information found for Request ID: {instance.id}")
 
@@ -135,5 +203,9 @@ def update_or_create_invoice(sender, instance, created, **kwargs):
     if created:
         pdf_file_path = generate_invoice(instance)
         instance.invoice_pdf = pdf_file_path
+<<<<<<< HEAD
+        instance.save()
+>>>>>>> parent of f4dc6a9 (✅ update in orders app and template)
+=======
         instance.save()
 >>>>>>> parent of f4dc6a9 (✅ update in orders app and template)
