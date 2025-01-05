@@ -13,7 +13,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView,DetailView,DeleteView
 from services.models import Experiment
 from orders.models import Order
-from orders.models import LaboratoryRequest
+from orders.models import Order
 from django.contrib import messages
 from django.http import HttpResponseRedirect,Http404
 from django.shortcuts import get_object_or_404
@@ -44,9 +44,7 @@ class IndexView(TemplateView):
             profile = Profile.objects.get(user=self.request.user)
             context['profile'] = profile
             context['requests'] = Order.objects.filter(user=self.request.user)
-            
-            context['requests'] = LaboratoryRequest.objects.filter(user=self.request.user)
-        
+                    
         return context
     
 
@@ -112,8 +110,8 @@ class DownloadInvoiceView(View):
     def get(self, request, request_id):
         try:
             request_instance = Order.objects.get(id=request_id)
-            # Retrieve the LaboratoryRequest instance
-            request_instance = LaboratoryRequest.objects.get(id=request_id)
+            # Retrieve the Order instance
+            request_instance = Order.objects.get(id=request_id)
 
             # Check if the invoice PDF exists
             if not request_instance.invoice_pdf:
@@ -130,11 +128,11 @@ class DownloadInvoiceView(View):
         except Order.DoesNotExist:
             raise Http404("درخواست مربوط به فاکتور پیدا نشد.")
 
-class LaboratoryRequestDeleteView(DeleteView):
+class OrderDeleteView(DeleteView):
     model = Order
     template_name = 'userpanel/order_confirm_delete.html'
     success_url = reverse_lazy('userpanel:index')
-    model = LaboratoryRequest
+    model = Order
     template_name = 'userpanel/order_confirm_delete.html'  # Specify a template for confirmation
     success_url = reverse_lazy('userpanel:index')  # URL to redirect after successful deletion
 
@@ -163,10 +161,10 @@ class RequestEditView(UpdateView):
         return super().form_valid(form)
     
 
-class LaboratoryRequestDetailView(DetailView):
+class OrderDetailView(DetailView):
     model = Order
     template_name = 'userpanel/order_detail.html'
-    model = LaboratoryRequest
+    model = Order
     template_name = 'userpanel/laboratory_request_detail.html'  # Specify your template
 
     def get_object(self, queryset=None):
@@ -179,7 +177,7 @@ class LaboratoryRequestDetailView(DetailView):
         order = self.get_object()
         context['experiment'] = order.experiment
         context['user'] = order.user
-        laboratory_request = self.get_object()  # Get the current LaboratoryRequest instance
+        laboratory_request = self.get_object()  # Get the current Order instance
         
         # Add extra context if needed
         context['experiment'] = laboratory_request.experiment  # Pass the related Experiment object

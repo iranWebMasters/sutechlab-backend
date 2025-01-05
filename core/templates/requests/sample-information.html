@@ -27,7 +27,7 @@
                 </div>
             </div>
 
-            <div class="card mb-3">
+            {% comment %} <div class="card mb-3">
                 <div class="card-body">
                     <h5 class="card-title">ویژگی های نمونه</h5>
                     <div class="form-check mb-3">
@@ -58,7 +58,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> {% endcomment %}
 
             <div class="row mb-3">
                 <div class="col-md-6">
@@ -90,8 +90,7 @@
                         <th>نام نمونه</th>
                         <th>نام نمونه مشتری</th>
                         <th>تعداد نمونه</th>
-                        <th>نمونه فاسدشدنی است؟</th>
-                        <th>تاریخ تحویل نمونه</th>
+                        {% comment %} <th>نمونه فاسدشدنی است؟</th> {% endcomment %}
                         <th>اقدامات</th>
                     </tr>
                 </thead>
@@ -102,8 +101,8 @@
                         <td>{{ sample.sample_type }}</td> <!-- نوع نمونه -->
                         <td>{{ sample.customer_sample_name }}</td> <!-- نام نمونه مشتری -->
                         <td>{{ sample.sample_count }}</td> <!-- تعداد نمونه -->
-                        <td>{{ sample.is_perishable|yesno:"بله,خیر" }}</td> <!-- وضعیت فاسدشدنی -->
-                        <td>{{ sample.expiration_date }}</td> <!-- تاریخ انقضا -->
+                        {% comment %} <td>{{ sample.is_perishable|yesno:"بله,خیر" }}</td> <!-- وضعیت فاسدشدنی --> {% endcomment %}
+                        {% comment %} <td>{{ sample.expiration_date }}</td> <!-- تاریخ انقضا --> {% endcomment %}
                         <td>
                             <!-- لینک‌ها یا دکمه‌های مربوط به اقدامات -->
                             <a href="{% url 'orders:sample_detail' sample.id %}" class="btn btn-info">جزئیات</a>

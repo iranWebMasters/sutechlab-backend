@@ -294,6 +294,8 @@ class DiscountInfoFormView(FormView):
         profile = Profile.objects.get(user=self.request.user)
         context['profile'] = profile
         context['current_step']= 4
+        experiment_id = self.kwargs['experiment_id']
+        context['experiment'] = get_object_or_404(Experiment, id=experiment_id)
 
         return context
     
@@ -306,7 +308,7 @@ class UserOrderExperimentCancelView(View):
         user = get_object_or_404(User, id=user_id)
         experiment = get_object_or_404(Experiment, id=experiment_id)
         profile = Profile.objects.get(user=self.request.user)
-        referer = request.META.get('HTTP_REFERER', reverse('userpanel:index'))  # Default to index if no referer
+        referer = request.META.get('HTTP_REFERER', reverse('userpanel:index')) 
         return render(request, self.template_name, {
             'user': user,
             'experiment': experiment,
