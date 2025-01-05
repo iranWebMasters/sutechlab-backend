@@ -1,6 +1,6 @@
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import RequestInfo, Experiment,TemporarySampleInfo,TemporaryTestInfo,Parameters
+from .models import RequestInfo, Experiment,SampleInfo,TestInfo,Parameters
 from django.views.generic import FormView,DetailView,UpdateView,DeleteView
 from django.shortcuts import get_object_or_404,redirect,render
 from django.urls import reverse_lazy
@@ -71,7 +71,7 @@ class SampleInfoCreateView(FormView):
         experiment_id = self.kwargs.get('experiment_id')
         experiment = get_object_or_404(Experiment, id=experiment_id)
         current_user = self.request.user
-        user_samples = TemporarySampleInfo.objects.filter(experiment=experiment, user=current_user)
+        user_samples = SampleInfo.objects.filter(experiment=experiment, user=current_user)
 
         context['user_samples'] = user_samples 
         context['samples'] = experiment.samples.all()
@@ -97,7 +97,7 @@ class SampleInfoCreateView(FormView):
         return super().form_invalid(form)
     
 class SampleDetailView(DetailView):
-    model = TemporarySampleInfo
+    model = SampleInfo
     template_name = 'requests/sample_detail.html'
     context_object_name = 'sample'
 
@@ -109,7 +109,7 @@ class SampleDetailView(DetailView):
         return context
 
 class SampleEditView(UpdateView):
-    model = TemporarySampleInfo
+    model = SampleInfo
     form_class = SampleForm
     # template_name = 'requests/sample_edit.html'
     template_name = 'requests/sample-information.html'
@@ -119,7 +119,7 @@ class SampleEditView(UpdateView):
         return self.request.path  # به همان صفحه برمی‌گردد
     
 class SampleDeleteView(DeleteView):
-    model = TemporarySampleInfo
+    model = SampleInfo
     template_name = 'requests/sample_confirm_delete.html'
     
     def get_success_url(self):
@@ -144,8 +144,8 @@ class TestInfoCreateView(FormView):
         experiment_id = self.kwargs['experiment_id']
         experiment = get_object_or_404(Experiment,id = experiment_id)
         current_user = self.request.user
-        user_samples = TemporarySampleInfo.objects.filter(experiment=experiment, user=current_user)
-        user_tests = TemporaryTestInfo.objects.filter(experiment=experiment, user=current_user)
+        user_samples = SampleInfo.objects.filter(experiment=experiment, user=current_user)
+        user_tests = TestInfo.objects.filter(experiment=experiment, user=current_user)
         tests = experiment.tests.all()
         profile = Profile.objects.get(user=self.request.user)
         context = {
@@ -220,16 +220,16 @@ class ParameterValuesView(View):
             return JsonResponse({'error': 'Parameter not found'},status=404)
         
 class TestDetailView(DetailView):
-    model = TemporaryTestInfo
+    model = TestInfo
     template_name = 'orders/test_detail.html'
     context_object_name = 'test'
 
     def get_object(self):
         test_id = self.kwargs.get('pk')
-        return get_object_or_404(TemporaryTestInfo, id=test_id)
+        return get_object_or_404(TestInfo, id=test_id)
     
 class TestUpdateView(UpdateView):
-    model = TemporaryTestInfo
+    model = TestInfo
     form_class = TestInfoForm
     template_name = 'requests/test_edit.html'
     context_object_name = 'test'
@@ -244,9 +244,9 @@ class TestUpdateView(UpdateView):
         experiment = get_object_or_404(Experiment, id=experiment_id)
         current_user = self.request.user
         
-        user_samples = TemporarySampleInfo.objects.filter(experiment=experiment, user=current_user)
+        user_samples = SampleInfo.objects.filter(experiment=experiment, user=current_user)
         
-        user_test = get_object_or_404(TemporaryTestInfo, experiment=experiment, user=current_user, pk=test_pk)
+        user_test = get_object_or_404(TestInfo, experiment=experiment, user=current_user, pk=test_pk)
         
         tests = experiment.tests.all()
         
@@ -261,7 +261,7 @@ class TestUpdateView(UpdateView):
 
 
 class TestDeleteView(DeleteView):
-    model = TemporaryTestInfo
+    model = TestInfo
     template_name = 'requests/test-information.html'
     context_object_name = 'test'
 
@@ -319,7 +319,7 @@ class UserOrderExperimentCancelView(View):
         experiment = get_object_or_404(Experiment,id=experiment_id)
 
         RequestInfo.objects.filter(user=user, experiment=experiment).delete()
-        TemporarySampleInfo.objects.filter(user=user,experiment=experiment).delete()
-        TemporaryTestInfo.objects.filter(user=user,experiment=experiment)
-        TemporaryDiscountInfo.objects.filter(user=user,experiment=experiment)
+        SampleInfo.objects.filter(user=user,experiment=experiment).delete()
+        TestInfo.objects.filter(user=user,experiment=experiment)
+        DiscountInfo.objects.filter(user=user,experiment=experiment)
         return redirect(self.success_url)

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import TemporaryRequestInfo, TemporaryOrder, TemporarySampleInfo, DiscountInfo, TemporaryTestInfo
+from .models import RequestInfo, Order, SampleInfo, DiscountInfo, TestInfo
 from django.utils.html import format_html
 
 class RequestInfoAdmin(admin.ModelAdmin):   
@@ -74,8 +74,8 @@ class TestInformationAdmin(admin.ModelAdmin):
 
 
 # Registering the models with their admin classes
-admin.site.register(TemporaryRequestInfo, RequestInfoAdmin)
-admin.site.register(TemporarySampleInfo, SampleInfoAdmin)
-admin.site.register(TemporaryOrder, RequestAdmin)
+admin.site.register(RequestInfo, RequestInfoAdmin)
+admin.site.register(SampleInfo, SampleInfoAdmin)
+admin.site.register(Order, RequestAdmin)
 admin.site.register(DiscountInfo, DiscountInfoAdmin)
-admin.site.register(TemporaryTestInfo, TestInformationAdmin)
+admin.site.register(TestInfo, TestInformationAdmin)

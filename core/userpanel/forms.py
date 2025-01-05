@@ -1,6 +1,6 @@
 from django import forms
 from accounts.models import Profile
-from orders.models import TemporaryOrder 
+from orders.models import Order 
 
 
 class ProfileUpdatePanelForm(forms.ModelForm):
@@ -10,7 +10,7 @@ class ProfileUpdatePanelForm(forms.ModelForm):
 
 class RequestUpdateForm(forms.ModelForm):
     class Meta:
-        model = TemporaryOrder
+        model = Order
         fields = '__all__'
 
 class PaymentForm(forms.Form):
