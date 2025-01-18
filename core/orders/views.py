@@ -1,6 +1,6 @@
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import RequestInfo, Experiment,SampleInfo,TestInfo,Parameters
+from .models import  Experiment,SampleInfo,TestInfo,Parameters
 from django.views.generic import FormView,DetailView,UpdateView,DeleteView
 from django.shortcuts import get_object_or_404,redirect,render
 from django.urls import reverse_lazy
@@ -14,21 +14,16 @@ from accounts.models import User
 import logging
 import jdatetime
 import json
-
 from .forms import *
 
-
-logger = logging.getLogger(__name__)
-
-class RequestInfoCreateView(LoginRequiredMixin, CreateView):
-    model = RequestInfo
-    form_class = RequestInfoForm
-    template_name = 'requests/request-information.html' 
+class OrderCreateView(LoginRequiredMixin, CreateView):
+    model = Order
+    form_class = OrderForm
+    template_name = 'orders/request-information.html' 
     success_url = reverse_lazy('orders:sample_info_create')
     
     def get_success_url(self):
-        experiment_id = self.kwargs['experiment_id']
-        return reverse_lazy('orders:sample_info_create', kwargs={'experiment_id': experiment_id})
+        return reverse_lazy('orders:sample_info_create', kwargs={'order_code': self.object.order_code})
 
     
     def get_context_data(self, **kwargs):
@@ -51,16 +46,17 @@ class RequestInfoCreateView(LoginRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        request_info = form.save(commit=False)
+        order = form.save(commit=False)
         experiment_id = self.kwargs['experiment_id']
-        request_info.experiment = get_object_or_404(Experiment, id=experiment_id)
-        request_info.user = self.request.user
-        request_info.save()
+        order.experiment = get_object_or_404(Experiment, id=experiment_id)
+        order.user = self.request.user
+        order.save()
+        self.request.session['order_code'] = order.order_code
         return super().form_valid(form)
 
 
 class SampleInfoCreateView(FormView):
-    template_name = 'requests/sample-information.html'
+    template_name = 'orders/sample-information.html'
     form_class = SampleForm
 
     def get_success_url(self):
@@ -68,27 +64,27 @@ class SampleInfoCreateView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        experiment_id = self.kwargs.get('experiment_id')
-        experiment = get_object_or_404(Experiment, id=experiment_id)
-        current_user = self.request.user
-        user_samples = SampleInfo.objects.filter(experiment=experiment, user=current_user)
-
-        context['user_samples'] = user_samples 
+        order_code = self.kwargs.get('order_code')
+        order = get_object_or_404(Order, order_code=order_code)
+        experiment = order.experiment
+        context['order'] = order
+        context['user_samples'] = SampleInfo.objects.filter(order=order)
+        profile = Profile.objects.get(user=self.request.user)
+        context['profile'] = profile 
         context['samples'] = experiment.samples.all()
         context['experiment'] = experiment
         context['formset'] = self.get_form()
-        profile = Profile.objects.get(user=self.request.user)
-        context['profile'] = profile 
         context['current_step'] = 2
 
         return context
         
     def form_valid(self, form):
-        request_info = form.save(commit=False)
-        experiment_id = self.kwargs['experiment_id']
-        request_info.experiment = get_object_or_404(Experiment, id=experiment_id)
-        request_info.user = self.request.user
-        request_info.save()
+        sample_info = form.save(commit=False)
+        order_code = self.kwargs.get('order_code')
+        order = get_object_or_404(Order, order_code=order_code)
+        sample_info.order = order
+        sample_info.save()
+
         return super().form_valid(form)
     
     def form_invalid(self, form):
@@ -98,7 +94,7 @@ class SampleInfoCreateView(FormView):
     
 class SampleDetailView(DetailView):
     model = SampleInfo
-    template_name = 'requests/sample_detail.html'
+    template_name = 'orders/sample_detail.html'
     context_object_name = 'sample'
 
     def get_context_data(self, **kwargs):
@@ -111,8 +107,8 @@ class SampleDetailView(DetailView):
 class SampleEditView(UpdateView):
     model = SampleInfo
     form_class = SampleForm
-    # template_name = 'requests/sample_edit.html'
-    template_name = 'requests/sample-information.html'
+    # template_name = 'orders/sample_edit.html'
+    template_name = 'orders/sample-information.html'
     context_object_name = 'sample'
 
     def get_success_url(self):
@@ -120,14 +116,11 @@ class SampleEditView(UpdateView):
     
 class SampleDeleteView(DeleteView):
     model = SampleInfo
-    template_name = 'requests/sample_confirm_delete.html'
+    template_name = 'orders/sample_confirm_delete.html'
     
     def get_success_url(self):
-        # اطمینان از وجود experiment_id در kwargs
-        experiment_id = self.kwargs.get('experiment_id')
-        if experiment_id:
-            return reverse_lazy('orders:sample_info_create', kwargs={'experiment_id': experiment_id})
-        return reverse_lazy('orders:sample_list')
+        order_code = self.kwargs.get('order_code')
+        return reverse_lazy('orders:sample_info_create', kwargs={'order_code': order_code})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -135,21 +128,22 @@ class SampleDeleteView(DeleteView):
         return context
     
 class TestInfoCreateView(FormView):
-    template_name = 'requests/test-information.html'
+    template_name = 'orders/test-information.html'
     form_class = TestInfoForm
 
     def get_success_url(self):
         return self.request.path
     def get_context_data(self, **kwargs):
-        experiment_id = self.kwargs['experiment_id']
-        experiment = get_object_or_404(Experiment,id = experiment_id)
-        current_user = self.request.user
-        user_samples = SampleInfo.objects.filter(experiment=experiment, user=current_user)
-        user_tests = TestInfo.objects.filter(experiment=experiment, user=current_user)
+        order_code = self.kwargs.get('order_code')
+        order = get_object_or_404(Order, order_code=order_code)
+        experiment = order.experiment
+        user_samples = SampleInfo.objects.filter(order=order)
+        user_tests = TestInfo.objects.filter(order=order)
         tests = experiment.tests.all()
         profile = Profile.objects.get(user=self.request.user)
         context = {
             'tests': tests,
+            'order': order,
             'profile': profile,
             'experiment': experiment,
             'user_samples': user_samples,
@@ -160,10 +154,10 @@ class TestInfoCreateView(FormView):
         return context
     
     def form_valid(self, form):
-        request_info = form.save(commit=False)
-        experiment_id = self.kwargs['experiment_id']
-        request_info.experiment = get_object_or_404(Experiment, id=experiment_id)
-        request_info.user = self.request.user
+        test_info = form.save(commit=False)
+        order_code = self.kwargs.get('order_code')  # دریافت order_code از URL
+        order = get_object_or_404(Order, order_code=order_code)
+        test_info.order = order
 
         parameter_values = {}
         for key, value in self.request.POST.items():
@@ -178,12 +172,12 @@ class TestInfoCreateView(FormView):
         print("Collected parameter values without CSRF token:", parameter_values)
 
         # ذخیره مقادیر به عنوان JSON
-        request_info.parameter_values = json.dumps(parameter_values)
+        test_info.parameter_values = json.dumps(parameter_values)
 
         # پرینت برای بررسی مقدار parameter_values قبل از ذخیره
-        print("JSON parameter values to be saved:", request_info.parameter_values)
+        print("JSON parameter values to be saved:", test_info.parameter_values)
 
-        request_info.save()
+        test_info.save()
         return super().form_valid(form)
     
     def form_invalid(self, form):
@@ -231,7 +225,7 @@ class TestDetailView(DetailView):
 class TestUpdateView(UpdateView):
     model = TestInfo
     form_class = TestInfoForm
-    template_name = 'requests/test_edit.html'
+    template_name = 'orders/test_edit.html'
     context_object_name = 'test'
     def get_success_url(self):
         experiment_id = self.kwargs['experiment_id']
@@ -262,7 +256,7 @@ class TestUpdateView(UpdateView):
 
 class TestDeleteView(DeleteView):
     model = TestInfo
-    template_name = 'requests/test-information.html'
+    template_name = 'orders/test-information.html'
     context_object_name = 'test'
 
     def get_success_url(self):
@@ -273,15 +267,17 @@ class TestDeleteView(DeleteView):
 
 class DiscountInfoFormView(FormView):
     form_class = DiscountInfoForm
-    template_name = 'requests/discount_info.html'
+    template_name = 'orders/discount_info.html'
     def get_success_url(self):
         return reverse_lazy('userpanel:index')
     def form_valid(self, form):
-        request_info = form.save(commit=False)
-        experiment_id = self.kwargs['experiment_id']
-        request_info.experiment = get_object_or_404(Experiment, id=experiment_id)
-        request_info.user = self.request.user
-        request_info.save()
+        discount_info = form.save(commit=False)
+        order_code = self.kwargs.get('order_code')
+        order = get_object_or_404(Order, order_code=order_code)
+        discount_info.order = order
+        discount_info.save()
+        order.is_complete = True
+        order.save()
         return super().form_valid(form)
     
     def form_invalid(self, form):
@@ -291,11 +287,11 @@ class DiscountInfoFormView(FormView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        order_code = self.kwargs['order_code']
+        context['order'] = get_object_or_404(Order,order_code = order_code)
         profile = Profile.objects.get(user=self.request.user)
         context['profile'] = profile
         context['current_step']= 4
-        experiment_id = self.kwargs['experiment_id']
-        context['experiment'] = get_object_or_404(Experiment, id=experiment_id)
 
         return context
     

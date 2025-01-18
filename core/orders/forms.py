@@ -1,8 +1,8 @@
 from django import forms
-from .models import  RequestInfo,SampleInfo,TestInfo,DiscountInfo
-class RequestInfoForm(forms.ModelForm):
+from .models import  Order,SampleInfo,TestInfo,DiscountInfo
+class OrderForm(forms.ModelForm):
     class Meta:
-        model = RequestInfo
+        model = Order
         fields = ['description']  
 
 

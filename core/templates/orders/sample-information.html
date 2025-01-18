@@ -1,12 +1,12 @@
 {% extends 'userpanel/base.html' %}
 {% load static %}
 {% block content %}
-{% include 'requests/request-head.html' %}
+{% include 'orders/request-head.html' %}
 
 <div class="container p-4 request-page" data-index="2" dir="rtl">
     <div class="bg-white p-4 rounded shadow-lg">
         <h5 class="text-primary mb-4">مشخصات عمومی نمونه</h5>
-        <form method="post" enctype="multipart/form-data" action="{% url 'orders:sample_info_create' experiment.id %}">
+        <form method="post" enctype="multipart/form-data" action="{% url 'orders:sample_info_create' order.order_code %}">
             {% csrf_token %}
             <div class="row mb-3">
                 <div class="col-md-4">
@@ -107,7 +107,7 @@
                             <!-- لینک‌ها یا دکمه‌های مربوط به اقدامات -->
                             <a href="{% url 'orders:sample_detail' sample.id %}" class="btn btn-info">جزئیات</a>
                             <a href="{% url 'orders:sample_edit' sample.id %}" class="btn btn-warning">ویرایش</a>
-                            <form action="{% url 'orders:sample_delete' experiment_id=sample.experiment.id pk=sample.id %}" method="post" style="display:inline;">
+                            <form action="{% url 'orders:sample_delete' order_code=order.order_code pk=sample.id %}" method="post" style="display:inline;">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-danger">حذف</button>
                             </form>
@@ -122,8 +122,8 @@
             </table>
         </div>
         <div class="text-center">
-            <a href="{% url 'orders:request_info' experiment.id %}" class="page-btn backward-btn btn btn-outline-primary px-4 me-2">مرحله قبل</a>
-            <a href="{% url 'orders:test_info_create' experiment.id %}" class="page-btn forward-btn btn btn-success px-4 me-2">ثبت و مرحله بعد</a>
+            <a href="{% url 'orders:request_info' order.order_code %}" class="page-btn backward-btn btn btn-outline-primary px-4 me-2">مرحله قبل</a>
+            <a href="{% url 'orders:test_info_create' order.order_code %}" class="page-btn forward-btn btn btn-success px-4 me-2">ثبت و مرحله بعد</a>
             <a href="{% url 'orders:confirm_cancel' user_id=request.user.id experiment_id=experiment.id %}" class="btn btn-danger px-4">انصراف</a>
 
         </div>
