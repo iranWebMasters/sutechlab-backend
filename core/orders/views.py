@@ -275,9 +275,9 @@ class DiscountInfoFormView(FormView):
         order_code = self.kwargs.get('order_code')
         order = get_object_or_404(Order, order_code=order_code)
         discount_info.order = order
-        discount_info.save()
         order.is_complete = True
         order.save()
+        discount_info.save()
         return super().form_valid(form)
     
     def form_invalid(self, form):
@@ -296,28 +296,27 @@ class DiscountInfoFormView(FormView):
         return context
     
 
-class UserOrderExperimentCancelView(View):
+class UserOrderCancelView(View):
     template_name = 'userpanel/order_confirm_cancel.html'
     success_url = reverse_lazy('userpanel:experiments-list')
 
-    def get(self, request, user_id, experiment_id):
-        user = get_object_or_404(User, id=user_id)
-        experiment = get_object_or_404(Experiment, id=experiment_id)
+    def get(self, request, order_code):
+        order = get_object_or_404(Order, order_code=order_code)
         profile = Profile.objects.get(user=self.request.user)
         referer = request.META.get('HTTP_REFERER', reverse('userpanel:index')) 
         return render(request, self.template_name, {
-            'user': user,
-            'experiment': experiment,
+            'order': order,
             'profile': profile,
             'referer': referer
         })
         
-    def post (self,request,user_id,experiment_id):
-        user = get_object_or_404(User,id=user_id)
-        experiment = get_object_or_404(Experiment,id=experiment_id)
+    def post(self, request, order_code):
+        order = get_object_or_404(Order, order_code=order_code)
 
-        RequestInfo.objects.filter(user=user, experiment=experiment).delete()
-        SampleInfo.objects.filter(user=user,experiment=experiment).delete()
-        TestInfo.objects.filter(user=user,experiment=experiment)
-        DiscountInfo.objects.filter(user=user,experiment=experiment)
+        SampleInfo.objects.filter(order=order).delete()
+        TestInfo.objects.filter(order=order).delete()
+        DiscountInfo.objects.filter(order=order).delete()
+
+        order.delete()
+
         return redirect(self.success_url)

@@ -18,6 +18,7 @@ class Order(models.Model):
     description = models.TextField(blank=True, null=True, verbose_name='توضیحات')
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', verbose_name='وضعیت')
     is_complete = models.BooleanField(default=False, verbose_name='تکمیل شده')
+    invoice_pdf = models.FileField(upload_to='invoices/', null=True, blank=True, verbose_name='پیش فاکتور')
     order_code = models.CharField(max_length=255, blank=True, unique=True, verbose_name='کد سفارش')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
 
@@ -25,13 +26,10 @@ class Order(models.Model):
         if not self.order_code:
             self.order_code = generate_order_code(self.user.customer_code)
         super().save(*args, **kwargs)
-        
-    def __str__(self):
-        return f"Request(ID: {self.id}, User: {self.user.email}, Experiment: {self.experiment.test_name})"
 
-    class Meta:
-        verbose_name = 'درخواست'
-        verbose_name_plural = 'درخواست‌ها'
+    def __str__(self):
+        return f"Order {self.order_code} by {self.user.email} - Status: {self.status}"
+
 
 class SampleInfo(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='sample_info')
@@ -39,24 +37,19 @@ class SampleInfo(models.Model):
     customer_sample_name = models.CharField(max_length=255, verbose_name='نام نمونه مشتری')
     sample_count = models.PositiveIntegerField(verbose_name='تعداد نمونه')
 
-    additional_info = models.TextField(blank=True, null=True, verbose_name='توضیحات اضافی')
-    is_perishable = models.BooleanField(null=True, blank=True, default=False, verbose_name='نمونه فاسدشدنی است')
-    expiration_date = models.DateField(null=True, blank=True, verbose_name='تاریخ انقضا')
-    sample_return = models.BooleanField(null=True, blank=True, default=False, verbose_name='نمونه برگشت داده شده بشود')
-    storage_duration = models.PositiveIntegerField(null=True, blank=True, verbose_name='مدت زمان نگهداری (به روز)')
-    storage_duration_unit = models.CharField(null=True, blank=True, max_length=32, verbose_name='واحد مدت زمان نگهداری')
+    # additional_info = models.TextField(blank=True, null=True, verbose_name='توضیحات اضافی')
+    # is_perishable = models.BooleanField(null=True, blank=True, default=False, verbose_name='نمونه فاسدشدنی است')
+    # expiration_date = models.DateField(null=True, blank=True, verbose_name='تاریخ انقضا')
+    # sample_return = models.BooleanField(null=True, blank=True, default=False, verbose_name='نمونه برگشت داده شده بشود')
+    # storage_duration = models.PositiveIntegerField(null=True, blank=True, verbose_name='مدت زمان نگهداری (به روز)')
+    # storage_duration_unit = models.CharField(null=True, blank=True, max_length=32, verbose_name='واحد مدت زمان نگهداری')
 
     storage_conditions = models.TextField(blank=True, null=True, verbose_name='شرایط نگهداری')
     sample_description = models.TextField(blank=True, null=True, verbose_name='توضیحات نمونه')
     file_upload = models.FileField(upload_to='sample_files/', blank=True, null=True, verbose_name='فایل تکمیلی نمونه')
 
     def __str__(self):
-        return f"SampleInfo(ID: {self.id}, Customer Sample: {self.customer_sample_name}, Type: {self.sample_type}, Count: {self.sample_count})"
-
-    class Meta:
-        verbose_name = 'اطلاعات نمونه'
-        verbose_name_plural = 'اطلاعات نمونه‌ها'
-
+        return f"Sample {self.customer_sample_name} for Order {self.order.order_code}"
 
 class TestInfo(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='test_info')
@@ -64,8 +57,6 @@ class TestInfo(models.Model):
     test = models.ForeignKey(Test, blank=True, null=True, on_delete=models.CASCADE, verbose_name='عنوان آزمایش')
 
     repeat_count_test = models.PositiveIntegerField(verbose_name='تعداد تکرار آزمون')
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
-    updated_at = models.DateTimeField(auto_now=True, verbose_name='تاریخ به‌روزرسانی')
 
     parameter = models.ForeignKey(Parameters, on_delete=models.CASCADE, verbose_name='پارامتر')
     parameter_values = models.JSONField(verbose_name='مقادیر پارامتر') 
@@ -77,16 +68,12 @@ class TestInfo(models.Model):
             return {}
 
     def __str__(self):
-        return f"TemporaryTestInfo(ID: {self.id}, User: {self.user.email}, Experiment: {self.experiment.test_name}, Sample ID: {self.user_sample.id}, Test: {self.test.name_fa if self.test else 'N/A'})"
-
-    class Meta:
-        verbose_name = 'اطلاعات آزمایش'
-        verbose_name_plural = 'اطلاعات آزمایش‌ها'
+        return f"Test {self.test.name_fa if self.test else 'N/A'} for Sample {self.user_sample.customer_sample_name}"
 
 
 class DiscountInfo(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='discount_info')
-    
+    order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='discount_info')
+
     send_cost = models.BooleanField(default=False, verbose_name='تمایل به پرداخت هزینه ارسال')
     is_faculty_member = models.BooleanField(default=False, verbose_name='آیا کاربر عضو هیات علمی است؟')
     is_student_or_staff = models.BooleanField(default=False, verbose_name='آیا کاربر دانشجو یا کارکنان دانشگاه است؟')
@@ -99,8 +86,4 @@ class DiscountInfo(models.Model):
     research_grant_withdrawal_amount = models.PositiveIntegerField(blank=True, null=True, verbose_name='میزان استفاده از گرنت پژوهشی')
 
     def __str__(self):
-        return f"TemporaryDiscountInfo(ID: {self.id}, User: {self.user.email}, Experiment: {self.experiment.test_name,})"
-
-    class Meta:
-        verbose_name = 'اطلاعات تخفیف'
-        verbose_name_plural = 'اطلاعات تخفیف‌ها'
+        return f"Discount Info for Order {self.order.order_code} - Faculty Member: {self.is_faculty_member}"

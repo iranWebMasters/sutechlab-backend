@@ -1,30 +1,97 @@
 from django.contrib import admin
 from .models import Order, SampleInfo, TestInfo, DiscountInfo
 
-@admin.register(Order)
+class SampleInfoInline(admin.TabularInline):
+    model = SampleInfo
+    extra = 0
+    fields = [
+        'sample_type', 
+        'customer_sample_name', 
+        'sample_count', 
+        'storage_conditions', 
+        'sample_description', 
+        'file_upload'
+    ]
+    readonly_fields = ['file_upload']
+    # Adding help texts for better understanding
+    help_texts = {
+        'sample_type': 'نوع نمونه را وارد کنید.',
+        'customer_sample_name': 'نام نمونه مشتری را وارد کنید.',
+        'sample_count': 'تعداد نمونه‌ها را وارد کنید.',
+        'storage_conditions': 'شرایط نگهداری نمونه را وارد کنید.',
+        'sample_description': 'توضیحات اضافی در مورد نمونه را وارد کنید.',
+    }
+
+class TestInfoInline(admin.TabularInline):
+    model = TestInfo
+    extra = 0
+    fields = [
+        'user_sample', 
+        'test', 
+        'repeat_count_test', 
+        'parameter', 
+        'parameter_values',
+    ]
+    # Adding help texts for better understanding
+    help_texts = {
+        'user_sample': 'انتخاب نمونه آزمایش.',
+        'test': 'عنوان آزمایش را انتخاب کنید.',
+        'repeat_count_test': 'تعداد تکرار آزمایش را وارد کنید.',
+        'parameter': 'پارامترهای مربوط به آزمایش را انتخاب کنید.',
+        'parameter_values': 'مقادیر پارامترها را وارد کنید.',
+    }
+
+class DiscountInfoInline(admin.TabularInline):
+    model = DiscountInfo
+    extra = 0
+    fields = [
+        'send_cost', 
+        'is_faculty_member', 
+        'is_student_or_staff', 
+        'is_affiliated_with_institution',
+        'contract_party_file', 
+        'has_labs_net_grant', 
+        'labs_net_file', 
+        'has_research_grant',
+        'research_grant_withdrawal_amount'
+    ]
+    readonly_fields = ['contract_party_file', 'labs_net_file']
+    # Adding help texts for better understanding
+    help_texts = {
+        'send_cost': 'آیا مایل به پرداخت هزینه ارسال هستید؟',
+        'is_faculty_member': 'آیا کاربر عضو هیات علمی است؟',
+        'is_student_or_staff': 'آیا کاربر دانشجو یا کارکنان دانشگاه است؟',
+        'is_affiliated_with_institution': 'آیا کاربر متقاضی استفاده از تخفیف نهادهای طرف قرارداد است؟',
+        'has_labs_net_grant': 'آیا کاربر دارای گرنت شبکه آزمایشگاهی است؟',
+        'has_research_grant': 'آیا کاربر دارای گرنت پژوهشی است؟',
+    }
+
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'experiment', 'status', 'is_complete', 'created_at')
-    search_fields = ('order_code', 'user__email', 'experiment__test_name')
-    list_filter = ('status', 'is_complete')
-    ordering = ('-created_at',)
+    list_display = ['id', 'user', 'experiment', 'status', 'is_complete', 'order_code', 'created_at']
+    list_filter = ['status', 'is_complete', 'created_at']
+    search_fields = ['order_code', 'user__email', 'experiment__test_name']
+    inlines = [SampleInfoInline, TestInfoInline, DiscountInfoInline]
+    
+    fieldsets = (
+        ('اطلاعات سفارش', {
+            'fields': ('user', 'experiment', 'description', 'status', 'is_complete', 'order_code','invoice_pdf')
+        }),
+        ('تاریخ‌ها', {
+            'fields': ('created_at',),
+        }),
+    )
+    readonly_fields = ['order_code', 'created_at','invoice_pdf']
 
-@admin.register(SampleInfo)
-class SampleInfoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'order', 'sample_type', 'customer_sample_name', 'sample_count')
-    search_fields = ('customer_sample_name', 'sample_type')
-    list_filter = ('is_perishable',)
-    ordering = ('-order',)
+    # Adding custom styling for the admin panel
+    class Media:
+        css = {
+            'all': ('admin/css/custom_admin.css',)  # Ensure to create this CSS file for custom styles
+        }
+        js = ('admin/js/custom_admin.js',)  # Ensure to create this JS file for custom scripts
 
-@admin.register(TestInfo)
-class TestInfoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'order', 'user_sample', 'test', 'repeat_count_test', 'created_at')
-    search_fields = ('order__order_code', 'user_sample__customer_sample_name', 'test__name_fa')
-    list_filter = ('test',)
-    ordering = ('-created_at',)
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.select_related('user', 'experiment')  # Optimize queries by using select_related
 
-@admin.register(DiscountInfo)
-class DiscountInfoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'order', 'is_faculty_member', 'is_student_or_staff', 'has_labs_net_grant')
-    search_fields = ('order__order_code', 'order__user__email')
-    list_filter = ('is_faculty_member', 'is_student_or_staff', 'has_labs_net_grant')
-    ordering = ('-order',)
+# Registering the OrderAdmin class with the Order model
+admin.site.register(Order, OrderAdmin)

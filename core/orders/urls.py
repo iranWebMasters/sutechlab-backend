@@ -18,6 +18,6 @@ urlpatterns = [
     path('experiment/<int:experiment_id>/test/<int:pk>/delete/', TestDeleteView.as_view(), name='test_delete'),
 
     path('discount-info/<int:order_code>/', DiscountInfoFormView.as_view(), name='discount_info_form'),
-    path('confirm_cancel/<int:order_code>/',UserOrderExperimentCancelView.as_view(),name='confirm_cancel')
+    path('confirm_cancel/<int:order_code>/',UserOrderCancelView.as_view(),name='confirm_cancel'),
 
 ]

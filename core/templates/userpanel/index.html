@@ -28,35 +28,35 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for request in requests %}
+                    {% for order in requests %}
                     <tr role="row">
-                        <td><a href="{% url 'userpanel:laboratory_request_detail' request.id %}">{{ request.id }}</a></td> <!-- Updated link -->
-                        <td><a href="{% url 'userpanel:laboratory_request_detail' request.id %}">{{ request.user.email }}</a></td>
-                        <td><a href="{% url 'userpanel:laboratory_request_detail' request.id %}">{{ request.experiment.test_name }}</a></td>
-                        <td><a href="{% url 'userpanel:laboratory_request_detail' request.id %}">{{ request.sample_type }}</a></td>
-                        <td><a href="{% url 'userpanel:laboratory_request_detail' request.id %}">{{ request.sample_count }}</a></td>
-                        <td><a href="{% url 'userpanel:laboratory_request_detail' request.id %}">{{ request.submission_date }}</a></td>
+                        <td><a href="{% url 'userpanel:laboratory_request_detail' order.id %}">{{ order.id }}</a></td> <!-- Updated link -->
+                        <td><a href="{% url 'userpanel:laboratory_request_detail' order.id %}">{{ order.user.email }}</a></td>
+                        <td><a href="{% url 'userpanel:laboratory_request_detail' order.id %}">{{ order.experiment.test_name }}</a></td>
+                        <td><a href="{% url 'userpanel:laboratory_request_detail' order.id %}">{{ order.sample_type }}</a></td>
+                        <td><a href="{% url 'userpanel:laboratory_request_detail' order.id %}">{{ order.sample_count }}</a></td>
+                        <td><a href="{% url 'userpanel:laboratory_request_detail' order.id %}">{{ order.created_at }}</a></td>
                         <td>
-                            {% if request.status == 'successful' %}
+                            {% if order.status == 'successful' %}
                                 <span class="text-success">پرداخت موفق</span>
-                            {% elif request.status == 'failed' %}
+                            {% elif order.status == 'failed' %}
                                 <span class="text-danger">پرداخت ناموفق</span>
-                            {% elif request.status == 'pending' %}
+                            {% elif order.status == 'pending' %}
                                 <span class="text-warning">در حال بررسی</span>
-                            {% elif request.status == 'canceled' %}
+                            {% elif order.status == 'canceled' %}
                                 <span class="text-secondary">لغو شده</span>
-                            {% elif request.status == 'ready_for_payment' %}
+                            {% elif order.status == 'ready_for_payment' %}
                                 <span class="text-info">آماده پرداخت</span>
                             {% else %}
                                 <span class="text-muted">وضعیت نامشخص</span>
                             {% endif %}
                         </td>
                         <td > <!-- فیلد دانلود پیش فاکتور -->
-                            <a href="{% url 'userpanel:delete_request' request.id %}" class="item-delete margin-left-10" title="حذف"></a>
-                            <!-- <a href="{% url 'userpanel:edit_request' request.id %}" class="item-edit" title='ویرایش'></a> -->
+                            <a href="{% url 'userpanel:delete_request' order.id %}" class="item-delete margin-left-10" title="حذف"></a>
+                            <!-- <a href="{% url 'userpanel:edit_request' order.id %}" class="item-edit" title='ویرایش'></a> -->
                         </td>
                         <td >
-                            <a href="{% url 'userpanel:download_invoice' request.id %}" class="item-download" title="دانلود پیش فاکتور">
+                            <a href="{% url 'userpanel:download_invoice' order.id %}" class="item-download" title="دانلود پیش فاکتور">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="download-icon">
                                     <path d="M12 17l-5-5h3V3h4v9h3l-5 5zm0 4c-4.418 0-8-3.582-8-8h2c0 3.313 2.687 6 6 6s6-2.687 6-6h2c0 4.418-3.582 8-8 8z"/>
                                 </svg>
