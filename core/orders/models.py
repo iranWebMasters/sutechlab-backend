@@ -11,6 +11,7 @@ class Order(models.Model):
         ('successful', 'پرداخت موفق'),
         ('failed', 'پرداخت ناموفق'),
         ('canceled', 'لغو شده'),
+        ('ready_for_payment', 'آماده پرداخت'),
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='کاربر')
@@ -20,6 +21,8 @@ class Order(models.Model):
     is_complete = models.BooleanField(default=False, verbose_name='تکمیل شده')
     invoice_pdf = models.FileField(upload_to='invoices/', null=True, blank=True, verbose_name='پیش فاکتور')
     order_code = models.CharField(max_length=255, blank=True, unique=True, verbose_name='کد سفارش')
+    final_price = models.DecimalField(max_digits=10, decimal_places=0,default=0, verbose_name='قیمت نهایی', null=True, blank=True)
+    tracking_code = models.CharField(max_length=255,null=False, blank=False, verbose_name='Tracking Code')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
 
     def save(self, *args, **kwargs):

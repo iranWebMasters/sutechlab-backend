@@ -238,9 +238,9 @@ class ProcessPaymentView(View):
             order.status = 'successful'
             order.tracking_code = tracking_code
             order.save()
-            laboratory_request.status = 'successful'
-            laboratory_request.tracking_code = tracking_code  # ثبت کد رهگیری در درخواست آزمایش
-            laboratory_request.save()
+            order.status = 'successful'
+            order.tracking_code = tracking_code  # ثبت کد رهگیری در درخواست آزمایش
+            order.save()
 
             messages.success(request, 'پرداخت با موفقیت از طریق کیف پول انجام شد.')
             return redirect('userpanel:payment_success', tracking_code=tracking_code)

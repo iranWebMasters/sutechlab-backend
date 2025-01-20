@@ -1,159 +1,145 @@
-{% extends 'userpanel/base.html' %}  <!-- Adjust the base template as needed -->
+{% extends 'userpanel/base.html' %}
 
 {% block content %}
 <div class="container mt-5">
     <h2 class="text-center mb-4">جزئیات درخواست آزمایش</h2>
+    
     <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">کد سفارش: {{ object.order_code }}</h4>
+        </div>
         <div class="card-body">
-            <table class="table table-bordered table-striped">
-                <thead class="thead-light">
-                    <tr>
-                        <th>عنوان</th>
-                        <th>اطلاعات</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th>کد سفارش</th>
-                        <td>{{ object.order_code }}</td>
-                    </tr>
-                    <tr>
-                        <th>کاربر</th>
-                        <td>
-                            {% if object.user %}
-                                {{ object.user.email }}
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>کاربر:</h5>
+                    <p>
+                        {% if object.user %}
+                            <strong>{{ object.user.profile.first_name }} {{ object.user.profile.last_name }}</strong>
+                        {% else %}
+                            <span class="text-muted">N/A</span>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <h5>تاریخ ثبت درخواست:</h5>
+                    <p>{{ object.created_at|date:"d M Y" }}</p>
+                </div>
+            </div>
+
+            <hr>
+
+            <h5>جزئیات آزمایش:</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>آزمایش:</strong> {{ object.experiment.test_name }}</p>
+                    <p><strong>توضیحات:</strong> {{ object.description|default:"بدون توضیحات" }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>وضعیت:</strong>
+                    {% if order.status == 'successful' %}
+                        <span class="text-success">پرداخت موفق</span>
+                    {% elif order.status == 'failed' %}
+                        <span class="text-danger">پرداخت ناموفق</span>
+                    {% elif order.status == 'pending' %}
+                        <span class="text-warning">در حال بررسی</span>
+                    {% elif order.status == 'canceled' %}
+                        <span class="text-secondary">لغو شده</span>
+                    {% elif order.status == 'ready_for_payment' %}
+                        <span class="text-info">آماده پرداخت</span>
+                    {% else %}
+                        <span class="text-muted">وضعیت نامشخص</span>
+                    {% endif %}</p>
+                    <p><strong>تکمیل شده توسط کاربر:</strong> {{ object.is_complete|yesno:"بله,خیر" }}</p>
+                </div>
+            </div>
+
+            <hr>
+
+            <h5>اطلاعات نمونه ها:</h5>
+            <div class="row">
+                {% for sample in object.sample_info.all %}
+                    <div class="col-md-6">
+                        <p><strong>نوع نمونه:</strong> {{ sample.sample_type }}</p>
+                        <p><strong>نام نمونه مشتری:</strong> {{ sample.customer_sample_name }}</p>
+                        <p><strong>تعداد نمونه:</strong> {{ sample.sample_count }}</p>
+                        <p><strong>شرایط نگهداری:</strong> {{ sample.storage_conditions|default:"ندارد" }}</p>
+                        <p><strong>توضیحات نمونه:</strong> {{ sample.sample_description|default:"ندارد" }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>فایل تکمیلی نمونه:</strong>
+                            {% if sample.file_upload %}
+                                <a href="{{ sample.file_upload.url }}" class="btn btn-link">دانلود فایل</a>
                             {% else %}
-                                N/A
+                                <span class="text-muted">هیچ فایلی بارگذاری نشده است.</span>
                             {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>آزمایش</th>
-                        <td>{{ object.experiment.name }}</td>
-                    </tr>
-                    <tr>
-                        <th>تاریخ ثبت درخواست</th>
-                        <td>{{ object.submission_date }}</td>
-                    </tr>
-                    <tr>
-                        <th>توضیحات</th>
-                        <td>{{ object.description }}</td>
-                    </tr>
-                    <tr>
-                        <th>نوع نمونه</th>
-                        <td>{{ object.sample_type }}</td>
-                    </tr>
-                    <tr>
-                        <th>نام نمونه مشتری</th>
-                        <td>{{ object.customer_sample_name }}</td>
-                    </tr>
-                    <tr>
-                        <th>تعداد نمونه</th>
-                        <td>{{ object.sample_count }}</td>
-                    </tr>
-                    <tr>
-                        <th>توضیحات اضافی</th>
-                        <td>{{ object.additional_info }}</td>
-                    </tr>
-                    <tr>
-                        <th>نمونه فاسدشدنی است</th>
-                        <td>{{ object.is_perishable|yesno:"بله,خیر" }}</td>
-                    </tr>
-                    <tr>
-                        <th>تاریخ انقضا</th>
-                        <td>{{ object.expiration_date }}</td>
-                    </tr>
-                    <tr>
-                        <th>نمونه برگشت داده شده بشود</th>
-                        <td>{{ object.sample_return|yesno:"بله,خیر" }}</td>
-                    </tr>
-                    <tr>
-                        <th>مدت زمان نگهداری (به روز)</th>
-                        <td>{{ object.storage_duration }}</td>
-                    </tr>
-                    <tr>
-                        <th>واحد مدت زمان نگهداری</th>
-                        <td>{{ object.storage_duration_unit }}</td>
-                    </tr>
-                    <tr>
-                        <th>شرایط نگهداری</th>
-                        <td>{{ object.storage_conditions }}</td>
-                    </tr>
-                    <tr>
-                        <th>توضیحات نمونه</th>
-                        <td>{{ object.sample_description }}</td>
-                    </tr>
-                    <tr>
-                        <th>فایل تکمیلی نمونه</th>
-                        <td>
-                            {% if object.file_upload %}
-                                <a href="{{ object.file_upload.url }}" class="btn btn-link">دانلود فایل</a>
+                        </p>
+                    </div>
+                    <hr>
+                {% endfor %}
+            </div>
+
+            <hr>
+
+            <h5>اطلاعات آزمون</h5>
+            <div class="row">
+                {% for test in object.test_info.all %}
+                    <div class="col-md-6">
+                        <p><strong>عنوان آزمایش:</strong> {{ test.test.title }}</p>
+                        <p><strong>تعداد تکرار آزمون:</strong> {{ test.repeat_count_test }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>پارامتر:</strong> {{ test.parameter.name }}</p>
+                        <p><strong>مقدار پارامتر:</strong> {{ test.get_parameter_values_dict|default:"ندارد" }}</p>
+                    </div>
+                    <hr>
+                {% endfor %}
+            </div>
+
+            <hr>
+
+            <h5>اطلاعات تخفیف</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>تمایل به پرداخت هزینه ارسال:</strong> {{ object.discount_info.send_cost|yesno:"بله,خیر" }}</p>
+                        <p><strong>آیا کاربر عضو هیات علمی است؟:</strong> {{ object.discount_info.is_faculty_member|yesno:"بله,خیر" }}</p>
+                        <p><strong>آیا کاربر دانشجو یا کارکنان دانشگاه است؟:</strong> {{ object.discount_info.is_student_or_staff|yesno:"بله,خیر" }}</p>
+                        <p><strong>آیا کاربر متقاضی استفاده از تخفیف نهادهای طرف قرارداد است؟:</strong> {{ object.discount_info.is_affiliated_with_institution|yesno:"بله,خیر" }}</p>
+                        <p><strong>آیا کاربر دارای گرنت شبکه آزمایشگاهی است؟:</strong> {{ object.discount_info.has_labs_net_grant|yesno:"بله,خیر" }}</p>
+                        <p><strong>آیا کاربر دارای گرنت پژوهشی است؟:</strong> {{ object.discount_info.has_research_grant|yesno:"بله,خیر" }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>میزان استفاده از گرنت پژوهشی:</strong> {{ object.discount_info.research_grant_withdrawal_amount|default:"ندارد" }}</p>
+                        <p><strong>فایل نهاد تخفیف:</strong>
+                            {% if object.discount_info.contract_party_file %}
+                                <a href="{{ object.discount_info.contract_party_file.url }}" class="btn btn-link">دانلود فایل</a>
                             {% else %}
-                                هیچ فایلی بارگذاری نشده است.
+                                <span class="text-muted">هیچ فایلی بارگذاری نشده است.</span>
                             {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>شناسه نمونه آزمایش</th>
-                        <td>{{ object.user_sample }}</td>
-                    </tr>
-                    <tr>
-                        <th>عنوان آزمایش</th>
-                        <td>{{ object.test.title }}</td>
-                    </tr>
-                    <tr>
-                        <th>تعداد تکرار آزمون</th>
-                        <td>{{ object.repeat_count_test }}</td>
-                    </tr>
-                    <tr>
-                        <th>پارامتر</th>
-                        <td>{{ object.parameter.name }}</td>
-                    </tr>
-                    <tr>
-                        <th>مقدار پارامتر</th>
-                        <td>{{ object.parameter_value }}</td>
-                    </tr>
-                    <tr>
-                        <th>آیا کاربر عضو هیات علمی است؟</th>
-                        <td>{{ object.is_faculty_member|yesno:"بله,خیر" }}</td>
-                    </tr>
-                    <tr>
-                        <th>آیا کاربر دانشجو یا کارکنان دانشگاه است؟</th>
-                        <td>{{ object.is_student_or_staff|yesno:"بله,خیر" }}</td>
-                    </tr>
-                    <tr>
-                        <th>آیا کاربر متقاضی استفاده از تخفیف نهادهای طرف قرارداد است؟</th>
-                        <td>{{ object.is_affiliated_with_institution|yesno:"بله,خیر" }}</td>
-                    </tr>
-                    <tr>
-                        <th>نام نهاد تخفیف</th>
-                        <td>{{ object.discount_institution_name }}</td>
-                    </tr>
-                    <tr>
-                        <th>وضعیت</th>
-                        <td>{{ object.status }}</td>
-                    </tr>
-                    <tr>
-                        <th>تکمیل شده</th>
-                        <td>{{ object.is_complete|yesno:"بله,خیر" }}</td>
-                    </tr>
-                    <tr>
-                        <th>پیش فاکتور</th>
-                        <td>
-                            {% if object.invoice_pdf %}
-                                <a href="{{ object.invoice_pdf.url }}" class="btn btn-link">دانلود پیش فاکتور</a>
+                        </p>
+                        <p><strong>فایل گرنت شبکه آزمایشگاهی:</strong>
+                            {% if object.discount_info.labs_net_file %}
+                                <a href="{{ object.discount_info.labs_net_file.url }}" class="btn btn-link">دانلود فایل</a>
                             {% else %}
-                                هیچ پیش فاکتوری بارگذاری نشده است.
+                                <span class="text-muted">هیچ فایلی بارگذاری نشده است.</span>
                             {% endif %}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                        </p>
+                    </div>
+                </div>
+            <hr>
+
+            <h5>پیش فاکتور</h5>
+            <p>
+                {% if object.invoice_pdf %}
+                    <a href="{{ object.invoice_pdf.url }}" class="btn btn-link">دانلود پیش فاکتور</a>
+                {% else %}
+                    <span class="text-muted">هیچ پیش فاکتوری بارگذاری نشده است.</span>
+                {% endif %}
+            </p>
 
             <!-- Conditional Button for "آماده پرداخت" Status -->
             {% if object.status == 'ready_for_payment' %}
                 <div class="text-center mt-4">
-                    <a href="{% url 'userpanel:payment_page' object.id %}" class="btn btn-success">پرداخت</a>
+                    <a href="{% url 'userpanel:payment_page' object.id %}" class="btn btn-success btn-lg">پرداخت</a>
                 </div>
             {% endif %}
 
