@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django_jalali',
     'django.contrib.sites',
+    # 'sslserver',
     # 'django_celery_beat',
 
     
@@ -132,26 +133,29 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# Https settings
 SECURE_BROWSER_XSS_FILTER = True
-CSRF_COOKIE_SECURE = False
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
-## Strict-Transport-Security
-SECURE_HSTS_SECONDS = 15768000
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
+## Strict-Transport-Security (HSTS)
+SECURE_HSTS_SECONDS = 0  # غیرفعال‌کردن HSTS
+SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+SECURE_HSTS_PRELOAD = False
 
-## that requests over HTTP are redirected to HTTPS. aslo can config in webserver
-SECURE_SSL_REDIRECT = False
+## Force HTTPS redirection
+SECURE_SSL_REDIRECT = False  # غیرفعال‌کردن ریدایرکت به HTTPS
 
-# for more security
-CSRF_COOKIE_SECURE = True
+# CSRF settings
+CSRF_COOKIE_SECURE = False  # غیرفعال‌کردن نیاز به HTTPS برای کوکی‌های CSRF
 CSRF_USE_SESSIONS = True
 CSRF_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SECURE = False
-SESSION_COOKIE_SAMESITE = 'Strict'
+
+# Session settings
+SESSION_COOKIE_SECURE = False  # غیرفعال‌کردن نیاز به HTTPS برای کوکی‌های سشن
+SESSION_COOKIE_SAMESITE = 'Lax'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+
 
     
     

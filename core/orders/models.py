@@ -22,7 +22,7 @@ class Order(models.Model):
     invoice_pdf = models.FileField(upload_to='invoices/', null=True, blank=True, verbose_name='پیش فاکتور')
     order_code = models.CharField(max_length=255, blank=True, unique=True, verbose_name='کد سفارش')
     final_price = models.DecimalField(max_digits=10, decimal_places=0,default=0, verbose_name='قیمت نهایی', null=True, blank=True)
-    tracking_code = models.CharField(max_length=255,null=False, blank=False, verbose_name='Tracking Code')
+    tracking_code = models.CharField(max_length=255,null=True, blank=True, verbose_name='Tracking Code')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
 
     def save(self, *args, **kwargs):
@@ -66,9 +66,13 @@ class TestInfo(models.Model):
 
     def get_parameter_values_dict(self):
         try:
-            return json.loads(self.parameter_values)
+            # Load the JSON data
+            parameter_dict = json.loads(self.parameter_values)
+            # Create a formatted string from the dictionary
+            formatted_output = ', '.join(f"{key} : {value}" for key, value in parameter_dict.items())
+            return formatted_output if formatted_output else "ندارد"
         except json.JSONDecodeError:
-            return {}
+            return "ندارد"
 
     def __str__(self):
         return f"Test {self.test.name_fa if self.test else 'N/A'} for Sample {self.user_sample.customer_sample_name}"

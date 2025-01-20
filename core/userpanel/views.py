@@ -225,7 +225,7 @@ class ProcessPaymentView(View):
             profile.save()
 
         # اگر مبلغ قابل پرداخت صفر باشد، مستقیماً پرداخت را کامل کن
-        tracking_code = str(uuid.uuid4())[:12].replace('-', '').upper()
+        tracking_code = order.order_code
 
         if amount_to_process == 0:
             payment = Payment.objects.create(
@@ -259,18 +259,22 @@ class PaymentSuccessView(DetailView):
     model = Payment
     template_name = 'userpanel/payment_success.html'
     context_object_name = 'payment'
-    slug_field = 'tracking_code'  # استفاده از tracking_code برای پیدا کردن پرداخت
+    slug_field = 'tracking_code'
     slug_url_kwarg = 'tracking_code'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
         # Get the payment instance from the context
-        payment = self.get_object()  # This retrieves the Payment instance based on the slug
+        payment = self.get_object()
         
         # Use the payment instance to populate the context
         context['tracking_code'] = payment.tracking_code
         context['amount'] = payment.amount
-        profile = Profile.objects.get(user=self.request.user)
-        context['profile'] = profile
+        
+        # Fetch the profile for the current user
+        if self.request.user.is_authenticated:
+            profile = Profile.objects.get(user=self.request.user)
+            context['profile'] = profile
+        
         return context

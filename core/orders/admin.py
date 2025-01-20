@@ -13,7 +13,6 @@ class SampleInfoInline(admin.TabularInline):
         'file_upload'
     ]
     readonly_fields = ['file_upload']
-    # Adding help texts for better understanding
     help_texts = {
         'sample_type': 'نوع نمونه را وارد کنید.',
         'customer_sample_name': 'نام نمونه مشتری را وارد کنید.',
@@ -32,7 +31,7 @@ class TestInfoInline(admin.TabularInline):
         'parameter', 
         'parameter_values',
     ]
-    # Adding help texts for better understanding
+    readonly_fields = ['parameter_values']
     help_texts = {
         'user_sample': 'انتخاب نمونه آزمایش.',
         'test': 'عنوان آزمایش را انتخاب کنید.',
@@ -56,7 +55,6 @@ class DiscountInfoInline(admin.TabularInline):
         'research_grant_withdrawal_amount'
     ]
     readonly_fields = ['contract_party_file', 'labs_net_file']
-    # Adding help texts for better understanding
     help_texts = {
         'send_cost': 'آیا مایل به پرداخت هزینه ارسال هستید؟',
         'is_faculty_member': 'آیا کاربر عضو هیات علمی است؟',
@@ -67,20 +65,20 @@ class DiscountInfoInline(admin.TabularInline):
     }
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'experiment', 'status', 'is_complete', 'order_code', 'created_at']
+    list_display = ['id', 'user', 'experiment', 'status', 'is_complete', 'order_code', 'created_at', 'final_price', 'tracking_code']
     list_filter = ['status', 'is_complete', 'created_at']
     search_fields = ['order_code', 'user__email', 'experiment__test_name']
     inlines = [SampleInfoInline, TestInfoInline, DiscountInfoInline]
     
     fieldsets = (
         ('اطلاعات سفارش', {
-            'fields': ('user', 'experiment', 'description', 'status', 'is_complete', 'order_code','invoice_pdf')
+            'fields': ('user', 'experiment', 'description', 'status', 'is_complete', 'order_code', 'invoice_pdf', 'final_price', 'tracking_code')
         }),
         ('تاریخ‌ها', {
             'fields': ('created_at',),
         }),
     )
-    readonly_fields = ['order_code', 'created_at','invoice_pdf']
+    readonly_fields = ['order_code', 'created_at', 'invoice_pdf']
 
     # Adding custom styling for the admin panel
     class Media:

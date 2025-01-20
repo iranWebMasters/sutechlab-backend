@@ -42,6 +42,7 @@ class GoToGatewayView(View):
 
 class CallbackGatewayView(View):
     def get(self, request, payment_id):  # Add payment_id as a parameter
+        print(f"User in callback: {request.user} (is_authenticated: {request.user.is_authenticated})")
         tracking_code = request.GET.get(settings.TRACKING_CODE_QUERY_PARAM, None)
         if not tracking_code:
             logging.debug("این لینک معتبر نیست.")
