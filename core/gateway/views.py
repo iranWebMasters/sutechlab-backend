@@ -13,6 +13,7 @@ from .models import Payment
 class GoToGatewayView(View):
     def get(self, request, payment_id):
         payment = get_object_or_404(Payment, id=payment_id)
+        print(f"GoToGatewayView: {request.user} (is_authenticated: {request.user.is_authenticated})")
 
         user_mobile_number = request.user.profile.phone_number if request.user.is_authenticated else None
 
@@ -32,6 +33,7 @@ class GoToGatewayView(View):
             # Update the payment status to 'pending'
             payment.status = 'pending'
             payment.save()
+            print(f"GoToGatewayView: {request.user} (is_authenticated: {request.user.is_authenticated})")
 
             return bank.redirect_gateway()  # This should handle payment redirection
         except AZBankGatewaysException as e:

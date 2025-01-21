@@ -143,17 +143,18 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = False
 SECURE_HSTS_PRELOAD = False
 
 ## Force HTTPS redirection
-SECURE_SSL_REDIRECT = False  # غیرفعال‌کردن ریدایرکت به HTTPS
+SECURE_SSL_REDIRECT = False  
 
 # CSRF settings
-CSRF_COOKIE_SECURE = False  # غیرفعال‌کردن نیاز به HTTPS برای کوکی‌های CSRF
+CSRF_COOKIE_SECURE = False  
 CSRF_USE_SESSIONS = True
 CSRF_COOKIE_HTTPONLY = True
 
 # Session settings
-SESSION_COOKIE_SECURE = False  # غیرفعال‌کردن نیاز به HTTPS برای کوکی‌های سشن
+SESSION_COOKIE_SECURE = False
 SESSION_COOKIE_SAMESITE = 'Lax'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_AGE = 1209600  # 2 weeks in seconds
 
 
 

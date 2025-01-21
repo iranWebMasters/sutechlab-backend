@@ -1,5 +1,6 @@
 {% extends 'userpanel/base.html' %}
-{% load static %} 
+{% load static %}
+{% load custom_filters %}
 {% block content %} 
     <div class="breadcrumb">
         <ul>
@@ -35,7 +36,7 @@
                         <td><a href="{% url 'userpanel:laboratory_request_detail' order.id %}">{{ order.experiment.test_name }}</a></td>
                         {% comment %} <td><a href="{% url 'userpanel:laboratory_request_detail' order.id %}">{{ order.sample_type }}</a></td>
                         <td><a href="{% url 'userpanel:laboratory_request_detail' order.id %}">{{ order.sample_count }}</a></td> {% endcomment %}
-                        <td><a href="{% url 'userpanel:laboratory_request_detail' order.id %}">{{ order.created_at|date:"d M Y" }}</a></td>
+                        <td><a href="{% url 'userpanel:laboratory_request_detail' order.id %}">{{ order.created_at|to_jalali }}</a></td>
                         <td>
                             {% if order.status == 'successful' %}
                                 <span class="text-success">پرداخت موفق</span>

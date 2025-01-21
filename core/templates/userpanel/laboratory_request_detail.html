@@ -1,4 +1,5 @@
 {% extends 'userpanel/base.html' %}
+{% load custom_filters %}
 
 {% block content %}
 <div class="container mt-5">
@@ -22,7 +23,9 @@
                 </div>
                 <div class="col-md-6">
                     <h5 class="text-warning">تاریخ ثبت درخواست:</h5>
-                    <p>{{ object.created_at|date:"d M Y" }}</p>
+                    <p>{{ order.created_at|to_jalali }}</p>
+                    
+
                 </div>
             </div>
 
@@ -82,7 +85,6 @@
                 {% endfor %}
             </div>
 
-            <hr>
 
             <h5 class="text-success">اطلاعات آزمون:</h5>
             <div class="row">
@@ -107,7 +109,7 @@
                 {% endfor %}
             </div>
 
-            <hr>
+            {% comment %} <hr> {% endcomment %}
 
             <h5 class="text-warning">اطلاعات تخفیف:</h5>
             <div class="row">
