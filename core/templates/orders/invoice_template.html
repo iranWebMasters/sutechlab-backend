@@ -1,0 +1,160 @@
+{% load custom_filters %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <base href="{% static '/' %}" />
+    <style>
+        @font-face {
+            font-family: 'Vazir';
+            src: url('fonts/Vazir.ttf');
+        }
+        
+        body {
+            font-family: 'Vazir', Arial, sans-serif;
+            margin: 20px;
+            direction: rtl;
+            line-height: 1.6;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            width: 100px;
+            height: auto;
+            float: left;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: right;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        .section-title {
+            background-color: #808080;
+            color: white;
+            padding: 5px 10px;
+            margin: 20px 0 10px 0;
+        }
+        
+        .checkbox-group {
+            margin: 20px 0;
+        }
+        
+        .checkbox-group label {
+            display: block;
+            margin: 5px 0;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9em;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+        
+        .request-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .request-box {
+            border: 1px solid #000;
+            padding: 5px 10px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="images/pdf_logo.png" alt="لوگو دانشگاه" class="logo">
+        <h2>رسید اولیه درخواست</h2>
+        <h3>دانشگاه صنعتی شیراز</h3>
+    </div>
+
+    <div class="request-info">
+        <div class="request-box">
+            <span>شماره درخواست: {{ order.order_code }}</span>
+        </div>
+        <div class="request-box">
+            <span>تاریخ صدور درخواست: {{ order.created_at|to_jalali }}</span>
+        </div>
+    </div>
+
+    <div class="section-title">مشخصات متقاضی</div>
+    <table>
+        <tr>
+            <th>نام شخص حقیقی:</th>
+            <td>{{ order.user.profile.first_name }} {{ order.user.profile.last_name }} </td>
+            <th>تلفن:</th>
+            <td>{{ order.user.profile.phone_number }}</td>
+        </tr>
+        <tr>
+            <th>شماره ملی / شناسه ملی:</th>
+            <td>{{ order.user.profile.national_id }}</td>
+            <th>کد پستی:</th>
+            <td>{{ order.user.profile.postal_code }}</td>
+        </tr>
+        <tr>
+            <th>ایمیل / وبسایت:</th>
+            <td>{{ order.user.email }}</td>
+        </tr>
+    </table>
+
+    <div class="section-title">مشخصات درخواست</div>
+    <table>
+        <tr>
+            <th>ردیف</th>
+            <th>نام آزمون</th>
+            <th>نام نمونه</th>
+            <th>تعداد نمونه</th>
+            <th>پارامترها</th>
+            <th>تعداد تکرار / مقدار</th>
+            <th>واحد</th>
+        </tr>
+        {% for test in order.test_info.all %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ test.test.name_fa }}</td>
+            <td>{{ test.sample_name }}</td>
+            <td>{{ test.sample_count }}</td>
+            <td>{{ test.parameters }}</td>
+            <td>{{ test.repeat_count_test }}</td>
+            <td>{{ test.unit }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p>توضیحات درخواست: {{ order.description }}</p>
+
+    <div class="checkbox-group">
+        <label><input type="checkbox" {% if order.is_faculty %}checked{% endif %}> عضو هیأت علمی دانشگاه صنعتی شیراز هستم</label>
+        <label><input type="checkbox" {% if order.is_student %}checked{% endif %}> دانشجوی تحصیلات تکمیلی دانشگاه صنعتی شیراز هستم</label>
+        <label><input type="checkbox" {% if order.is_staff %}checked{% endif %}> دانشجو یا از کارکنان دانشگاه صنعتی شیراز هستم</label>
+        <label><input type="checkbox" {% if order.has_discount %}checked{% endif %}> متقاضی استفاده از تخفیف‌های طرف قرارداد آزمایشگاه مرکزی دانشگاه هستم</label>
+    </div>
+
+    <div class="footer">
+        <p>متقاضی گرامی، لطفاً پس از ثبت اولیه درخواست خود، این رسید را همراه فرم درخواست و نمونه‌ها به واحد پذیرش مرکز خدمات آزمایشگاهی دانشگاه صنعتی شیراز ارسال نمایید.</p>
+        <p>آدرس: {{ contact.address }}</p>
+        <p>کدپستی: {{ contact.postal_code }}</p>
+    </div>
+</body>
+</html>
