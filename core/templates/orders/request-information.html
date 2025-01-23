@@ -4,13 +4,13 @@
 {% include 'orders/request-head.html' %}
 <div class="container p-4 request-page" data-index="1" dir="rtl">
     <div class="bg-white p-4 rounded shadow-lg">
-        <h5 class="mb-4 text-primary">آزمایشگاه : {{ experiment.laboratory.name }} </h5>
+        <h5 class="mb-4 text-primary"> {{ experiment.laboratory.name }} </h5>
         <form action="{% url 'orders:request_info' experiment.id %}" method="post">
             {% csrf_token %}
             <div class="row g-3 mb-3">
                 <div class="col-md-4">
                     <label for="customerName" class="form-label">نام مشتری:</label>
-                    <input type="text" class="form-control bg-light" id="customerName" value="{{full_name}}" readonly>
+                    <input type="text" class="form-control bg-light" id="customerName" value="{{profile.first_name}} {{profile.last_name}}" readonly>
                 </div>
                 <div class="col-md-4">
                     <label for="requestDate" class="form-label">تاریخ ثبت درخواست:</label>

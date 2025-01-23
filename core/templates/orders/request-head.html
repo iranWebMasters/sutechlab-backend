@@ -1,32 +1,47 @@
 <div class="stepper">
-    <div class="step {% if current_step == 1 %}active{% endif %}" data-index="1">
+    <div class="step {% if current_step >= 1 %}completed{% endif %} {% if current_step == 1 %}active{% endif %}" data-index="1">
         <div class="circle">
-            <span class="completed-mark">✔</span>
-            <span class="num">1</span>
+            {% if current_step > 1 %}
+                <span class="completed-mark">✔</span>
+            {% else %}
+                <span class="num">1</span>
+            {% endif %}
         </div>
         <p>اطلاعات درخواست</p>
     </div>
-    <div class="line" data-index="1"></div>
-    <div class="step {% if current_step == 2 %}active{% endif %}" data-index="2">
+    <div class="line {% if current_step > 1 %}completed{% endif %}" data-index="1"></div>
+
+    <div class="step {% if current_step >= 2 %}completed{% endif %} {% if current_step == 2 %}active{% endif %}" data-index="2">
         <div class="circle">
-            <span class="completed-mark">✔</span>
-            <span class="num">2</span>
+            {% if current_step > 2 %}
+                <span class="completed-mark">✔</span>
+            {% else %}
+                <span class="num">2</span>
+            {% endif %}
         </div>
         <p>اطلاعات نمونه</p>
     </div>
-    <div class="line" data-index="2"></div>
-    <div class="step {% if current_step == 3 %}active{% endif %}" data-index="3">
+    <div class="line {% if current_step > 2 %}completed{% endif %}" data-index="2"></div>
+
+    <div class="step {% if current_step >= 3 %}completed{% endif %} {% if current_step == 3 %}active{% endif %}" data-index="3">
         <div class="circle">
-            <span class="completed-mark">✔</span>
-            <span class="num">3</span>
+            {% if current_step > 3 %}
+                <span class="completed-mark">✔</span>
+            {% else %}
+                <span class="num">3</span>
+            {% endif %}
         </div>
         <p>اطلاعات آزمون</p>
     </div>
-    <div class="line" data-index="3"></div>
-    <div class="step {% if current_step == 4 %}active{% endif %}" data-index="4">
+    <div class="line {% if current_step > 3 %}completed{% endif %}" data-index="3"></div>
+
+    <div class="step {% if current_step >= 4 %}completed{% endif %} {% if current_step == 4 %}active{% endif %}" data-index="4">
         <div class="circle">
-            <span class="completed-mark">✔</span>
-            <span class="num">4</span>
+            {% if current_step > 4 %}
+                <span class="completed-mark">✔</span>
+            {% else %}
+                <span class="num">4</span>
+            {% endif %}
         </div>
         <p>اطلاعات تکمیلی</p>
     </div>

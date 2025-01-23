@@ -16,33 +16,53 @@ import jdatetime
 import json
 from .forms import *
 
+class MultiStepOrderView(LoginRequiredMixin, View):
+    order = None
+
+    def dispatch(self, request, *args, **kwargs):
+        self.order = Order.objects.filter(user=request.user, is_complete=False).first()
+        if self.order:
+            if self.order.current_step < self.get_step_number():
+                return redirect(self.get_redirect_url())
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_step_number(self):
+        """مرحله جاری (override در ویوهای فرزند)"""
+        raise NotImplementedError("You must implement get_step_number.")
+
+    def get_redirect_url(self):
+        """URL مرحله‌ای که باید به آن هدایت شود (override در ویوهای فرزند)"""
+        raise NotImplementedError("You must implement get_redirect_url.")
+
 class OrderCreateView(LoginRequiredMixin, CreateView):
     model = Order
     form_class = OrderForm
     template_name = 'orders/request-information.html' 
     success_url = reverse_lazy('orders:sample_info_create')
-    
+
     def get_success_url(self):
         return reverse_lazy('orders:sample_info_create', kwargs={'order_code': self.object.order_code})
 
+        
+    def get_step_number(self):
+        return 2
+
+    def get_redirect_url(self):
+        return reverse('orders:sample_info_create', kwargs={'order_code': self.order.order_code})
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         experiment_id = self.kwargs['experiment_id']
         experiment = get_object_or_404(Experiment, id=experiment_id)
-        
-        jalali_date = jdatetime.datetime.now().strftime('%Y/%m/%d')
 
-        profile=self.request.user.profile
-        full_name = profile.first_name +" " +profile.last_name
-        context['full_name'] = full_name
-        context['jalali_date'] = jalali_date
-        context['experiment'] = experiment
-        context['laboratory_name'] = experiment.laboratory.name
-        profile = Profile.objects.get(user=self.request.user)
-        context['profile'] = profile
-        context['current_step'] = 1
-        
+        profile = self.request.user.profile
+        context.update({
+            'jalali_date': jdatetime.datetime.now().strftime('%Y/%m/%d'),
+            'experiment': experiment,
+            'laboratory_name': experiment.laboratory.name,
+            'profile': profile,
+            'current_step': 1,
+        })
         return context
 
     def form_valid(self, form):
@@ -58,38 +78,50 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
 class SampleInfoCreateView(FormView):
     template_name = 'orders/sample-information.html'
     form_class = SampleForm
+    order = None
 
+    def dispatch(self, request, *args, **kwargs):
+        order_code = self.kwargs.get('order_code')
+        self.order = get_object_or_404(Order, order_code=order_code)
+        return super().dispatch(request, *args, **kwargs)
+    
     def get_success_url(self):
         return self.request.path
+    
+    def get_step_number(self):
+        return 2
 
+    def get_redirect_url(self):
+        return reverse('orders:sample_info_create', kwargs={'order_code': self.order.order_code})
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        order_code = self.kwargs.get('order_code')
-        order = get_object_or_404(Order, order_code=order_code)
-        experiment = order.experiment
-        context['order'] = order
-        context['user_samples'] = SampleInfo.objects.filter(order=order)
-        profile = Profile.objects.get(user=self.request.user)
-        context['profile'] = profile 
-        context['samples'] = experiment.samples.all()
-        context['experiment'] = experiment
-        context['formset'] = self.get_form()
-        context['current_step'] = 2
-
+        experiment = self.order.experiment
+        context.update({
+            'order': self.order,
+            'user_samples': SampleInfo.objects.filter(order=self.order),
+            'profile': self.request.user.profile,
+            'samples': experiment.samples.all(),
+            'experiment': experiment,
+            'current_step': 2,
+        })
         return context
         
     def form_valid(self, form):
         sample_info = form.save(commit=False)
-        order_code = self.kwargs.get('order_code')
-        order = get_object_or_404(Order, order_code=order_code)
-        sample_info.order = order
+        sample_info.order = self.order
         sample_info.save()
-
+        self.order.current_step = self.get_step_number() + 1
+        self.order.save()
         return super().form_valid(form)
     
     def form_invalid(self, form):
-        logger.error("Form is invalid.")
-        logger.error(form.errors)  # Log the form errors
+        messages.error(self.request, "لطفا تمام فیلد ها را پر کنید.")
+        
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(self.request, f"{field}: {error}")
+
         return super().form_invalid(form)
     
 class SampleDetailView(DetailView):
@@ -130,59 +162,62 @@ class SampleDeleteView(DeleteView):
 class TestInfoCreateView(FormView):
     template_name = 'orders/test-information.html'
     form_class = TestInfoForm
+    order = None
+
+
+    def dispatch(self, request, *args, **kwargs):
+        order_code = self.kwargs.get('order_code')
+        self.order = get_object_or_404(Order, order_code=order_code)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         return self.request.path
-    def get_context_data(self, **kwargs):
-        order_code = self.kwargs.get('order_code')
-        order = get_object_or_404(Order, order_code=order_code)
-        experiment = order.experiment
-        user_samples = SampleInfo.objects.filter(order=order)
-        user_tests = TestInfo.objects.filter(order=order)
-        tests = experiment.tests.all()
-        profile = Profile.objects.get(user=self.request.user)
-        context = {
-            'tests': tests,
-            'order': order,
-            'profile': profile,
-            'experiment': experiment,
-            'user_samples': user_samples,
-            'user_tests': user_tests,
-            'current_step': 3
+    
+    def get_step_number(self):
+        return 3
 
-        }
+    def get_redirect_url(self):
+        return reverse('orders:test_info_create', kwargs={'order_code': self.order.order_code})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        experiment = self.order.experiment
+        context.update({
+            'order': self.order,
+            'profile': self.request.user.profile,
+            'experiment': experiment,
+            'user_samples': SampleInfo.objects.filter(order=self.order),
+            'user_tests': TestInfo.objects.filter(order=self.order),
+            'tests': experiment.tests.all(),
+            'current_step': 3,
+        })
         return context
     
     def form_valid(self, form):
         test_info = form.save(commit=False)
-        order_code = self.kwargs.get('order_code')  # دریافت order_code از URL
-        order = get_object_or_404(Order, order_code=order_code)
-        test_info.order = order
+        test_info.order = self.order
 
         parameter_values = {}
         for key, value in self.request.POST.items():
             if key not in form.cleaned_data:
                 parameter_values[key] = value
 
-        # حذف توکن CSRF از parameter_values
         if 'csrfmiddlewaretoken' in parameter_values:
             del parameter_values['csrfmiddlewaretoken']
 
-        # پرینت برای بررسی مقادیر parameter_values
         print("Collected parameter values without CSRF token:", parameter_values)
-
-        # ذخیره مقادیر به عنوان JSON
         test_info.parameter_values = json.dumps(parameter_values)
-
-        # پرینت برای بررسی مقدار parameter_values قبل از ذخیره
         print("JSON parameter values to be saved:", test_info.parameter_values)
-
         test_info.save()
+        self.order.current_step = self.get_step_number() + 1
+        self.order.save()
         return super().form_valid(form)
     
     def form_invalid(self, form):
-        logger.error("Form is invalid.")
-        logger.error(form.errors)
+        messages.error(self.request, "فرم نامعتبر است.")
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(self.request, f"{field}: {error}")
         return super().form_invalid(form)
 
 class TestParametersView(View):
@@ -268,33 +303,45 @@ class TestDeleteView(DeleteView):
 class DiscountInfoFormView(FormView):
     form_class = DiscountInfoForm
     template_name = 'orders/discount_info.html'
+    order = None
+
+    def dispatch(self, request, *args, **kwargs):
+        order_code = self.kwargs.get('order_code')
+        self.order = get_object_or_404(Order, order_code=order_code)
+        return super().dispatch(request, *args, **kwargs)
+    
     def get_success_url(self):
         return reverse_lazy('userpanel:index')
+    
+    def get_step_number(self):
+        return 4
+
+    def get_redirect_url(self):
+        return reverse('orders:discount_info', kwargs={'order_code': self.order.order_code})
+    
     def form_valid(self, form):
         discount_info = form.save(commit=False)
-        order_code = self.kwargs.get('order_code')
-        order = get_object_or_404(Order, order_code=order_code)
-        discount_info.order = order
-        order.is_complete = True
-        order.save()
+        discount_info.order = self.order
         discount_info.save()
+        self.order.is_complete = True
+        self.order.save()
         return super().form_valid(form)
     
     def form_invalid(self, form):
-        logger.error("Form is invalid.")
-        logger.error(form.errors)  # Log the form errors
+        messages.error(self.request, "فرم نامعتبر است.")
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(self.request, f"{field}: {error}")
         return super().form_invalid(form)
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        order_code = self.kwargs['order_code']
-        context['order'] = get_object_or_404(Order,order_code = order_code)
-        profile = Profile.objects.get(user=self.request.user)
-        context['profile'] = profile
-        context['current_step']= 4
-
+        context.update({
+            'order': self.order,
+            'profile': self.request.user.profile,
+            'current_step': 4,
+        })
         return context
-    
 
 class UserOrderCancelView(View):
     template_name = 'userpanel/order_confirm_cancel.html'
@@ -302,21 +349,18 @@ class UserOrderCancelView(View):
 
     def get(self, request, order_code):
         order = get_object_or_404(Order, order_code=order_code)
-        profile = Profile.objects.get(user=self.request.user)
-        referer = request.META.get('HTTP_REFERER', reverse('userpanel:index')) 
+        profile = Profile.objects.get(user=request.user)
+        referer = request.META.get('HTTP_REFERER', reverse('userpanel:index'))
         return render(request, self.template_name, {
             'order': order,
             'profile': profile,
             'referer': referer
         })
-        
+
     def post(self, request, order_code):
         order = get_object_or_404(Order, order_code=order_code)
-
         SampleInfo.objects.filter(order=order).delete()
         TestInfo.objects.filter(order=order).delete()
         DiscountInfo.objects.filter(order=order).delete()
-
         order.delete()
-
         return redirect(self.success_url)
