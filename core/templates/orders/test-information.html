@@ -128,7 +128,7 @@
 
         <div class="text-center">
             <a href="#" class="page-btn backward-btn btn btn-outline-primary btn-sm px-4 me-2">مرحله قبل</a>
-            <a href="{% url 'orders:discount_info_form' order.order_code %}" class="page-btn forward-btn btn btn-success btn-sm px-4 me-2">ثبت و مرحله بعد</a>
+            <a href="{% url 'orders:discount_info' order.order_code %}" class="page-btn forward-btn btn btn-success btn-sm px-4 me-2">ثبت و مرحله بعد</a>
             <a href="{% url 'orders:confirm_cancel' order_code=request.session.order_code %}" class="btn btn-danger px-4">انصراف</a>
 
         </div>

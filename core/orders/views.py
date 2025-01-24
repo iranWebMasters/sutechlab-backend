@@ -55,6 +55,8 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
         experiment_id = self.kwargs['experiment_id']
         experiment = get_object_or_404(Experiment, id=experiment_id)
 
+        incomplete_order = Order.objects.filter(user=self.request.user, is_complete=False, experiment=experiment).first()
+
         profile = self.request.user.profile
         context.update({
             'jalali_date': jdatetime.datetime.now().strftime('%Y/%m/%d'),
@@ -63,15 +65,45 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
             'profile': profile,
             'current_step': 1,
         })
+
+        if incomplete_order:
+            context['description'] = incomplete_order.description  # توضیحات قبلی
+            context['button_label'] = "بروزرسانی و مرحله بعد"
+            context['order_code'] = incomplete_order.order_code
+        else:
+            context['description'] = ""
+            context['button_label'] = "ثبت و مرحله بعد"
+            context['order_code'] = None
+
         return context
 
     def form_valid(self, form):
-        order = form.save(commit=False)
         experiment_id = self.kwargs['experiment_id']
-        order.experiment = get_object_or_404(Experiment, id=experiment_id)
+        experiment = get_object_or_404(Experiment, id=experiment_id)
+        order = form.save(commit=False)
+        order.experiment = experiment
         order.user = self.request.user
         order.save()
         self.request.session['order_code'] = order.order_code
+
+        return super().form_valid(form)
+
+class OrderUpdateView(LoginRequiredMixin, UpdateView):
+    model = Order
+    form_class = OrderForm
+    template_name = 'orders/request-information.html'
+
+    def get_success_url(self):
+        return reverse_lazy('orders:sample_info_create', kwargs={'order_code': self.object.order_code})
+
+    def get_object(self, queryset=None):
+        experiment_id = self.kwargs['experiment_id']
+        experiment = get_object_or_404(Experiment, id=experiment_id)
+        return get_object_or_404(Order, user=self.request.user, is_complete=False, experiment=experiment)
+
+    def form_valid(self, form):
+        # به‌روزرسانی سفارش موجود
+        self.object = form.save()
         return super().form_valid(form)
 
 
@@ -214,7 +246,8 @@ class TestInfoCreateView(FormView):
         return super().form_valid(form)
     
     def form_invalid(self, form):
-        messages.error(self.request, "فرم نامعتبر است.")
+        messages.error(self.request, "لظفا تمام موارد خواسته شده را به درستی پر نمایید.")
+
         for field, errors in form.errors.items():
             for error in errors:
                 messages.error(self.request, f"{field}: {error}")
@@ -324,11 +357,13 @@ class DiscountInfoFormView(FormView):
         discount_info.order = self.order
         discount_info.save()
         self.order.is_complete = True
+        self.order.status = 'pending' 
         self.order.save()
         return super().form_valid(form)
     
     def form_invalid(self, form):
-        messages.error(self.request, "فرم نامعتبر است.")
+        messages.error(self.request, "لطفا تمام فیلد ها را پر کنید.")
+
         for field, errors in form.errors.items():
             for error in errors:
                 messages.error(self.request, f"{field}: {error}")
@@ -338,6 +373,7 @@ class DiscountInfoFormView(FormView):
         context = super().get_context_data(**kwargs)
         context.update({
             'order': self.order,
+            'experiment': self.order.experiment,
             'profile': self.request.user.profile,
             'current_step': 4,
         })

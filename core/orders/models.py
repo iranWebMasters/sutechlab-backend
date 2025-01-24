@@ -12,12 +12,13 @@ class Order(models.Model):
         ('failed', 'پرداخت ناموفق'),
         ('canceled', 'لغو شده'),
         ('ready_for_payment', 'آماده پرداخت'),
+        ('incomplete', 'تکمیل نشده'),
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='کاربر')
     experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE, verbose_name='آزمایش')
     description = models.TextField(blank=True, null=True, verbose_name='توضیحات')
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', verbose_name='وضعیت')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='incomplete', verbose_name='وضعیت')
     current_step = models.PositiveIntegerField(default=1, verbose_name='مرحله جاری')
     is_complete = models.BooleanField(default=False, verbose_name='تکمیل شده')
     invoice_pdf = models.FileField(upload_to='invoices/', null=True, blank=True, verbose_name='پیش فاکتور')

@@ -65,14 +65,14 @@ class DiscountInfoInline(admin.TabularInline):
     }
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'experiment', 'status', 'is_complete', 'order_code', 'created_at', 'final_price', 'tracking_code']
-    list_filter = ['status', 'is_complete', 'created_at']
+    list_display = ['id', 'user', 'experiment', 'status', 'current_step', 'is_complete', 'order_code', 'created_at', 'final_price', 'tracking_code']
+    list_filter = ['status', 'is_complete', 'created_at', 'experiment']
     search_fields = ['order_code', 'user__email', 'experiment__test_name']
     inlines = [SampleInfoInline, TestInfoInline, DiscountInfoInline]
     
     fieldsets = (
         ('اطلاعات سفارش', {
-            'fields': ('user', 'experiment', 'description', 'status', 'is_complete', 'order_code', 'invoice_pdf', 'final_price', 'tracking_code')
+            'fields': ('user', 'experiment', 'description', 'status', 'current_step', 'is_complete', 'order_code', 'invoice_pdf', 'final_price', 'tracking_code')
         }),
         ('تاریخ‌ها', {
             'fields': ('created_at',),
