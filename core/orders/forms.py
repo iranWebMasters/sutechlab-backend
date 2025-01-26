@@ -60,3 +60,4 @@ class DiscountInfoForm(forms.ModelForm):
             'has_research_grant',  # New field for research grant
             'research_grant_withdrawal_amount'  # New field for withdrawal amount
         ]
+    

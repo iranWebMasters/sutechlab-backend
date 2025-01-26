@@ -54,7 +54,8 @@ class SampleInfo(models.Model):
     file_upload = models.FileField(upload_to='sample_files/', blank=True, null=True, verbose_name='فایل تکمیلی نمونه')
 
     def __str__(self):
-        return f"Sample {self.customer_sample_name} for Order {self.order.order_code}"
+        # return f"Sample {self.customer_sample_name} for Order {self.order.order_code}"
+        return f"{self.customer_sample_name}"
 
 class TestInfo(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='test_info')

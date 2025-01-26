@@ -32,7 +32,7 @@
                             <label class="form-check-label" for="facultyMember">
                                 عضو هیات علمی دانشگاه هستم
                             </label>
-                            <input type="hidden" name="is_faculty_member" value="True">
+                            <input type="hidden" name="is_faculty_member" value="False">
                         </div>
                     </div>
                     <div class="row">
@@ -41,7 +41,7 @@
                             <label class="form-check-label" for="student">
                                 دانشجو هستم
                             </label>
-                            <input type="hidden" name="is_student_or_staff" value="True">
+                            <input type="hidden" name="is_student_or_staff" value="False">
                         </div>
                     </div>
                     <div class="row align-items-center">
@@ -50,7 +50,7 @@
                             <label class="form-check-label" for="contractParty">
                                 متقاضی استفاده از تخفیف نهاد های طرف قرارداد هستم
                             </label>
-                            <input type="hidden" name="is_affiliated_with_institution" value="True">
+                            <input type="hidden" name="is_affiliated_with_institution" value="False">
                         </div>
                         <div class="col-md-6" id="contractPartyFileSection" style="display:none">
                             <div class="input-group">
@@ -95,9 +95,12 @@
             </div>
 
             <div class="text-center">
-                <button type="button" data-index="4" class="page-btn backward-btn btn btn-outline-primary px-4 me-2">مرحله قبل</button>
+                <a href="{% url 'orders:test_info_create' order.order_code %}" class="page-btn backward-btn btn btn-outline-primary px-4 me-2">
+                مرحله قبل
+                </a>
+
                 <button type="submit" data-index="4" class="page-btn complete-btn btn btn-success px-4 me-2">اتمام و ثبت درخواست</button>
-                <a href="{% url 'orders:confirm_cancel' order_code=request.session.order_code %}" class="btn btn-danger px-4">انصراف</a>
+                <a href="{% url 'orders:confirm_cancel' order_code=request.session.order_code %}" class="btn btn-danger px-4">لغو درخواست</a>
             </div>
         </form>
     </div>
