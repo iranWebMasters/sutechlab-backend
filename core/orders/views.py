@@ -225,7 +225,6 @@ class TestInfoCreateView(FormView):
         test_info.save()
         self.order.current_step = self.get_step_number() + 1
         self.order.save()
-        messages.success(self.request, "اطلاعات آزمون شما با موفقیت ثبت گردید.")
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -319,9 +318,9 @@ class DiscountInfoFormView(FormView):
     def dispatch(self, request, *args, **kwargs):
         order_code = self.kwargs.get('order_code')
         self.order = get_object_or_404(Order, order_code=order_code)
-        # if DiscountInfo.objects.filter(order=self.order).exists():
-        #     messages.error(request, "اطلاعات تخفیف برای این سفارش قبلاً ثبت شده است. لطفاً سفارش جدید ثبت کنید.")
-        #     return redirect('userpanel:index')
+        if DiscountInfo.objects.filter(order=self.order).exists():
+            messages.error(request, "اطلاعات تخفیف برای این سفارش قبلاً ثبت شده است. لطفاً سفارش جدید ثبت کنید.")
+            return redirect('userpanel:index')
         return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
@@ -334,22 +333,16 @@ class DiscountInfoFormView(FormView):
         return reverse('orders:discount_info', kwargs={'order_code': self.order.order_code})
 
     def form_valid(self, form):
-        # پرینت کردن داده‌های فرم برای مشاهده مقادیر
-        print("Form Data:", form.cleaned_data)
-        
-        # ذخیره‌سازی اطلاعات
         discount_info = form.save(commit=False)
         discount_info.order = self.order
         discount_info.save()
-        
-        # به‌روزرسانی وضعیت سفارش
         self.order.is_complete = True
         self.order.status = 'pending'
-        
+        self.order.save()
         return super().form_valid(form)
 
-
     def form_invalid(self, form):
+        messages.error(self.request, "لطفا تمام فیلد ها را پر کنید.")
         for field, errors in form.errors.items():
             for error in errors:
                 messages.error(self.request, f"{field}: {error}")
