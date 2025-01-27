@@ -30,6 +30,12 @@ class AboutUsAdmin(admin.ModelAdmin):
 class BannersUsAdmin(admin.ModelAdmin):
     pass
 
+class HyperlinkAdmin(admin.ModelAdmin):
+    list_display = ('title', 'url')
+    search_fields = ('title',)
+
+
+admin.site.register(Hyperlink, HyperlinkAdmin)
 admin.site.register(HomePage, HomePageAdmin)
 admin.site.register(ContactUs, ContactUsAdmin)
 admin.site.register(Newsletter, NewsletterAdmin)

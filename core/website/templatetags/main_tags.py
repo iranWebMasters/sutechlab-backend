@@ -2,7 +2,7 @@ from django import template
 from devices.models import Device
 from blog.models import Post
 from django.utils import timezone
-from website.models import Contact,HomePage
+from website.models import Contact,HomePage,Hyperlink 
 
 
 register = template.Library()
@@ -24,3 +24,8 @@ def get_single_contact():
 @register.simple_tag
 def home_page_data():
     return HomePage.objects.first()
+
+@register.inclusion_tag('website/index-hyperlinks.html')
+def display_hyperlinks():
+    hyperlinks = Hyperlink.objects.filter(display_option='True')
+    return {'hyperlinks': hyperlinks}

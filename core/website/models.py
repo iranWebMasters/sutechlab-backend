@@ -110,3 +110,12 @@ class AboutUs(models.Model):
     class Meta:
         verbose_name = 'درباره ما'
         verbose_name_plural = 'صفحه درباره ما'
+
+class Hyperlink(models.Model):
+    title = models.CharField(max_length=100)
+    logo = models.ImageField(upload_to='logos/')
+    url = models.URLField(max_length=200)
+    display_option = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.title
