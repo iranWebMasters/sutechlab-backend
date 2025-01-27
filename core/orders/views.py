@@ -50,12 +50,10 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
         experiment_id = self.kwargs['experiment_id']
         experiment = get_object_or_404(Experiment, id=experiment_id)
         incomplete_order = Order.objects.filter(user=self.request.user, is_complete=False, experiment=experiment).first()
-        profile = self.request.user.profile
         context.update({
             'jalali_date': jdatetime.datetime.now().strftime('%Y/%m/%d'),
             'experiment': experiment,
             'laboratory_name': experiment.laboratory.name,
-            'profile': profile,
             'current_step': 1,
         })
         if incomplete_order:
@@ -123,7 +121,6 @@ class SampleInfoCreateView(FormView):
         context.update({
             'order': self.order,
             'user_samples': SampleInfo.objects.filter(order=self.order),
-            'profile': self.request.user.profile,
             'samples': experiment.samples.all(),
             'experiment': experiment,
             'current_step': 2,
@@ -153,8 +150,6 @@ class SampleDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        profile = Profile.objects.get(user=self.request.user)
-        context['profile'] = profile
         return context
 
 class SampleEditView(UpdateView):
@@ -203,7 +198,6 @@ class TestInfoCreateView(FormView):
         experiment = self.order.experiment
         context.update({
             'order': self.order,
-            'profile': self.request.user.profile,
             'experiment': experiment,
             'user_samples': SampleInfo.objects.filter(order=self.order),
             'user_tests': TestInfo.objects.filter(order=self.order),
@@ -353,7 +347,6 @@ class DiscountInfoFormView(FormView):
         context.update({
             'order': self.order,
             'experiment': self.order.experiment,
-            'profile': self.request.user.profile,
             'current_step': 4,
         })
         return context
@@ -364,11 +357,9 @@ class UserOrderCancelView(View):
 
     def get(self, request, order_code):
         order = get_object_or_404(Order, order_code=order_code)
-        profile = Profile.objects.get(user=request.user)
         referer = request.META.get('HTTP_REFERER', reverse('userpanel:index'))
         return render(request, self.template_name, {
             'order': order,
-            'profile': profile,
             'referer': referer
         })
 

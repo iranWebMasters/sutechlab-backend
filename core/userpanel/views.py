@@ -21,6 +21,7 @@ from gateway.models import Payment
 from azbankgateways import models as bank_models
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from notifications.models import Notification
 import uuid
 
 from .forms import *
@@ -41,10 +42,7 @@ class IndexView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
-            profile = Profile.objects.get(user=self.request.user)
-            context['profile'] = profile
-            context['requests'] = Order.objects.filter(user=self.request.user)
-                    
+            context['orders'] = Order.objects.filter(user=self.request.user)  
         return context
     
 
@@ -264,17 +262,7 @@ class PaymentSuccessView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
-        # Get the payment instance from the context
         payment = self.get_object()
-        
-        # Use the payment instance to populate the context
         context['tracking_code'] = payment.tracking_code
-        context['amount'] = payment.amount
-        
-        # Fetch the profile for the current user
-        if self.request.user.is_authenticated:
-            profile = Profile.objects.get(user=self.request.user)
-            context['profile'] = profile
-        
+        context['amount'] = payment.amount       
         return context

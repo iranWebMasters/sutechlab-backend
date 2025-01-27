@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'services',
     'orders',
     'gateway',
+    'notifications',
     
     'drf_yasg',
     'rest_framework',
@@ -65,6 +66,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'notifications.context_processors.notification_context_processor',
+                'accounts.context_processors.user_profile_context_processor',
             ],
         },
     },
@@ -244,3 +247,7 @@ SWAGGER_SETTINGS = {
     'DOC_EXPANSION': 'none', 
     'DEFAULT_MODEL_RENDERING': 'example',
 }
+
+
+SMS_API_KEY = 'your_api_key_here'
+SMS_API_URL = 'https://api.kavenegar.com/v1/{api_key}/sms/send.json'

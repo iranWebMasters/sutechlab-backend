@@ -1,0 +1,27 @@
+{% load custom_filters %}
+
+<div class="notification margin-15">
+    <a class="notification__icon" id="notificationBell">
+        <span class="notification-badge" style="display: {% if unread_notifications > 0 %}block{% else %}none{% endif %};">
+            {{ unread_notifications }}
+        </span>
+    </a>
+    <div class="dropdown__notification" style="display: none;" id="notificationDropdown">
+        <div class="content__notification">
+            {% if notifications %}
+                {% for notification in notifications %}
+                    <div class="notification-item {% if not notification.is_read %}unread{% endif %}" 
+                         data-notification-id="{{ notification.id }}">
+                        <p class="font-size-13">{{ notification.title }}</p>
+                        <span class="notification-message font-size-12">{{ notification.message }}</span>
+                        <span class="notification-time font-size-10"> {{ notification.created_at|date:"H:i" }}    {{ notification.created_at|to_jalali }}</span>
+                    </div>
+                    <a href="" class="item-delete margin-left-10" title="حذف"></a>
+
+                {% endfor %}
+            {% else %}
+                <span class="font-size-13">موردی برای نمایش وجود ندارد</span>
+            {% endif %}
+        </div>
+    </div>
+</div>
