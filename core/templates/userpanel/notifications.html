@@ -16,7 +16,7 @@
                         <span class="notification-message font-size-12">{{ notification.message }}</span>
                         <span class="notification-time font-size-10"> {{ notification.created_at|date:"H:i" }}    {{ notification.created_at|to_jalali }}</span>
                     </div>
-                    <a href="" class="item-delete margin-left-10" title="حذف"></a>
+                    <a class="item-delete margin-left-10" title="حذف" data-notification-id="{{ notification.id }}">حذف</a>
 
                 {% endfor %}
             {% else %}

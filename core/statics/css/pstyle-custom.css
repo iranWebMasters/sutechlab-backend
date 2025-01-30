@@ -309,9 +309,11 @@
     margin-left: 10px; /* فاصله بین لینک‌ها */
 }
 
+
+
 .notification-badge {
     position: absolute;
-    top: 5px;
+    top: 7px;
     right: 5px;
     background-color: red;
     color: white;
@@ -319,10 +321,11 @@
     padding: 3px 6px;
     font-size: 12px;
 }
+
 .dropdown__notification {
     position: absolute;
     top: 50px;
-    right: 0;
+    right: 500;
     width: 300px;
     background-color: white;
     border: 1px solid #ccc;
@@ -347,7 +350,7 @@
 .notification {
     position: fixed; /* برای ثابت کردن نوتیف‌ها در صفحه */
     top: 20px; /* فاصله از بالای صفحه */
-    left: 1150px; /* فاصله از چپ‌ترین قسمت صفحه */
+    left: 70px; /* فاصله از چپ‌ترین قسمت صفحه */
     z-index: 1000; /* اطمینان از نمایش روی تمام عناصر دیگر */
     display: flex;
     align-items: center;
@@ -356,8 +359,9 @@
 
 .notification .dropdown__notification {
     position: absolute;
-    top: 50px; /* تنظیم فاصله منو از آیکون */
+    top: 30px; /* تنظیم فاصله منو از آیکون */
     left: 0; /* هم‌تراز با لبه چپ آیکون */
+    transform: translateX(-35px); /* شیفت به سمت چپ */
     background: white;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -375,4 +379,11 @@
     padding: 10px;
     font-size: 14px;
     color: #555;
+}
+
+
+
+
+.account-balance {
+    margin-left: 65px; /* مقدار را به دلخواه تغییر دهید */
 }

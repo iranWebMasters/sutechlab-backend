@@ -1,6 +1,7 @@
 from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from notifications.models import Notification
+from django.views import View
 from django.http import JsonResponse
 
 
@@ -18,11 +19,13 @@ class UserNotificationsView(LoginRequiredMixin, ListView):
         return context
 
 
-def mark_notification_as_read(request, notification_id):
-    try:
-        notification = Notification.objects.get(id=notification_id, user=request.user)
-        notification.is_read = True
-        notification.save()
-        return JsonResponse({"success": True})
-    except Notification.DoesNotExist:
-        return JsonResponse({"success": False, "error": "Notification not found"}, status=404)
+class MarkNotificationAsReadView(LoginRequiredMixin, View):
+    def post(self, request, notification_id):
+        try:
+            notification = Notification.objects.get(id=notification_id, user=request.user)
+            notification.is_read = True
+            notification.save()
+            return JsonResponse({"success": True})
+        except Notification.DoesNotExist:
+            return JsonResponse({"success": False, "error": "Notification not found"}, status=404)
+        
