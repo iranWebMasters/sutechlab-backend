@@ -308,3 +308,82 @@
 .operations a {
     margin-left: 10px; /* فاصله بین لینک‌ها */
 }
+
+
+
+.notification-badge {
+    position: absolute;
+    top: 7px;
+    right: 5px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 3px 6px;
+    font-size: 12px;
+}
+
+.dropdown__notification {
+    position: absolute;
+    top: 50px;
+    right: 500;
+    width: 300px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    z-index: 1000;
+}
+.notification-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+.notification-item:hover {
+    background-color: #f9f9f9;
+}
+.unread {
+    font-weight: bold;
+}
+
+
+
+.notification {
+    position: fixed; /* برای ثابت کردن نوتیف‌ها در صفحه */
+    top: 20px; /* فاصله از بالای صفحه */
+    left: 70px; /* فاصله از چپ‌ترین قسمت صفحه */
+    z-index: 1000; /* اطمینان از نمایش روی تمام عناصر دیگر */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification .dropdown__notification {
+    position: absolute;
+    top: 30px; /* تنظیم فاصله منو از آیکون */
+    left: 0; /* هم‌تراز با لبه چپ آیکون */
+    transform: translateX(-35px); /* شیفت به سمت چپ */
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 300px; /* عرض منو */
+}
+
+.notification .notification__icon {
+    cursor: pointer;
+    font-size: 20px;
+    color: #444;
+}
+
+.notification .content__notification {
+    padding: 10px;
+    font-size: 14px;
+    color: #555;
+}
+
+
+
+
+.account-balance {
+    margin-left: 65px; /* مقدار را به دلخواه تغییر دهید */
+}

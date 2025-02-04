@@ -1,48 +1,95 @@
 from django.contrib import admin
-from .models import RequestInfo, Request, SampleInfo, DiscountInfo, TestInfo,LaboratoryRequest
+from .models import Order, SampleInfo, TestInfo, DiscountInfo
 
+class SampleInfoInline(admin.TabularInline):
+    model = SampleInfo
+    extra = 0
+    fields = [
+        'sample_type', 
+        'customer_sample_name', 
+        'sample_count', 
+        'storage_conditions', 
+        'sample_description', 
+        'file_upload'
+    ]
+    readonly_fields = ['file_upload']
+    help_texts = {
+        'sample_type': 'نوع نمونه را وارد کنید.',
+        'customer_sample_name': 'نام نمونه مشتری را وارد کنید.',
+        'sample_count': 'تعداد نمونه‌ها را وارد کنید.',
+        'storage_conditions': 'شرایط نگهداری نمونه را وارد کنید.',
+        'sample_description': 'توضیحات اضافی در مورد نمونه را وارد کنید.',
+    }
 
-class RequestInfoAdmin(admin.ModelAdmin):   
-    list_display = ('user', 'experiment', 'submission_date', 'description')
-    search_fields = ('user__email', 'experiment__name', 'description')
-    list_filter = ('submission_date', 'experiment')
-    ordering = ('-submission_date',)
+class TestInfoInline(admin.TabularInline):
+    model = TestInfo
+    extra = 0
+    fields = [
+        'user_sample', 
+        'test', 
+        'repeat_count_test', 
+        'parameter', 
+        'parameter_values',
+    ]
+    readonly_fields = ['parameter_values']
+    help_texts = {
+        'user_sample': 'انتخاب نمونه آزمایش.',
+        'test': 'عنوان آزمایش را انتخاب کنید.',
+        'repeat_count_test': 'تعداد تکرار آزمایش را وارد کنید.',
+        'parameter': 'پارامترهای مربوط به آزمایش را انتخاب کنید.',
+        'parameter_values': 'مقادیر پارامترها را وارد کنید.',
+    }
 
+class DiscountInfoInline(admin.TabularInline):
+    model = DiscountInfo
+    extra = 0
+    fields = [
+        'send_cost', 
+        'is_faculty_member', 
+        'is_student_or_staff', 
+        'is_affiliated_with_institution',
+        'contract_party_file', 
+        'has_labs_net_grant', 
+        'labs_net_file', 
+        'has_research_grant',
+        'research_grant_withdrawal_amount'
+    ]
+    readonly_fields = ['contract_party_file', 'labs_net_file']
+    help_texts = {
+        'send_cost': 'آیا مایل به پرداخت هزینه ارسال هستید؟',
+        'is_faculty_member': 'آیا کاربر عضو هیات علمی است؟',
+        'is_student_or_staff': 'آیا کاربر دانشجو یا کارکنان دانشگاه است؟',
+        'is_affiliated_with_institution': 'آیا کاربر متقاضی استفاده از تخفیف نهادهای طرف قرارداد است؟',
+        'has_labs_net_grant': 'آیا کاربر دارای گرنت شبکه آزمایشگاهی است؟',
+        'has_research_grant': 'آیا کاربر دارای گرنت پژوهشی است؟',
+    }
 
-class SampleInfoAdmin(admin.ModelAdmin):
-    list_display = ('customer_sample_name', 'sample_type', 'sample_count', 'is_perishable', 'expiration_date')
-    search_fields = ('customer_sample_name', 'sample_type')
-    list_filter = ('is_perishable', 'expiration_date')
-    ordering = ('-expiration_date',)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'experiment', 'status', 'current_step', 'is_complete', 'order_code', 'created_at', 'final_price', 'tracking_code']
+    list_filter = ['status', 'is_complete', 'created_at', 'experiment']
+    search_fields = ['order_code', 'user__email', 'experiment__test_name']
+    inlines = [SampleInfoInline, TestInfoInline, DiscountInfoInline]
+    
+    fieldsets = (
+        ('اطلاعات سفارش', {
+            'fields': ('user', 'experiment', 'description', 'status', 'current_step', 'is_complete', 'order_code', 'invoice_pdf', 'final_price', 'tracking_code')
+        }),
+        ('تاریخ‌ها', {
+            'fields': ('created_at',),
+        }),
+    )
+    readonly_fields = ['order_code', 'created_at', 'invoice_pdf']
 
+    # Adding custom styling for the admin panel
+    class Media:
+        css = {
+            'all': ('admin/css/custom_admin.css',)  # Ensure to create this CSS file for custom styles
+        }
+        js = ('admin/js/custom_admin.js',)  # Ensure to create this JS file for custom scripts
 
-class RequestAdmin(admin.ModelAdmin):
-    list_display = ('user', 'request_info','discount_info')
-    search_fields = ('user__email',)
-    ordering = ('user',)
-    filter_horizontal = ('sample_info','test_info',)
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.select_related('user', 'experiment')  # Optimize queries by using select_related
 
-
-class DiscountInfoAdmin(admin.ModelAdmin):
-    list_display = ('is_faculty_member', 'is_student_or_staff', 'is_affiliated_with_institution', 'discount_institution_name')
-    search_fields = ('discount_institution_name',)
-    list_filter = ('is_faculty_member', 'is_student_or_staff', 'is_affiliated_with_institution')
-
-
-class TestInformationAdmin(admin.ModelAdmin):
-    list_display = ('user', 'experiment', 'user_sample', 'test', 'repeat_count_test', 'created_at', 'updated_at')
-    search_fields = ('user__email', 'experiment__name', 'user_sample__customer_sample_name', 'test__name')
-    list_filter = ('experiment', 'test', 'created_at')
-    ordering = ('-created_at',)
-
-class LaboratoryRequestAdmin(admin.ModelAdmin):
-    ...
-
-
-# Registering the models with their admin classes
-admin.site.register(RequestInfo, RequestInfoAdmin)
-admin.site.register(LaboratoryRequest, LaboratoryRequestAdmin)
-admin.site.register(SampleInfo, SampleInfoAdmin)
-admin.site.register(Request, RequestAdmin)
-admin.site.register(DiscountInfo, DiscountInfoAdmin)
-admin.site.register(TestInfo, TestInformationAdmin)
+# Registering the OrderAdmin class with the Order model
+admin.site.register(Order, OrderAdmin)

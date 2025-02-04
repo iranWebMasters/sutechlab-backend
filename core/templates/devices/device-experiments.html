@@ -1,0 +1,59 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block content %}
+
+<div class="pricing pricing-1 ptb-100">
+  <div class="container">
+    <div class="default-section-title default-section-title-middle">
+      <h6>لیست آزمون های دستگاه {{ device.name }}</h6>
+    </div>
+    <div class="setion-content">
+      <div class="row justify-content-center">
+
+        {% if experiments %}
+          {% for experiment in experiments %}
+          <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+            <div class="pricing-card">
+              <div class="pricing-card-header">
+                <h3>{{ experiment.test_name }}</h3> <!-- نمایش نام آزمایش -->
+                <div class="price">
+                  <h2>{{ experiment.unit_price.unit_price }} <sup>{{ experiment.unit_price.get_currency_display }}</sup></h2> <!-- نمایش قیمت واحد -->
+                </div>
+              </div>
+              <div class="pricing-text-area">
+                <div class="service-price-list">
+                  <ul>
+                    <li><i class=""></i> آزمایشگاه: {{ experiment.laboratory.name }}</li>
+                    <li><i class=""></i> اپراتور: {{ experiment.operator.first_name }} {{ experiment.operator.last_name }}</li> <!-- نمایش نام اپراتور -->
+                    <li>
+                      <i class="{% if experiment.status == 'active' %}fas fa-check{% else %}fas fa-times{% endif %}"></i>
+                      وضعیت: {{ experiment.get_status_display }} <!-- نمایش وضعیت -->
+                    </li>
+                    <li>
+                      <i class="{% if experiment.iso_17025 == 'has' %}fas fa-check{% else %}fas fa-times{% endif %}"></i>
+                      ISO 17025: {{ experiment.get_iso_17025_display }} <!-- نمایش ISO 17025 -->
+                    </li>
+                    <!-- <li><i class=""></i> تعداد نمونه‌ها: {{ experiment.samples.count }}</li>  -->
+                  </ul>
+                </div>
+                <a class="default-button default-button-2" href="{% url 'userpanel:experiment-detail' experiment.id %}">
+                  <span>جزئیات</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <div class="col-12">
+            <div class="no-experiments-message">
+              <h4>آزمایشی برای این دستگاه یافت نشد.</h4>
+            </div>
+          </div>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

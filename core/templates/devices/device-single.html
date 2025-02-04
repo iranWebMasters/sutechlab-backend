@@ -1,48 +1,88 @@
-{% extends 'base.html' %}
-{% load blog_tags %}
-{% load static %}
-
+{% extends 'base.html' %} {% load blog_tags %} {% load static %} 
 {% block content %}
-<div class="uni-banner">
-<div class="container">
-<div class="uni-banner-text">
-<h1>{{devices.title}}</h1>
-<ul>
-<li><a href="{% url 'website:index' %}">خانه</a></li>
-<li>جزئیات خدمات</li>
-</ul>
-</div>
-</div>
-</div>
-
-
-<div class="service detials-page ptb-100">
-<div class="container">
-<div class="row">
-<div class="col-lg-8 col-md-12 col-sm-12 col-12">
-<div class="details-text-area pr-20">
-<div class="details-page-img">
-<img src="{{ devices.image.url }}" alt="image">
-</div>
-<h3>{{devices.title}}</h3>
-<p>{{devices.content|safe}}</p>
-</div>
-</div>
-<div class="col-lg-4 col-md-12 col-sm-12 col-12">
-<div class="sidebar-content pt-30">
-{% comment %} {% include 'devices/service-search.html' %} {% endcomment %}
-{% comment %} {% postcategories %} {% endcomment %}
-{% comment %} {% include 'blog/blog-hours.html' %} {% endcomment %}
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="request-button-area pt-30">
+<!-- <div class="uni-banner">
     <div class="container">
-        <a href="{% url 'devices:index' %}" class="default-button">ثبت درخواست</a>
+        <div class="uni-banner-text">
+            <h1>{{ device.name }}</h1>
+            <ul>
+                <li><a href="{% url 'website:index' %}">خانه</a></li>
+                <li>جزئیات خدمات</li>
+            </ul>
+        </div>
     </div>
-</div>
+</div> -->
 
+<div class="service details-page ptb-100">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-12 col-sm-12 col-12">
+        <div class="details-text-area pr-20">
+          <div class="details-page-img">
+            <img src="{{ device.image.url }}" alt="{{ device.name }}" />
+          </div>
+          {% if device.description %}
+          <p><strong> توضیحات:</strong> {{ device.description|safe }}</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-12 col-sm-12 col-12">
+        <div class="sidebar-content pt-30">
+            <div class="sidebar-card categories mt-30">
+                <h3>{{ device.name }}</h3>
+                <ul>
+                    {% if device.english_name %}
+                    <li>
+                        <i class="fas fa-angle-double-left"></i>
+                        <strong>نام انگلیسی:</strong> {{ device.english_name }}
+                    </li>
+                    {% endif %}
+    
+                    {% if device.model %}
+                    <li>
+                        <i class="fas fa-angle-double-left"></i>
+                        <strong>مدل:</strong> {{ device.model }}
+                    </li>
+                    {% endif %}
+    
+                    {% if device.manufacturer %}
+                    <li>
+                        <i class="fas fa-angle-double-left"></i>
+                        <strong>شرکت سازنده:</strong> {{ device.manufacturer }}
+                    </li>
+                    {% endif %}
+    
+                    {% if device.country %}
+                    <li>
+                        <i class="fas fa-angle-double-left"></i>
+                        <strong>کشور سازنده:</strong> {{ device.country }}
+                    </li>
+                    {% endif %}
+
+                    {% if device.capabilities %}
+                    <li>
+                        <i class="fas fa-angle-double-left"></i>
+                        <strong>قابلیت ها:</strong> {{ device.capabilities }}
+                    </li>
+                    {% endif %}
+    
+                    {% if device.status %}
+                    <li>
+                        <i class="fas fa-angle-double-left"></i>
+                        <strong>وضعیت:</strong> {{ device.get_status_display }}
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="sidebar-card calculate-area mt-30">
+              <h3>لیست آزمون های دستگاه</h3>
+              <a href="{% url 'devices:experiments' device.id %}" class="default-button default-button-3">مشاهده</a>
+
+              </div>
+            <!-- {% include 'blog/blog-hours.html' %} -->
+        </div>
+    </div>
+    </div>
+  </div>
+</div>
 
 {% endblock content %}

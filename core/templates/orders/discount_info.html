@@ -1,0 +1,142 @@
+{% extends 'userpanel/base.html' %}
+{% include 'orders/request-head.html' %}
+
+{% block content %}
+{% include 'orders/request-head.html' %}
+
+<div class="container p-4 request-page" data-index="4" dir="rtl">
+    <div class="bg-white p-4 rounded shadow-lg">
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h6 class="card-title">هزینه ارسال فاکتور و نمونه</h6>
+                    <div class="form-check ">
+                        <input class="form-check-input" type="checkbox" id="sendCost" name="send_cost">
+                        <label class="form-check-label" for="sendCost">
+                            تمایل به پرداخت هزینه ارسال نمونه و فاکتور، بعد از انجام آزمون را دارم
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h6 class="card-title ">اطلاعات تخفیف ها</h6>
+
+                    <div class="row">
+                        <div class="form-check col-md-6">
+                            <input class="form-check-input" type="radio" name="discountInfo" value="facultyMember" id="facultyMember">
+                            <label class="form-check-label" for="facultyMember">
+                                عضو هیات علمی دانشگاه هستم
+                            </label>
+                            <input type="hidden" name="is_faculty_member" value="False">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-check col-md-6">
+                            <input class="form-check-input" type="radio" name="discountInfo" value="student" id="student">
+                            <label class="form-check-label" for="student">
+                                دانشجو هستم
+                            </label>
+                            <input type="hidden" name="is_student_or_staff" value="False">
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="form-check col-md-6">
+                            <input class="form-check-input" type="radio" name="discountInfo" value="contractParty" id="contractParty">
+                            <label class="form-check-label" for="contractParty">
+                                متقاضی استفاده از تخفیف نهاد های طرف قرارداد هستم
+                            </label>
+                            <input type="hidden" name="is_affiliated_with_institution" value="False">
+                        </div>
+                        <div class="col-md-6" id="contractPartyFileSection" style="display:none">
+                            <div class="input-group">
+                                <input type="file" class="form-control" name="contract_party_file">
+                            </div>
+                            <small class="text-muted">نام فایل باید حاوی حروف A-Z باشد</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h6 class="card-title ">اطلاعات گرنت ها</h6>
+                    <div class="row">
+                        <div class="col-md-6 form-check">
+                            <input class="form-check-input" type="checkbox" name="has_labs_net_grant" id="labsNetGrant">
+                            <label class="form-check-label" for="labsNetGrant">
+                                دارای گرنت شبکه آزمایشگاهی فناوری های راهبردی هستم
+                            </label>
+                        </div>
+                        <div class="col-md-6" id="labsNetFileSection" style="display:none">
+                            <div class="input-group">
+                                <input type="file" class="form-control" name="labs_net_file">
+                            </div>
+                            <small class="text-muted">نام فایل باید حاوی حروف A-Z باشد</small>
+                        </div>
+                    </div>
+                    <div class="row" id="researchGrantInfo" style="display: none;">
+                        <div class="form-check col-md-6">
+                            <input class="form-check-input" type="checkbox" name="has_research_grant" id="researchGrant">
+                            <label class="form-check-label" for="researchGrant">
+                                دارای گرنت پژوهشی دانشگاه صنعتی شیراز هستم
+                            </label>
+                        </div>
+
+                        <div class="col researchGrantWithdrawalAmountInputs" style="display: none;">
+                            <input type="number" class="form-control" name="research_grant_withdrawal_amount" placeholder="میزان استفاده (ریال)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <a href="{% url 'orders:test_info_create' order.order_code %}" class="page-btn backward-btn btn btn-outline-primary px-4 me-2">
+                مرحله قبل
+                </a>
+
+                <button type="submit" data-index="4" class="page-btn complete-btn btn btn-success px-4 me-2">اتمام و ثبت درخواست</button>
+                <a href="{% url 'orders:confirm_cancel' order_code=request.session.order_code %}" class="btn btn-danger px-4">لغو درخواست</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    (function () {
+        var lastDiscountPlan;
+        $("input[name='discountInfo']").on("click", function () {
+            if (lastDiscountPlan == this.value) {
+                $("input[name='discountInfo']").prop("checked", false);
+                lastDiscountPlan = undefined;
+            } else lastDiscountPlan = this.value;
+            if (["facultyMember", "student"].includes(lastDiscountPlan)) {
+                $("#contractPartyFileSection").slideUp(200).delay(200);
+                $("#researchGrantInfo").slideDown(200);
+            } else if (["contractParty"].includes(lastDiscountPlan)) {
+                $("#researchGrantInfo").slideUp(200).delay(200);
+                $("#contractPartyFileSection").slideDown(200);
+            } else {
+                $("#contractPartyFileSection").slideUp(200);
+                $("#researchGrantInfo").slideUp(200);
+            }
+        });
+    })();
+
+    $("input[name='has_research_grant']").on("change", function () {
+        if ($(this).prop("checked"))
+            $(".researchGrantWithdrawalAmountInputs").slideDown(200);
+        else $(".researchGrantWithdrawalAmountInputs").slideUp(200);
+    });
+
+    $("input[name='has_labs_net_grant']").on("change", function () {
+        if ($(this).prop("checked")) $("#labsNetFileSection").slideDown(200);
+        else $("#labsNetFileSection").slideUp(200);
+    });
+</script>
+
+{% endblock %}

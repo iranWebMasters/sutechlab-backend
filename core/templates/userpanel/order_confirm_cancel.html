@@ -1,0 +1,51 @@
+{% extends 'userpanel/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header text-center">
+            <h2>تأیید لغو درخواست</h2>
+        </div>
+        <div class="card-body">
+            <p class="lead text-center">آیا مطمئن هستید که می‌خواهید درخواست <strong>{{ experiment.test_name }}</strong> را لغو کنید؟</p>
+            <p class="text-danger text-center">این عمل غیرقابل بازگشت است.</p>
+            <div class="text-center">
+                <form method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">تأیید</button>
+                </form>
+                <a href="{{ referer }}" class="btn btn-secondary">انصراف</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 700px;
+        margin: auto;
+        padding: 20px;
+    }
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .card-header {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+    .lead {
+        font-size: 1.2rem;
+    }
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+</style>
+{% endblock %}

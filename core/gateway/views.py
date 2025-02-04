@@ -5,14 +5,15 @@ from azbankgateways import bankfactories, models as bank_models, default_setting
 from azbankgateways.exceptions import AZBankGatewaysException
 from django.contrib import messages
 from django.views import View
-from orders.models import LaboratoryRequest
-from .models import Payment  # Import the Payment model
+from orders.models import Order
 from django.http import Http404
+from .models import Payment
 
 
 class GoToGatewayView(View):
     def get(self, request, payment_id):
         payment = get_object_or_404(Payment, id=payment_id)
+        print(f"GoToGatewayView: {request.user} (is_authenticated: {request.user.is_authenticated})")
 
         user_mobile_number = request.user.profile.phone_number if request.user.is_authenticated else None
 
@@ -32,6 +33,7 @@ class GoToGatewayView(View):
             # Update the payment status to 'pending'
             payment.status = 'pending'
             payment.save()
+            print(f"GoToGatewayView: {request.user} (is_authenticated: {request.user.is_authenticated})")
 
             return bank.redirect_gateway()  # This should handle payment redirection
         except AZBankGatewaysException as e:
@@ -42,6 +44,7 @@ class GoToGatewayView(View):
 
 class CallbackGatewayView(View):
     def get(self, request, payment_id):  # Add payment_id as a parameter
+        print(f"User in callback: {request.user} (is_authenticated: {request.user.is_authenticated})")
         tracking_code = request.GET.get(settings.TRACKING_CODE_QUERY_PARAM, None)
         if not tracking_code:
             logging.debug("این لینک معتبر نیست.")
@@ -62,11 +65,11 @@ class CallbackGatewayView(View):
 
 
             # Update the laboratory request status
-            laboratory_request = payment.laboratory_request
-            laboratory_request.status = 'successful'
+            order = payment.order
+            order.status = 'successful'
             payment.tracking_code = tracking_code
             
-            laboratory_request.save()
+            order.save()
             payment.save()
 
             messages.success(request, 'پرداخت با موفقیت انجام شد.')

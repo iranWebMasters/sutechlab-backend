@@ -1,0 +1,15 @@
+<!-- templates/website/hyperlink_slider.html -->
+
+<div class="partner pt-100 partner-bg">
+  <div class="container">
+    <div class="partner-slider-area owl-carousel">
+      {% for hyperlink in hyperlinks %}
+        <a href="{{ hyperlink.url }}" target="_blank">
+          <img src="{{ hyperlink.logo.url }}" alt="{{ hyperlink.title }}" />
+        </a>
+      {% comment %} {% empty %}
+        <p>هیچ هایپرلینکی وجود ندارد.</p> {% endcomment %}
+      {% endfor %}
+    </div>
+  </div>
+</div>

@@ -23,7 +23,8 @@ class WorkingHour(models.Model):
     def __str__(self):
         start_day_text = dict(self.DAY_CHOICES).get(self.start_day, '')
         end_day_text = dict(self.DAY_CHOICES).get(self.end_day, '')
-        return f"{start_day_text} تا {end_day_text} {self.start_time}  الی {self.end_time} "
+        return f"{start_day_text} ({self.start_time} - {self.end_time})"
+
 
 class Contact(models.Model):
     address = models.CharField(max_length=255, verbose_name="آدرس")
@@ -39,8 +40,9 @@ class Contact(models.Model):
         verbose_name_plural = "اطلاعات تماس"
 
     def __str__(self):
-        return self.email
-    
+        return f"{self.name} - {self.email}"
+
+
 class ContactUs(models.Model):
     name = models.CharField(max_length=255, verbose_name="نام")
     email = models.EmailField(verbose_name="ایمیل")
@@ -55,42 +57,46 @@ class ContactUs(models.Model):
         verbose_name_plural = "پیام ها"
 
     def __str__(self):
-        return self.name
+        return f"پیام از {self.name} - {self.email}"
 
 
 class Newsletter(models.Model):
-    email=models.EmailField(verbose_name="ایمیل")
+    email = models.EmailField(verbose_name="ایمیل")
 
     class Meta:
         verbose_name = "خبرنامه"
         verbose_name_plural = "خبرنامه‌ها"
 
     def __str__(self):
-        return self.email
+        return f"خبرنامه: {self.email}"
 
 
 class Banners(models.Model):
-    title = models.CharField(max_length=255, verbose_name="تیتر بنر")
     image = models.ImageField(upload_to='banners/', verbose_name="تصویر بنر")
-    description = models.TextField(verbose_name="توضیحات بنر", blank=True, null=True)
+    # title = models.CharField(max_length=255, verbose_name="تیتر بنر")
+    # description = models.TextField(verbose_name="توضیحات بنر", blank=True, null=True)
+
     def __str__(self):
-        return self.title
+        return f"بنر: {self.id}"
 
     class Meta:
         verbose_name = "بنر"
         verbose_name_plural = "بنرها"
-        
+
+
 class HomePage(models.Model):
     banner = models.ManyToManyField(Banners, related_name='HomePage', verbose_name='بنر ها')
     aboutـtitle = models.CharField(max_length=255, verbose_name="تیتر  درباره ما صفحه اصلی")
     about_text = models.TextField(verbose_name=" متن درباره صفحه اصلی" )
     aboutـbanner = models.ImageField(upload_to='banners/', verbose_name=" بنر در باره ما صفحه اصلی")
-    bottom_text = models.TextField(verbose_name="متن پایین صفحه")
+    bottom_text = models.TextField(max_length=197, verbose_name="متن پایین صفحه")
 
-    
     class Meta:
         verbose_name = "صفحه اصلی"
         verbose_name_plural = "صفحه اصلی"
+
+    def __str__(self):
+        return f"صفحه اصلی - {self.aboutـtitle}"
 
 
 class AboutUs(models.Model):
@@ -99,8 +105,17 @@ class AboutUs(models.Model):
     content = models.TextField(verbose_name='محتوا')
 
     def __str__(self):
-        return f"About Us - {self.title}"
+        return f"درباره ما - {self.title}"
 
     class Meta:
         verbose_name = 'درباره ما'
         verbose_name_plural = 'صفحه درباره ما'
+
+class Hyperlink(models.Model):
+    title = models.CharField(max_length=100)
+    logo = models.ImageField(upload_to='logos/')
+    url = models.URLField(max_length=200)
+    display_option = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.title

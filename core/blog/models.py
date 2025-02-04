@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 from taggit.managers import TaggableManager
 from django_jalali.db import models as jmodels
-from ckeditor.fields import RichTextField
+# from ckeditor.fields import RichTextField
 from django.contrib.auth import get_user_model
 
 
@@ -19,9 +19,14 @@ class Category(models.Model):
         verbose_name_plural = "دسته بندی ها"
 
 class Post(models.Model):
+    DISPLAY_CHOICES = (
+        ('show', 'نمایش در صفحه اصلی'),
+        ('hide', 'عدم نمایش در صفحه اصلی'),
+    )
+
     title = models.CharField("عنوان", max_length=255)
     slug = models.SlugField("اسلاگ", max_length=255, unique=True, blank=True)
-    content = RichTextField("محتوا")
+    content = models.TextField("محتوا")
     tags = TaggableManager("برچسب‌ها")
     published_date = jmodels.jDateField("تاریخ انتشار", null=True)
     status = models.BooleanField("نمایش در سایت", default=True)
@@ -31,7 +36,9 @@ class Post(models.Model):
     counted_views = models.IntegerField("تعداد بازدیدها", default=0)
     counted_comment = models.IntegerField("تعداد نظرات", default=0)
     category = models.ManyToManyField(Category, verbose_name="دسته‌بندی")
-    image = models.ImageField("تصویر", upload_to='post_images/') 
+    image = models.ImageField("تصویر", upload_to='post_images/')
+    display_option = models.CharField("گزینه نمایش",max_length=4,choices=DISPLAY_CHOICES,default='show')
+
 
     class Meta:
         ordering = ['-created_date']

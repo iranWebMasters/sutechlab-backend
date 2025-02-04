@@ -50,9 +50,17 @@
         </div>
 
         <ul>
-            <li class="item-li i-dashboard is-active"><a href="{% url 'userpanel:index' %}">پیشخوان</a></li>
-            <li class="item-li i-courses "><a href="{% url 'userpanel:experiments-list' %}">آزمون ها</a></li>
-            <li class="item-li i-users"><a href="{% url 'userpanel:update_profile_panel' %}">اطلاعات کاربری</a></li>
+            <ul>
+                <li class="item-li i-dashboard {% if request.path == '/userpanel/' %}is-active{% endif %}">
+                    <a href="{% url 'userpanel:index' %}">پیشخوان</a>
+                </li>
+                <li class="item-li i-courses {% if request.path == '/userpanel/experiments/' %}is-active{% endif %}">
+                    <a href="{% url 'userpanel:experiments-list' %}">آزمون ها</a>
+                </li>
+                <li class="item-li i-users {% if request.path == '/userpanel/profile/update/' %}is-active{% endif %}">
+                    <a href="{% url 'userpanel:update_profile_panel' %}">اطلاعات کاربری</a>
+                </li>
+            </ul>
             <!-- <li class="item-li i-tickets"><a href="tickets.html"> تیکت ها</a></li> -->
             <!-- <li class="item-li i-transactions"><a href="transactions.html">تراکنش ها</a></li> -->
             <!-- <li class="item-li i-my__purchases"><a href="mypurchases.html">خرید های من</a></li> -->
@@ -77,14 +85,9 @@
                 </span>
 
 
-                <div class="notification margin-15">
-                    <a class="notification__icon"></a>
-                    <div class="dropdown__notification">
-                        <div class="content__notification">
-                            <span class="font-size-13">موردی برای نمایش وجود ندارد</span>
-                        </div>
-                    </div>
-                </div>
+                {% include 'userpanel/notifications.html' with notifications=notifications %}
+                
+                
                 <a href="{% url 'website:index' %}" class="logout" title="خروج"></a>
 
             </div>

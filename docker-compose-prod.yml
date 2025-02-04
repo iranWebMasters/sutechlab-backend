@@ -1,13 +1,20 @@
 version: "3.9"
 
 services:
-  redis:
-    container_name: redis
-    image: redis
+
+
+  postgres:
+    container_name: postgres
+    image: postgres:latest
     restart: always
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     networks:
       - my_network
-    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   backend:
     build: .
@@ -23,12 +30,18 @@ services:
       - static_volume:/app/static
       - media_volume:/app/media
     environment:
-      - SECRET_KEY=django-insecure-w^@bj@s=-tx_rv-k^us_z3ox6jjtexq$q6hiy*!nhkzpr(wbhh
-      - DEBUG=True
-      - ALLOWED_HOSTS=*
-      - CELERY_BROKER_URL=redis://redis:6379/0
+      - SECRET_KEY=${SECRET_KEY}
+      - DEBUG=${DEBUG}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
     depends_on:
-      - redis
+      # - redis
+      - postgres 
     networks:
       - my_network
 
@@ -43,36 +56,47 @@ services:
       - static_volume:/home/app/static
       - media_volume:/home/app/media
     depends_on:
-      - redis
+      # - redis
       - backend
     networks:
       - my_network
 
-  worker:
-    build: .
-    command: celery -A core worker --loglevel=info
-    volumes:
-      - ./core:/app
-    depends_on:
-      - redis
-      - backend
-    networks:
-      - my_network
+  # worker:
+  #   build: .
+  #   command: celery -A core worker --loglevel=info
+  #   volumes:
+  #     - ./core:/app
+  #   depends_on:
+  #     - redis
+  #     - backend
+  #     - postgres
+  #   networks:
+  #     - my_network
   
-  beat:
-    build: .
-    command: celery -A core beat --loglevel=info
-    volumes:
-      - ./core:/app
-    depends_on:
-      - redis
-      - backend
-    networks:
-      - my_network
+  # beat:
+  #   build: .
+  #   command: celery -A core beat --loglevel=info
+  #   volumes:
+  #     - ./core:/app
+  #   depends_on:
+  #     - redis
+  #     - backend
+  #     - postgres 
+  #   networks:
+  #     - my_network
+
+  # redis:
+  #   container_name: redis
+  #   image: redis
+  #   restart: always
+  #   networks:
+  #     - my_network
+  #   command: redis-server --save 60 1 --loglevel warning
 
 volumes:
   static_volume:
   media_volume:
+  postgres_data:
 
 networks:
   my_network:

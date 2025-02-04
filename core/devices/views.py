@@ -4,17 +4,18 @@ from django.utils import timezone
 from django.views.generic import ListView
 from .models import *
 from django.views.generic import DetailView
+from services.models import Experiment
 
 
 
 class DevicesListView(ListView):
     model = Device
     template_name = 'devices/device-home.html'
-    context_object_name = 'services'
+    context_object_name = 'devices'
     paginate_by = 6
 
     def get_queryset(self):
-        queryset = Device.objects.filter(status=True,)
+        queryset = Device.objects.filter(status='ready',)
 
         username = self.kwargs.get('username')
         if username:
@@ -28,14 +29,29 @@ class DevicesListView(ListView):
 
 class DevicesDetailView(DetailView):
     model = Device
-    template_name = 'devices/service-single.html'
-    context_object_name = 'services'
+    template_name = 'devices/device-single.html'
+    context_object_name = 'device'
 
+class DevicesExperimentListView(ListView):
+    model = Experiment
+    template_name = 'devices/device-experiments.html'
+    context_object_name = 'experiments'
 
+    def get_queryset(self):
+        device_id = self.kwargs['device_id']
+        return Experiment.objects.filter(device_id=device_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        device_id = self.kwargs['device_id']
+        context['experiments'] = Experiment.objects.filter(device_id=device_id)
+        context['device'] = Device.objects.get(id=device_id)
+        return context
+    
 class DevicesSearchView(ListView):
     model = Device
-    template_name = 'devices/services_home.html'
-    context_object_name = 'services'
+    template_name = 'devices/devices_home.html'
+    context_object_name = 'devices'
     paginate_by = 10
     def get_queryset(self):
 

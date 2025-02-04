@@ -1,0 +1,60 @@
+<div class="stepper">
+    <!-- مرحله 1 -->
+    <a href="{% if experiment %}{% url 'orders:request_info' experiment.id %}{% else %}#{% endif %}" 
+       class="step {% if current_step >= 1 %}completed{% endif %} {% if current_step == 1 %}active{% endif %}" 
+       data-index="1">
+        <div class="circle">
+            {% if current_step > 1 %}
+                <span class="completed-mark">✔</span>
+            {% else %}
+                <span class="num">1</span>
+            {% endif %}
+        </div>
+        <p>اطلاعات درخواست</p>
+    </a>
+    <div class="line {% if current_step > 1 %}completed{% endif %}" data-index="1"></div>
+
+    <!-- مرحله 2 -->
+    <a href="{% if current_step >= 2 and order %}{% url 'orders:sample_info_create' order.order_code %}{% else %}#{% endif %}" 
+       class="step {% if current_step >= 2 %}completed{% endif %} {% if current_step == 2 %}active{% endif %}" 
+       data-index="2">
+        <div class="circle">
+            {% if current_step > 2 %}
+                <span class="completed-mark">✔</span>
+            {% else %}
+                <span class="num">2</span>
+            {% endif %}
+        </div>
+        <p>اطلاعات نمونه</p>
+    </a>
+    <div class="line {% if current_step > 2 %}completed{% endif %}" data-index="2"></div>
+
+    <!-- مرحله 3 -->
+    <a href="{% if current_step >= 3 and order %}{% url 'orders:test_info_create' order.order_code %}{% else %}#{% endif %}" 
+       class="step {% if current_step >= 3 %}completed{% endif %} {% if current_step == 3 %}active{% endif %}" 
+       data-index="3">
+        <div class="circle">
+            {% if current_step > 3 %}
+                <span class="completed-mark">✔</span>
+            {% else %}
+                <span class="num">3</span>
+            {% endif %}
+        </div>
+        <p>اطلاعات آزمون</p>
+    </a>
+    <div class="line {% if current_step > 3 %}completed{% endif %}" data-index="3"></div>
+
+    <!-- مرحله 4 -->
+    <a href="{% if current_step >= 4 and order %}{% url 'orders:discount_info' order.order_code %}{% else %}#{% endif %}" 
+       class="step {% if current_step >= 4 %}completed{% endif %} {% if current_step == 4 %}active{% endif %}" 
+       data-index="4">
+        <div class="circle">
+            {% if current_step > 4 %}
+                <span class="completed-mark">✔</span>
+            {% else %}
+                <span class="num">4</span>
+            {% endif %}
+        </div>
+        <p>اطلاعات تکمیلی</p>
+    </a>
+</div>

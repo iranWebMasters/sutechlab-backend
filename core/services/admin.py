@@ -20,12 +20,13 @@ class FacultyAdmin(admin.ModelAdmin):
 
 
 class ParameterAdmin(admin.ModelAdmin):
-    list_display = ('name', 'unit', 'laboratory', 'unit_amount', 'unit_price')
-    search_fields = ('name', 'laboratory__name', 'unit_amount__amount', 'unit_price__unit_price')
-    list_filter = ('unit', 'laboratory', 'unit_amount', 'unit_price')
-    autocomplete_fields = ('laboratory', 'unit_amount', 'unit_price')
+    list_display = ('name', 'unit', 'unit_amount', 'unit_price')
+    search_fields = ('name','unit_amount__amount', 'unit_price__unit_price')
+    list_filter = ('unit','unit_amount', 'unit_price')
+    autocomplete_fields = ('unit_amount', 'unit_price')
     ordering = ('name',)
     list_per_page = 20
+    filter_horizontal = ('values',)
 
 
 class UnitAmountAdmin(admin.ModelAdmin):
@@ -53,13 +54,23 @@ class TestsAdmin(admin.ModelAdmin):
 
 
 class SampleAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description', 'is_returnable')
-    search_fields = ('name',)
+    list_display = ('type', 'description', 'is_returnable')
+    search_fields = ('type',)
     list_filter = ('is_returnable',)
-    ordering = ('name',)
+    ordering = ('type',)
     list_per_page = 20
 
-
+class ParameterValueAdmin(admin.ModelAdmin):
+    list_display = ('name', 'default_value', 'min_value', 'max_value')
+    list_editable = ('default_value', 'min_value', 'max_value')
+    search_fields = ('name', 'default_value')
+    list_filter = ('min_value', 'max_value')
+    ordering = ('name',)
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'default_value', 'min_value', 'max_value')
+        }),
+    )
 class ExperimentAdmin(admin.ModelAdmin):
     list_display = (
         'test_name',
@@ -68,7 +79,6 @@ class ExperimentAdmin(admin.ModelAdmin):
         'operator',
         'status',
         'iso_17025',
-        'created_date',
         'updated_date',
     )
     search_fields = (
@@ -86,9 +96,19 @@ class ExperimentAdmin(admin.ModelAdmin):
     readonly_fields = ('created_date', 'updated_date')
     ordering = ('-created_date',)
     list_per_page = 20
+    actions = ['duplicate_experiments']
+    list_editable = ('status','iso_17025',)
+
+    def duplicate_experiments(self, request, queryset):
+        for experiment in queryset:
+            experiment.duplicate_experiments()
+        self.message_user(request, "تعداد آزمایش‌های انتخابی دو برابر شد.")
+    
+    duplicate_experiments.short_description = "دو برابر کردن آزمایش‌های انتخاب شده"
 
 
 admin.site.register(Laboratory, LaboratoryAdmin)
+admin.site.register(ParameterValue, ParameterValueAdmin)
 admin.site.register(Faculty, FacultyAdmin)
 admin.site.register(Parameters, ParameterAdmin)
 admin.site.register(UnitAmount, UnitAmountAdmin)

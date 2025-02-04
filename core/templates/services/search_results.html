@@ -35,8 +35,8 @@
                     <th>نام آزمایشگاه</th>
                     <th>نام دانشکده</th>
                     <th>اپراتور</th>
+                    <th>دستگاه</th>
                     <th>ISO 17025</th>
-                    <th>مبلغ (تومان)</th>
                     <th>وضعیت</th>
                     <th>عملیات</th>
                 </tr>
@@ -45,20 +45,20 @@
                 {% if results %}
                     {% for experiment in results %}
                     <tr role="row">
-                        <td><a href="{% url 'userpanel:experiments-detail' experiment.id %}">{{ experiment.id }}</a></td>
-                        <td><a href="">{{ experiment.test_name }}</a></td>
-                        <td><a href="">{{ experiment.laboratory.name }}</a></td>
-                        <td><a href="">{{ experiment.laboratory.faculty.name }}</a></td>
-                        <td><a href="">{{ experiment.operator.first_name }}</a></td>
+                        <td><a href="{% url 'userpanel:experiment-detail' experiment.id %}">{{ forloop.counter }}</a></td>
+                        <td><a href="{% url 'userpanel:experiment-detail' experiment.id %}">{{ experiment.test_name }}</a></td>
+                        <td><a href="{% url 'userpanel:experiment-detail' experiment.id %}">{{ experiment.laboratory.name }}</a></td>
+                        <td><a href="{% url 'userpanel:experiment-detail' experiment.id %}">{{ experiment.laboratory.faculty.name }}</a></td>
+                        <td><a href="{% url 'userpanel:experiment-detail' experiment.id %}">{{ experiment.operator.first_name }} {{ experiment.operator.last_name }}</a></td>
+                        <td><a href="{% url 'userpanel:experiment-detail' experiment.id %}">{{ experiment.device.name }}</a></td>
                         <td>
-                            <a href="" class="{% if experiment.iso_17025 == 'has' %}text-success{% else %}text-error{% endif %}">
+                            <a href="{% url 'userpanel:experiment-detail' experiment.id %}" class="{% if experiment.iso_17025 == 'has' %}text-success{% else %}text-error{% endif %}">
                                 {{ experiment.get_iso_17025_display }}
                             </a>
                         </td>
-                        <td><a href="">{{ experiment.unit_price }} تومان</a></td>
-                        <td><a href="" class="{% if experiment.status == 'active' %}text-success{% else %}text-error{% endif %}">{{ experiment.get_status_display }}</a></td>
+                        <td><a href="{% url 'userpanel:experiment-detail' experiment.id %}" class="{% if experiment.status == 'active' %}text-success{% else %}text-error{% endif %}">{{ experiment.get_status_display }}</a></td>
                         <td>
-                            <a href="{% url 'userpanel:experiments-detail' experiment.id %}" class="btn btn-success">انتخاب</a>
+                            <a href="{% url 'userpanel:experiment-detail' experiment.id %}" class="btn btn-primary">انتخاب</a>
                         </td>                    
                     </tr>
                     {% endfor %}

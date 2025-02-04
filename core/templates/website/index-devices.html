@@ -7,21 +7,26 @@
     </div>
     <div class="section-content">
     <div class="row">
-    {% for post in posts|slice:":3" %}
-    <div class="col-lg-4 col-md-6 col-sm-12 col-12">
-    <div class="service-card-3">
-    <div class="service-card-img-3">
-    <img src="{{post.image.url}}" alt="{{post.title}}">
-    </div>
-    <div class="service-card-text-3">
-    <h4><a href="{% url 'services:single' pk=post.id %}">{{post.title}}</a></h4>
-    <p>{{ post.content|truncatewords:39|safe }}</p>
-    <a class="read-more-btn" href="{% url 'services:single' pk=post.id %}">بیشتر بدانید</a>
-    </div>
-    </div>
-    </div>
-    {% endfor %}
-    </div>
+        {% for device in devices %}
+        <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+            <div class="service-card-3">
+                <a href="{% url 'devices:single' pk=device.id %}" class="service-card-link">
+                    <div class="service-card-img-3">
+                        <img src="{{ device.image.url }}" alt="{{ device.name }}">
+                    </div>
+                    <div class="service-card-text-3">
+                        <h4>{{ device.name }}</h4>
+                        <p><strong>نام انگلیسی:</strong> {{ device.english_name }}</p>
+                        <p><strong>وضعیت:</strong> {{ device.get_status_display }}</p>
+                        <!-- <span class="read-more-btn">بیشتر بدانید</span> -->
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    
+</div>
+<a class="default-button default-button-3 view-all-btn mt-30" href="{% url 'devices:index' %}"><span>مشاهده همه دستگاه ها</span></a>
     </div>
     </div>
     </div>

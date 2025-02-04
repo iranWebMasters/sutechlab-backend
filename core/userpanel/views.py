@@ -12,18 +12,19 @@ from django.views import View
 from django.urls import reverse_lazy
 from django.views.generic import ListView,DetailView,DeleteView
 from services.models import Experiment
-from orders.models import LaboratoryRequest
+from orders.models import Order
+from orders.models import Order
 from django.contrib import messages
 from django.http import HttpResponseRedirect,Http404
 from django.shortcuts import get_object_or_404
 from gateway.models import Payment 
 from azbankgateways import models as bank_models
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from notifications.models import Notification
 import uuid
 
-
-
 from .forms import *
-
 
 
 class IndexView(TemplateView):
@@ -41,11 +42,7 @@ class IndexView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
-            profile = Profile.objects.get(user=self.request.user)
-            context['profile'] = profile
-            
-            context['requests'] = LaboratoryRequest.objects.filter(user=self.request.user)
-        
+            context['orders'] = Order.objects.filter(user=self.request.user)  
         return context
     
 
@@ -69,7 +66,6 @@ class ProfileUpdatePanelView(LoginRequiredMixin,UpdateView):
         return response
     
 
-
 class ExperimentListView(ListView):
     model = Experiment
     template_name = 'services/experiment-list.html'
@@ -83,11 +79,21 @@ class ExperimentListView(ListView):
         context['profile'] = profile
         return context
 
-class TestDetailView(DetailView):
+@method_decorator(login_required, name='dispatch')
+class ExperimentDetailView(DetailView):
     model = Experiment
-    context_object_name = 'experiments'
+    context_object_name = 'experiment'
     
     template_name = 'services/experiment-details.html'
+    
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        if request.user.is_authenticated:
+            profile = Profile.objects.get(user = request.user)
+            required_fields = [profile.first_name, profile.last_name, profile.national_id, 
+                           profile.phone_number, profile.address, profile.postal_code]
+            if not all(required_fields):
+                return redirect('update_profile')
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -101,8 +107,9 @@ class TestDetailView(DetailView):
 class DownloadInvoiceView(View):
     def get(self, request, request_id):
         try:
-            # Retrieve the LaboratoryRequest instance
-            request_instance = LaboratoryRequest.objects.get(id=request_id)
+            request_instance = Order.objects.get(id=request_id)
+            # Retrieve the Order instance
+            request_instance = Order.objects.get(id=request_id)
 
             # Check if the invoice PDF exists
             if not request_instance.invoice_pdf:
@@ -116,12 +123,15 @@ class DownloadInvoiceView(View):
             response['Content-Disposition'] = f'attachment; filename="{request_instance.invoice_pdf.name}"'
             return response
 
-        except LaboratoryRequest.DoesNotExist:
+        except Order.DoesNotExist:
             raise Http404("درخواست مربوط به فاکتور پیدا نشد.")
 
-class LaboratoryRequestDeleteView(DeleteView):
-    model = LaboratoryRequest
-    template_name = 'userpanel/confirm_delete.html'  # Specify a template for confirmation
+class OrderDeleteView(DeleteView):
+    model = Order
+    template_name = 'userpanel/order_confirm_delete.html'
+    success_url = reverse_lazy('userpanel:index')
+    model = Order
+    template_name = 'userpanel/order_confirm_delete.html'  # Specify a template for confirmation
     success_url = reverse_lazy('userpanel:index')  # URL to redirect after successful deletion
 
     def get_context_data(self, **kwargs):
@@ -138,7 +148,8 @@ class LaboratoryRequestDeleteView(DeleteView):
         return HttpResponseRedirect(self.get_success_url())
 
 class RequestEditView(UpdateView):
-    model = Request
+    form_class = RequestUpdateForm
+    model = Order
     form_class = RequestUpdateForm  # فرم جدید را به اینجا اضافه کنید
     template_name = 'userpanel/request_form.html'
     success_url = reverse_lazy('userpanel:index')  # URL بعد از موفقیت در ویرایش
@@ -148,18 +159,23 @@ class RequestEditView(UpdateView):
         return super().form_valid(form)
     
 
-class LaboratoryRequestDetailView(DetailView):
-    model = LaboratoryRequest
+class OrderDetailView(DetailView):
+    model = Order
+    template_name = 'userpanel/order_detail.html'
+    model = Order
     template_name = 'userpanel/laboratory_request_detail.html'  # Specify your template
 
     def get_object(self, queryset=None):
         # Override to get the object based on the URL parameter
         request_id = self.kwargs.get('pk')
-        return get_object_or_404(LaboratoryRequest, pk=request_id)
+        return get_object_or_404(Order, pk=request_id)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        laboratory_request = self.get_object()  # Get the current LaboratoryRequest instance
+        order = self.get_object()
+        context['experiment'] = order.experiment
+        context['user'] = order.user
+        laboratory_request = self.get_object()  # Get the current Order instance
         
         # Add extra context if needed
         context['experiment'] = laboratory_request.experiment  # Pass the related Experiment object
@@ -169,15 +185,13 @@ class LaboratoryRequestDetailView(DetailView):
         # You can add more context variables as needed
         return context
     
-
 class PaymentPageView(DetailView):
-    model = LaboratoryRequest
+    model = Order
     template_name = 'userpanel/payment_page.html'  # Create this template for payment
-
     def get_object(self, queryset=None):
         # Get the object based on the request ID passed in the URL
         request_id = self.kwargs.get('request_id')
-        return get_object_or_404(LaboratoryRequest, id=request_id)
+        return get_object_or_404(Order, id=request_id)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -189,8 +203,8 @@ class PaymentPageView(DetailView):
 
 class ProcessPaymentView(View):
     def post(self, request, request_id):
-        laboratory_request = get_object_or_404(LaboratoryRequest, id=request_id)
-        final_amount = laboratory_request.final_price
+        order = get_object_or_404(Order, id=request_id)
+        final_amount = order.final_price
         use_wallet = request.POST.get('use_wallet') == 'true'
         amount_to_process = final_amount
 
@@ -209,26 +223,29 @@ class ProcessPaymentView(View):
             profile.save()
 
         # اگر مبلغ قابل پرداخت صفر باشد، مستقیماً پرداخت را کامل کن
-        tracking_code = str(uuid.uuid4())[:12].replace('-', '').upper()
+        tracking_code = order.order_code
 
         if amount_to_process == 0:
             payment = Payment.objects.create(
-                laboratory_request=laboratory_request,
+                order=order,
                 user=request.user,
                 amount=amount_to_process,
                 status='completed',
                 tracking_code=tracking_code  # تنظیم کد رهگیری
             )
-            laboratory_request.status = 'successful'
-            laboratory_request.tracking_code = tracking_code  # ثبت کد رهگیری در درخواست آزمایش
-            laboratory_request.save()
+            order.status = 'successful'
+            order.tracking_code = tracking_code
+            order.save()
+            order.status = 'successful'
+            order.tracking_code = tracking_code  # ثبت کد رهگیری در درخواست آزمایش
+            order.save()
 
             messages.success(request, 'پرداخت با موفقیت از طریق کیف پول انجام شد.')
             return redirect('userpanel:payment_success', tracking_code=tracking_code)
 
         # در غیر این صورت، فرآیند پرداخت به درگاه ادامه پیدا می‌کند
         payment = Payment.objects.create(
-            laboratory_request=laboratory_request,
+            order=order,
             user=request.user,
             amount=amount_to_process,
         )
@@ -240,18 +257,12 @@ class PaymentSuccessView(DetailView):
     model = Payment
     template_name = 'userpanel/payment_success.html'
     context_object_name = 'payment'
-    slug_field = 'tracking_code'  # استفاده از tracking_code برای پیدا کردن پرداخت
+    slug_field = 'tracking_code'
     slug_url_kwarg = 'tracking_code'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
-        # Get the payment instance from the context
-        payment = self.get_object()  # This retrieves the Payment instance based on the slug
-        
-        # Use the payment instance to populate the context
+        payment = self.get_object()
         context['tracking_code'] = payment.tracking_code
-        context['amount'] = payment.amount
-        profile = Profile.objects.get(user=self.request.user)
-        context['profile'] = profile
+        context['amount'] = payment.amount       
         return context

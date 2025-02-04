@@ -4,10 +4,10 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY='django-insecure-95*u*w5%3ye=7fdga*u0*ur#2e^qnd^6^zlg0ptwj5gr+(02mb)'
-DEBUG=True
-ALLOWED_HOSTS = ['*',]
 
+SECRET_KEY = os.getenv('SECRET_KEY',)
+DEBUG = os.getenv('DEBUG',)
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'services',
     'orders',
     'gateway',
+    'notifications',
     
     'drf_yasg',
     'rest_framework',
@@ -33,6 +34,9 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django_jalali',
     'django.contrib.sites',
+    # 'sslserver',
+    # 'django_celery_beat',
+
     
 ]
 
@@ -61,6 +65,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'notifications.context_processors.notification_context_processor',
+                'accounts.context_processors.user_profile_context_processor',
             ],
         },
     },
@@ -69,24 +75,24 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 # DATABASES_________________________________________
 
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DATABASE_NAME',),
+        'USER': os.environ.get('DATABASE_USER',),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD',),
+        'HOST': os.environ.get('DATABASE_HOST',),
+        'PORT': os.environ.get('DATABASE_PORT',),
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('DATABASE_NAME', 'sutechla_db'),
-            'USER': os.environ.get('DATABASE_USER', 'sutechlab'),
-            'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'password123!'),
-            'HOST': os.environ.get('DATABASE_HOST', 'localhost'),
-            'PORT': os.environ.get('DATABASE_PORT', '5432'),
-        }
-    }
+}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
 
 # DATABASES_________________________________________
 AUTH_PASSWORD_VALIDATORS = [
@@ -120,7 +126,7 @@ STATIC_ROOT = BASE_DIR / 'static'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
 
-CKEDITOR_UPLOAD_PATH='uploads/'
+# CKEDITOR_UPLOAD_PATH='uploads/'
 
 STATICFILES_DIRS = [
     BASE_DIR / "statics",
@@ -129,26 +135,30 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# Https settings
 SECURE_BROWSER_XSS_FILTER = True
-CSRF_COOKIE_SECURE = False
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
-## Strict-Transport-Security
-SECURE_HSTS_SECONDS = 15768000
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
+## Strict-Transport-Security (HSTS)
+SECURE_HSTS_SECONDS = 0  # غیرفعال‌کردن HSTS
+SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+SECURE_HSTS_PRELOAD = False
 
-## that requests over HTTP are redirected to HTTPS. aslo can config in webserver
-SECURE_SSL_REDIRECT = False
+## Force HTTPS redirection
+SECURE_SSL_REDIRECT = False  
 
-# for more security
-CSRF_COOKIE_SECURE = True
+# CSRF settings
+CSRF_COOKIE_SECURE = False  
 CSRF_USE_SESSIONS = True
 CSRF_COOKIE_HTTPONLY = True
+
+# Session settings
 SESSION_COOKIE_SECURE = False
-SESSION_COOKIE_SAMESITE = 'Strict'
+SESSION_COOKIE_SAMESITE = 'Lax'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_AGE = 1209600  # 2 weeks in seconds
+
+
 
     
     
@@ -236,3 +246,7 @@ SWAGGER_SETTINGS = {
     'DOC_EXPANSION': 'none', 
     'DEFAULT_MODEL_RENDERING': 'example',
 }
+
+
+SMS_API_KEY = 'your_api_key_here'
+SMS_API_URL = 'https://api.kavenegar.com/v1/{api_key}/sms/send.json'

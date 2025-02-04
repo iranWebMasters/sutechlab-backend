@@ -1,89 +1,98 @@
 {% extends 'userpanel/base.html' %}
 {% load humanize %}
-
+{% load custom_filters %}
 {% block content %}
 <div class="container mt-5">
-    <h2 class="text-center mb-4">پرداخت درخواست آزمایش</h2>
-    <div class="card shadow-sm">
+    <h2 class="text-center mb-4 text-primary">پرداخت درخواست آزمایش</h2>
+    <div class="card shadow-lg border-light rounded">
         <div class="card-body">
-            <h5 class="card-title">جزئیات درخواست</h5>
-            <hr>
-            <div class="row mb-3">
+            <h5 class="card-title text-success">جزئیات درخواست</h5>
+            <hr class="bg-success">
+            <div class="row mb-4">
                 <div class="col-md-6">
-                    <h6>کد سفارش:</h6>
-                    <p class="text-muted">{{ object.order_code }}</p>
+                    <h6 class="text-muted">کد سفارش:</h6>
+                    <p class="text-dark fw-bold">{{ object.order_code }}</p>
                 </div>
                 <div class="col-md-6">
-                    <h6>کاربر:</h6>
-                    <p class="text-muted">{{ object.user.email }}</p>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <h6>آزمایش:</h6>
-                    <p class="text-muted">{{ object.experiment.test_name }}</p>
-                </div>
-                <div class="col-md-6">
-                    <h6>تاریخ ثبت درخواست:</h6>
-                    <p class="text-muted">{{ object.submission_date }}</p>
+                    <h6 class="text-muted">کاربر:</h6>
+                    <p class="text-dark fw-bold">{{ object.user.profile.first_name }} {{ object.user.profile.last_name }}</p>
                 </div>
             </div>
-            <div class="row mb-3">
+            <div class="row mb-4">
                 <div class="col-md-6">
-                    <h6>وضعیت:</h6>
-                    <p class="text-muted">{{ object.status }}</p>
+                    <h6 class="text-muted">آزمایش:</h6>
+                    <p class="text-dark fw-bold">{{ object.experiment.test_name }}</p>
                 </div>
                 <div class="col-md-6">
-                    <h6>تعداد نمونه:</h6>
-                    <p class="text-muted">{{ object.sample_count }}</p>
+                    <h6 class="text-muted">تاریخ ثبت درخواست:</h6>
+                    <p class="text-dark fw-bold">{{ object.created_at|to_jalali }}</p>
                 </div>
             </div>
-            <div class="row mb-3">
+            <div class="row mb-4">
                 <div class="col-md-6">
-                    <h6>قیمت نهایی:</h6>
-                    <p class="text-muted">{{ object.final_price|intcomma }} تومان</p>
+                    <h6 class="text-muted">وضعیت:</h6>
+                    <p>
+                        {% if order.status == 'successful' %}
+                            <span class="badge bg-success">پرداخت موفق</span>
+                        {% elif order.status == 'failed' %}
+                            <span class="badge bg-danger">پرداخت ناموفق</span>
+                        {% elif order.status == 'pending' %}
+                            <span class="badge bg-warning text-dark">در حال بررسی</span>
+                        {% elif order.status == 'canceled' %}
+                            <span class="badge bg-secondary">لغو شده</span>
+                        {% elif order.status == 'ready_for_payment' %}
+                            <span class="badge bg-info text-dark">آماده پرداخت</span>
+                        {% else %}
+                            <span class="badge bg-light text-dark">وضعیت نامشخص</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h6 class="text-muted">قیمت نهایی:</h6>
+                    <p class="text-dark fw-bold">{{ object.final_price|intcomma }} تومان</p>
                 </div>
             </div>
             <form method="POST" action="{% url 'userpanel:process_payment' object.id %}">
                 {% csrf_token %}
-            <div class="row mb-3">
-                <div class="col-md-12">
-                    <h6>موجودی کیف پول:</h6>
-                    <p class="text-muted">{{ profile.wallet_balance|intcomma }} تومان</p>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="use_wallet" name="use_wallet" value="true" onchange="updatePayableAmount()">
-                        <label class="form-check-label" for="use_wallet">
-                            از کیف پول استفاده شود
-                        </label>
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <h6 class="text-muted">موجودی کیف پول:</h6>
+                        <p class="text-dark fw-bold">{{ profile.wallet_balance|intcomma }} تومان</p>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="use_wallet" name="use_wallet" value="true" onchange="updatePayableAmount()">
+                            <label class="form-check-label" for="use_wallet">
+                                از کیف پول استفاده شود
+                            </label>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Payable Amount Section -->
-            <div class="row mb-3">
-                <div class="col-md-12">
-                    <h6>مبلغ قابل پرداخت:</h6>
-                    <p id="payable_amount" class="text-muted">{{ object.final_price|intcomma}} تومان</p>
+                <!-- Payable Amount Section -->
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <h6 class="text-muted">مبلغ قابل پرداخت:</h6>
+                        <p id="payable_amount" class="text-dark fw-bold">{{ object.final_price|intcomma }} تومان</p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="text-center mt-4">
-
+                <div class="text-center mt-4">
                     <button type="submit" class="btn btn-success btn-lg">پرداخت</button>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
     <div class="text-center mt-3">
-        <a href="{% url 'userpanel:index' %}" class="btn btn-secondary">بازگشت به صفحه اصلی</a>
+        <a href="{% url 'userpanel:index' %}" class="btn btn-outline-secondary">بازگشت به صفحه اصلی</a>
     </div>
 </div>
 
 <script>
     function updatePayableAmount() {
         const useWalletCheckbox = document.getElementById('use_wallet');
-        const walletBalance = {{ profile.wallet_balance}};
-        const finalPrice = {{ object.final_price}};
+        const walletBalance = {{ profile.wallet_balance }};
+        const finalPrice = {{ object.final_price }};
         const payableAmountElement = document.getElementById('payable_amount');
 
         if (useWalletCheckbox.checked) {
@@ -98,4 +107,17 @@
         }
     }
 </script>
+
+<style>
+    .card {
+        border-radius: 15px;
+    }
+    .card-title {
+        font-size: 1.5rem;
+    }
+    .badge {
+        font-size: 0.9rem;
+    }
+</style>
+
 {% endblock %}

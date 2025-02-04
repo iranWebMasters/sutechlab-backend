@@ -4,118 +4,213 @@
 {% block content %}
 
 <div class="exp">
-    <h1 class="exp-title">{{ experiments.test_name }}</h1>  <!-- نام آزمون از مدل آزمایش‌ها گرفته می‌شود -->
+    <h1 class="exp-title">{{ experiment.test_name }}</h1>
     <div class="details-container">
+
+        {% if experiment.laboratory %}
         <div class="info-section">
-            <h3 class="section-heading">{{ experiments.laboratory.name }} </h3>
+            <h3 class="section-heading">دانشکده</h3>
 
             <div class="parameters">
+                {% if experiment.laboratory.faculty %}
                 <p>
-                    دانشکده: {{ experiments.laboratory.faculty.name }}  <!-- نمایش نام دانشکده -->
+                    <span class="label">دانشکده:</span>
+                    {{ experiment.laboratory.faculty.name }} 
                 </p>
+                {% endif %}
+                {% if experiment.laboratory.technical_manager %}
                 <p>
-                    <span class="label">نام مدیر فنی:</span>
-                    {{ experiments.laboratory.technical_manager.first_name }} {{ experiments.laboratory.technical_manager.last_name }}  <!-- نام مدیر فنی -->
+                    <span class="label">مدیر فنی:</span>
+                    {{ experiment.laboratory.technical_manager.first_name }} {{ experiment.laboratory.technical_manager.last_name }}  <!-- نام مدیر فنی -->
                 </p>
+                {% endif %}
             </div>
         </div>
+        {% endif %}
+
+        {% if experiment.tests.first %}
         <div class="info-section">
-            <h3 class="section-heading">{{ experiments.tests.first.name_fa }} </h3>  <!-- آزمون اول از مجموعه آزمون‌ها -->
+            <h3 class="section-heading">{{ experiment.tests.first.name_fa }} </h3>  <!-- آزمون اول از مجموعه آزمون‌ها -->
             
             <div class="parameters">
+                {% if experiment.tests.first.name_en %}
                 <p>
                     <span class="label">نام انگلیسی آزمون:</span>
-                    {{ experiments.tests.first.name_en }}
+                    {{ experiment.tests.first.name_en }}
                 </p>
-                <p>
-                    <span class="label">نوع واحد آزمون:</span>
-                    {{ experiments.tests.first.get_unit_type_display }}  <!-- نوع واحد آزمون از model Test -->
-                </p>
+                {% endif %}
+                {% if experiment.tests.first.operating_range %}
                 <p>
                     <span class="label">گستره کاری:</span>
-                    {{ experiments.tests.first.operating_range }}
+                    {{ experiment.tests.first.operating_range }}
                 </p>
+                {% endif %}
+                {% if experiment.tests.first.description %}
                 <p>
                     <span class="label">توصیف آزمون:</span>
-                    {{ experiments.tests.first.description }}
+                    {{ experiment.tests.first.description }}
                 </p>
+                {% endif %}
             </div>
         </div>
-        <div class="info-section">
-            <h3 class="section-heading">{{ experiments.device.name }} </h3>  <!-- نام دستگاه از مدل device -->
+        {% endif %}
 
-            <div class="parameters">
-                <p>
-                    <span class="label">برند(مدل):</span>
-                    {{ experiments.device.brand }}
-                </p>
-                <p>
-                    <span class="label">کاربرد:</span>
-                    {{ experiments.device.usage }}
-                </p>
-                <p>
-                    <span class="label">شرح خدمات:</span>
-                    {{ experiments.device.services_description }}
-                </p>
-                <p>
-                    <span class="label">توضیحات:</span>
-                    {{ experiments.device.additional_details }}
-                </p>
+        {% if experiment.device %}
+        <div class="info-section">
+            <h3 class="section-heading">اطلاعات دستگاه</h3>  <!-- نام دستگاه از مدل device -->
+        
+            <div class="info-container">
+                <div class="parameters">
+                    {% if experiment.device.name %}
+                    <p>
+                        <span class="label">نام دستگاه:</span>
+                        {{ experiment.device.name }}
+                    </p>
+                    {% endif %}
+                    {% if experiment.device.english_name %}
+                    <p>
+                        <span class="label">نام انگلیسی دستگاه:</span>
+                        {{ experiment.device.english_name }}
+                    </p>
+                    {% endif %}
+                    {% if experiment.device.model %}
+                    <p>
+                        <span class="label">مدل دستگاه:</span>
+                        {{ experiment.device.model }}
+                    </p>
+                    {% endif %}
+                    {% if experiment.device.manufacturer %}
+                    <p>
+                        <span class="label">شرکت سازنده:</span>
+                        {{ experiment.device.manufacturer }}
+                    </p>
+                    {% endif %}
+                    {% if experiment.device.country %}
+                    <p>
+                        <span class="label">کشور سازنده:</span>
+                        {{ experiment.device.country }}
+                    </p>
+                    {% endif %}
+                    {% if experiment.device.capabilities %}
+                    <p>
+                        <span class="label">قابلیت ها:</span>
+                        {{ experiment.device.capabilities }}
+                    </p>
+                    {% endif %}
+                    {% if experiment.device.description %}
+                    <p>
+                        <span class="label">شرح خدمات:</span>
+                        {{ experiment.device.description }}  <!-- Updated from services_description to description -->
+                    </p>
+                    {% endif %}
+                    {% if experiment.device.additional_details %}
+                    <p>
+                        <span class="label">توضیحات:</span>
+                        {{ experiment.device.additional_details }}  <!-- Assuming this field exists in your context -->
+                    </p>
+                    {% endif %}
+                    {% if experiment.device.get_status_display %}
+                    <p>
+                        <span class="label">وضعیت:</span>
+                        {{ experiment.device.get_status_display }}  <!-- Using the method to get the display name of the status -->
+                    </p>
+                    {% endif %}
+                </div>
+                <div class="image-container">
+                    {% if experiment.device.image %}
+                        <img class="device-image" src="{{ experiment.device.image.url }}" alt="{{ experiment.device.name }}" />
+                    {% else %}
+                        <span>تصویری موجود نیست</span>
+                    {% endif %}
+                </div>
             </div>
         </div>
+        {% endif %}
+
+        {% if experiment.tests.first.parameters.all %}
         <div class="info-section">
             <h3 class="section-heading">پارامتر ها</h3>
-
-            {% if experiments.tests.first.parameters.all %}
-                    {% for parameter in experiments.tests.first.parameters.all %}
-                    <div class="parameters-line">
-                        <p>
-                            <span class="label">نام:</span>
-                            {{ parameter.name }}
-                        </p>
-                        <p>
-                            <span class="label">واحد اندازه گیری:</span>  
-                            {{ parameter.get_unit_display }}
-                        </p>
-                        <p>
-                            <span class="label">مقدار واحد:</span>
-                            {{ parameter.unit_amount.amount }} {{ parameter.unit_amount.get_unit_display }}
-                        </p>
-                        <p>
-                            <span class="label">مبلغ واحد:</span>
-                            {{ parameter.unit_price.unit_price }} {{ parameter.unit_price.get_currency_display }}
-                        </p>
-                    </div>
-                    {% endfor %}
-                </div>
+            {% for parameter in experiment.tests.first.parameters.all %}
+            <div class="parameters-line">
+                {% if parameter.name %}
+                <p>
+                    <span class="label">نام:</span>
+                    {{ parameter.name }}
+                </p>
+                {% endif %}
+                {% if parameter.get_unit_display %}
+                <p>
+                    <span class="label">واحد اندازه گیری:</span>  
+                    {{ parameter.get_unit_display }}
+                </p>
+                {% endif %}
+                {% if parameter.unit_amount.amount %}
+                <p>
+                    <span class="label">مقدار واحد:</span>
+                    {{ parameter.unit_amount.amount }} {{ parameter.unit_amount.get_unit_display }}
+                </p>
+                {% endif %}
+                {% if parameter.unit_price.unit_price %}
+                <p>
+                    <span class="label">مبلغ واحد:</span>
+                    {{ parameter.unit_price.unit_price }} {{ parameter.unit_price.get_currency_display }}
+                </p>
+                {% endif %}
+            </div>
+            {% endfor %}
             {% else %}
-                <p>هیچ پارامتری وجود ندارد.</p>
+            <p>هیچ پارامتری وجود ندارد.</p>
             {% endif %}
         </div>
+        
+
+        {% if experiment.samples.all %}
         <div class="info-section">
-            <h3 class="section-heading">نمونه‌ها</h3>
-
-            {% if experiments.samples.all %}
-                <div class="parameters">
-                    {% for sample in experiments.samples.all %}
-                        <p>
-                            <span class="label">نام نمونه:</span> {{ sample.name }}  
-                        </p>
-                        <p>
-                            <span class="label">توصیف نمونه:</span> {{ sample.description }}  
-                        </p>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <p>هیچ نمونه‌ای وجود ندارد.</p>
-            {% endif %}
+            <h3 class="section-heading">نمونه های قابل پذیرش</h3>
+            <div class="parameters">
+                {% for sample in experiment.samples.all %}
+                    {% if sample.type %}
+                    <p>
+                        <span class="label">نوع نمونه:</span> {{ sample.type }}  
+                    </p>
+                    {% endif %}
+                    {% if sample.description %}
+                    <p>
+                        <span class="label">توصیف نمونه:</span> {{ sample.description }}  
+                    </p>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
+        {% else %}
+        <p>هیچ نمونه‌ای وجود ندارد.</p>
+        {% endif %}
+        
 
-        <a href="{% url 'orders:request_info' experiments.id %}" class="btn btn-success">
+        <a href="{% url 'orders:request_info' experiment.id %}" class="btn btn-success">
             ثبت درخواست
         </a>
     </div>
 
 </div>
+
+<style>
+.info-container {
+    display: flex; /* استفاده از فلوکس برای قرار دادن عناصر در کنار هم */
+    align-items: flex-start; /* تراز کردن عناصر به بالای کادر */
+}
+
+.parameters {
+    flex: 1; /* اجازه می‌دهد که بخش اطلاعات فضای بیشتری بگیرد */
+    margin-right: 20px; /* فاصله بین بخش اطلاعات و تصویر */
+}
+
+.device-image {
+    width: 500px; /* عرض تصویر را به 300 پیکسل تنظیم کنید */
+    height: auto; /* ارتفاع تصویر به طور خودکار تنظیم می‌شود تا نسبت تصویر حفظ شود */
+    border: 1px solid #ccc; /* اضافه کردن یک حاشیه برای مشخص کردن کادر */
+    border-radius: 5px; /* گوشه‌های کادر را گرد کنید */
+}
+</style>
 
 {% endblock content %}

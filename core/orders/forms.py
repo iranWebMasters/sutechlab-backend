@@ -1,9 +1,8 @@
 from django import forms
-from .models import  RequestInfo,SampleInfo,TestInfo,DiscountInfo
-
-class RequestInfoForm(forms.ModelForm):
+from .models import  Order,SampleInfo,TestInfo,DiscountInfo
+class OrderForm(forms.ModelForm):
     class Meta:
-        model = RequestInfo
+        model = Order
         fields = ['description']  
 
 
@@ -14,10 +13,10 @@ class SampleForm(forms.ModelForm):
             'sample_type',
             'customer_sample_name',
             'sample_count',
-            'is_perishable',
-            'expiration_date',
-            'storage_duration',
-            'storage_duration_unit',
+            # 'is_perishable',
+            # 'expiration_date',
+            # 'storage_duration',
+            # 'storage_duration_unit',
             'sample_description',
             'storage_conditions',
             'file_upload'
@@ -44,23 +43,21 @@ class SampleForm(forms.ModelForm):
 class TestInfoForm(forms.ModelForm):
     class Meta:
         model = TestInfo
-        fields = ['user_sample', 'test', 'repeat_count_test', 'parameter', 'parameter_value']  # حذف فیلدهای user و experiment
-        widgets = {
-            'sample': forms.Select(attrs={'class': 'form-control'}),
-            'test': forms.Select(attrs={'class': 'form-control'}),
-            'repeat_count_test': forms.NumberInput(attrs={'class': 'form-control'}),
-            'parameter': forms.Select(attrs={'class': 'form-control'}),
-            'parameter_value': forms.TextInput(attrs={'class': 'form-control'}),
-        }
+        fields = ['user_sample', 'test', 'repeat_count_test', 'parameter',]
 
 
 class DiscountInfoForm(forms.ModelForm):
     class Meta:
         model = DiscountInfo
-        fields = ['is_faculty_member', 'is_student_or_staff', 'is_affiliated_with_institution', 'discount_institution_name']
-        widgets = {
-            'is_faculty_member': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-            'is_student_or_staff': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-            'is_affiliated_with_institution': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-            'discount_institution_name': forms.TextInput(attrs={'class': 'form-control'}),
-        }
+        fields = [
+            'is_faculty_member', 
+            'is_student_or_staff', 
+            'is_affiliated_with_institution', 
+            'send_cost',  # New field for sending costs
+            'contract_party_file',  # New field for contract party file
+            'has_labs_net_grant',  # New field for Labs Network grant
+            'labs_net_file',  # New field for Labs Network file
+            'has_research_grant',  # New field for research grant
+            'research_grant_withdrawal_amount'  # New field for withdrawal amount
+        ]
+    

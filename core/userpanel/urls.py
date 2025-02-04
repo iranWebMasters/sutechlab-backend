@@ -7,13 +7,13 @@ urlpatterns = [
     path('', IndexView.as_view(), name='index'),
     path('profile/update/', ProfileUpdatePanelView.as_view(), name='update_profile_panel'),
     path('experiments/',ExperimentListView.as_view(), name='experiments-list'),
-    path('experiments/<int:pk>/',TestDetailView.as_view(), name='experiments-detail'),
+    path('experiments/<int:pk>/',ExperimentDetailView.as_view(), name='experiment-detail'),
 
     path('download-invoice/<int:request_id>/', DownloadInvoiceView.as_view(), name='download_invoice'),
-    path('delete-request/<int:pk>/', LaboratoryRequestDeleteView.as_view(), name='delete_request'),
+    path('delete-request/<int:pk>/', OrderDeleteView.as_view(), name='delete_request'),
     path('edit-request/<int:pk>/', RequestEditView.as_view(), name='edit_request'),
 
-    path('requests/<int:pk>/', LaboratoryRequestDetailView.as_view(), name='laboratory_request_detail'),
+    path('requests/<int:pk>/', OrderDetailView.as_view(), name='laboratory_request_detail'),
 
     path('payment/<int:request_id>/', PaymentPageView.as_view(), name='payment_page'),
 
