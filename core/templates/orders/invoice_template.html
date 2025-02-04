@@ -1,7 +1,7 @@
 {% load custom_filters %}
 {% load static %}
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <base href="{% static '/' %}" />
@@ -14,7 +14,7 @@
         body {
             font-family: 'Vazir', Arial, sans-serif;
             margin: 20px;
-            direction: rtl;
+            direction: ltr;
             line-height: 1.6;
         }
         
@@ -84,50 +84,50 @@
 </head>
 <body>
     <div class="header">
-        <img src="images/pdf_logo.png" alt="لوگو دانشگاه" class="logo">
-        <h2>رسید اولیه درخواست</h2>
-        <h3>دانشگاه صنعتی شیراز</h3>
+        <img src="images/pdf_logo.png" alt="University Logo" class="logo">
+        <h2>Initial Request Receipt</h2>
+        <h3>Shiraz University of Technology</h3>
     </div>
 
     <div class="request-info">
         <div class="request-box">
-            <span>شماره درخواست: {{ order.order_code }}</span>
+            <span>Request Number: {{ order.order_code }}</span>
         </div>
         <div class="request-box">
-            <span>تاریخ صدور درخواست: {{ order.created_at|to_jalali }}</span>
+            <span>Request Issuance Date: {{ order.created_at|to_jalali }}</span>
         </div>
     </div>
 
-    <div class="section-title">مشخصات متقاضی</div>
+    <div class="section-title">Applicant Information</div>
     <table>
         <tr>
-            <th>نام شخص حقیقی:</th>
+            <th>Full Name:</th>
             <td>{{ order.user.profile.first_name }} {{ order.user.profile.last_name }} </td>
-            <th>تلفن:</th>
+            <th>Phone:</th>
             <td>{{ order.user.profile.phone_number }}</td>
         </tr>
         <tr>
-            <th>شماره ملی / شناسه ملی:</th>
+            <th>National ID:</th>
             <td>{{ order.user.profile.national_id }}</td>
-            <th>کد پستی:</th>
+            <th>Postal Code:</th>
             <td>{{ order.user.profile.postal_code }}</td>
         </tr>
         <tr>
-            <th>ایمیل / وبسایت:</th>
+            <th>Email / Website:</th>
             <td>{{ order.user.email }}</td>
         </tr>
     </table>
 
-    <div class="section-title">مشخصات درخواست</div>
+    <div class="section-title">Request Details</div>
     <table>
         <tr>
-            <th>ردیف</th>
-            <th>نام آزمون</th>
-            <th>نام نمونه</th>
-            <th>تعداد نمونه</th>
-            <th>پارامترها</th>
-            <th>تعداد تکرار / مقدار</th>
-            <th>واحد</th>
+            <th>Row</th>
+            <th>Test Name</th>
+            <th>Sample Name</th>
+            <th>Sample Count</th>
+            <th>Parameters</th>
+            <th>Repeat Count / Value</th>
+            <th>Unit</th>
         </tr>
         {% for test in order.test_info.all %}
         <tr>
@@ -142,19 +142,19 @@
         {% endfor %}
     </table>
 
-    <p>توضیحات درخواست: {{ order.description }}</p>
+    <p>Request Description: {{ order.description }}</p>
 
     <div class="checkbox-group">
-        <label><input type="checkbox" {% if order.is_faculty %}checked{% endif %}> عضو هیأت علمی دانشگاه صنعتی شیراز هستم</label>
-        <label><input type="checkbox" {% if order.is_student %}checked{% endif %}> دانشجوی تحصیلات تکمیلی دانشگاه صنعتی شیراز هستم</label>
-        <label><input type="checkbox" {% if order.is_staff %}checked{% endif %}> دانشجو یا از کارکنان دانشگاه صنعتی شیراز هستم</label>
-        <label><input type="checkbox" {% if order.has_discount %}checked{% endif %}> متقاضی استفاده از تخفیف‌های طرف قرارداد آزمایشگاه مرکزی دانشگاه هستم</label>
+        <label><input type="checkbox" {% if order.is_faculty %}checked{% endif %}> I am a faculty member of Shiraz University of Technology</label>
+        <label><input type="checkbox" {% if order.is_student %}checked{% endif %}> I am a graduate student of Shiraz University of Technology</label>
+        <label><input type="checkbox" {% if order.is_staff %}checked{% endif %}> I am a student or staff member of Shiraz University of Technology</label>
+        <label><input type="checkbox" {% if order.has_discount %}checked{% endif %}> I am applying for discounts from the central laboratory of the university</label>
     </div>
 
     <div class="footer">
-        <p>متقاضی گرامی، لطفاً پس از ثبت اولیه درخواست خود، این رسید را همراه فرم درخواست و نمونه‌ها به واحد پذیرش مرکز خدمات آزمایشگاهی دانشگاه صنعتی شیراز ارسال نمایید.</p>
-        <p>آدرس: {{ contact.address }}</p>
-        <p>کدپستی: {{ contact.postal_code }}</p>
+        <p>Dear applicant, please submit this receipt along with the application form and samples to the admission unit of the laboratory services center of Shiraz University of Technology after initial registration of your request.</p>
+        <p>Address: {{ contact.address }}</p>
+        <p>Postal Code: {{ contact.postal_code }}</p>
     </div>
 </body>
 </html>

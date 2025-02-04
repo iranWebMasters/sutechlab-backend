@@ -7,8 +7,8 @@
         <a href="{{ hyperlink.url }}" target="_blank">
           <img src="{{ hyperlink.logo.url }}" alt="{{ hyperlink.title }}" />
         </a>
-      {% empty %}
-        <p>هیچ هایپرلینکی وجود ندارد.</p>
+      {% comment %} {% empty %}
+        <p>هیچ هایپرلینکی وجود ندارد.</p> {% endcomment %}
       {% endfor %}
     </div>
   </div>

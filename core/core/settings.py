@@ -9,7 +9,6 @@ SECRET_KEY = os.getenv('SECRET_KEY',)
 DEBUG = os.getenv('DEBUG',)
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -77,22 +76,22 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # DATABASES_________________________________________
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.environ.get('DATABASE_NAME',),
-#         'USER': os.environ.get('DATABASE_USER',),
-#         'PASSWORD': os.environ.get('DATABASE_PASSWORD',),
-#         'HOST': os.environ.get('DATABASE_HOST',),
-#         'PORT': os.environ.get('DATABASE_PORT',),
-#     }
-# }
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DATABASE_NAME',),
+        'USER': os.environ.get('DATABASE_USER',),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD',),
+        'HOST': os.environ.get('DATABASE_HOST',),
+        'PORT': os.environ.get('DATABASE_PORT',),
     }
 }
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 
 
 # DATABASES_________________________________________
