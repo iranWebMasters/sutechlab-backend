@@ -40,7 +40,7 @@ class Contact(models.Model):
         verbose_name_plural = "اطلاعات تماس"
 
     def __str__(self):
-        return f"{self.name} - {self.email}"
+        return f"{self.email}"
 
 
 class ContactUs(models.Model):

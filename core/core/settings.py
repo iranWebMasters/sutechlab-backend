@@ -1,14 +1,15 @@
-
 from pathlib import Path
 import os
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Secret Key and Debug Settings
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='').split(',')
 
-SECRET_KEY = os.getenv('SECRET_KEY',)
-DEBUG = os.getenv('DEBUG',)
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
-
+# Installed Apps
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -26,7 +27,6 @@ INSTALLED_APPS = [
     'orders',
     'gateway',
     'notifications',
-    
     'drf_yasg',
     'rest_framework',
     "azbankgateways",
@@ -36,12 +36,11 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     # 'sslserver',
     # 'django_celery_beat',
-
-    
 ]
 
 SITE_ID = 2
 
+# Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -54,6 +53,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'core.urls'
 
+# Templates
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -73,28 +73,27 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
-# DATABASES_________________________________________
 
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DATABASE_NAME'),
-        'USER': os.getenv('DATABASE_USER'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-        'HOST': os.getenv('DATABASE_HOST'),
-        'PORT': os.getenv('DATABASE_PORT'),
-    }
-}
+# Database Configuration
 # DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',  # Use PostgreSQL
+#         'NAME': config('DATABASE_NAME'),  # Read DATABASE_NAME from environment
+#         'USER': config('DATABASE_USER'),  # Read DATABASE_USER from environment
+#         'PASSWORD': config('DATABASE_PASSWORD'),  # Read DATABASE_PASSWORD from environment
+#         'HOST': config('DATABASE_HOST', default='localhost'),  # Read DATABASE_HOST from environment
+#         'PORT': config('DATABASE_PORT', default='5432'),  # Read DATABASE_PORT from environment
 #     }
 # }
 
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
 
-# DATABASES_________________________________________
+# Password Validators
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -110,23 +109,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+# Localization
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'Asia/Tehran'
-
 USE_I18N = True
-
 USE_TZ = True
 
-
+# Static and Media Files
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'static'
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
-
-# CKEDITOR_UPLOAD_PATH='uploads/'
 
 STATICFILES_DIRS = [
     BASE_DIR / "statics",
@@ -134,90 +127,67 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Security Settings
+SECURE_REFERRER_POLICY = config('SECURE_REFERRER_POLICY', default='strict-origin-when-cross-origin')
+SECURE_BROWSER_XSS_FILTER = config('SECURE_BROWSER_XSS_FILTER', default=True, cast=bool)
+X_FRAME_OPTIONS = config('X_FRAME_OPTIONS', default='SAMEORIGIN')
+SECURE_CONTENT_TYPE_NOSNIFF = config('SECURE_CONTENT_TYPE_NOSNIFF', default=True, cast=bool)
 
-SECURE_BROWSER_XSS_FILTER = True
-X_FRAME_OPTIONS = 'SAMEORIGIN'
-SECURE_CONTENT_TYPE_NOSNIFF = True
-
-## Strict-Transport-Security (HSTS)
-SECURE_HSTS_SECONDS = 0  # غیرفعال‌کردن HSTS
-SECURE_HSTS_INCLUDE_SUBDOMAINS = False
-SECURE_HSTS_PRELOAD = False
-
-## Force HTTPS redirection
-SECURE_SSL_REDIRECT = False  
+# HSTS Settings
+SECURE_HSTS_SECONDS = config('SECURE_HSTS_SECONDS', default=0, cast=int)  # Disable HSTS by default
+SECURE_HSTS_INCLUDE_SUBDOMAINS = config('SECURE_HSTS_INCLUDE_SUBDOMAINS', default=False, cast=bool)
+SECURE_HSTS_PRELOAD = config('SECURE_HSTS_PRELOAD', default=False, cast=bool)
+SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=False, cast=bool)  # Force HTTPS redirection
 
 # CSRF settings
-CSRF_COOKIE_SECURE = False  
-CSRF_USE_SESSIONS = True
-CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=False, cast=bool)  
+CSRF_USE_SESSIONS = config('CSRF_USE_SESSIONS', default=True, cast=bool)
+CSRF_COOKIE_HTTPONLY = config('CSRF_COOKIE_HTTPONLY', default=True, cast=bool)
 
 # Session settings
-SESSION_COOKIE_SECURE = False
-SESSION_COOKIE_SAMESITE = 'Lax'
-SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-SESSION_COOKIE_AGE = 1209600  # 2 weeks in seconds
+SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=False, cast=bool)
+SESSION_COOKIE_SAMESITE = config('SESSION_COOKIE_SAMESITE', default='Lax')
+SESSION_EXPIRE_AT_BROWSER_CLOSE = config('SESSION_EXPIRE_AT_BROWSER_CLOSE', default=False, cast=bool)
+SESSION_COOKIE_AGE = config('SESSION_COOKIE_AGE', default=1209600, cast=int)  # 2 weeks in seconds
 
-
-
-    
-    
-# registration url redirects
+# Registration URL Redirects
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 AUTH_USER_MODEL = "accounts.User"
 
-
-# Bank payment gateway
+# Bank Payment Gateway Configuration
 AZ_IRANIAN_BANK_GATEWAYS = {
-   'GATEWAYS': {
-       'ZARINPAL': {
-           'MERCHANT_CODE': '0dbb3d9d-41f7-4776-b97d-545e81377eda',
-           'SANDBOX': 1,  # 0 disable, 1 active
+    'GATEWAYS': {
+        "BMI": {
+            "MERCHANT_CODE": config('BMI_MERCHANT_CODE'),
+            "TERMINAL_CODE": config('BMI_TERMINAL_CODE'),
+            "SECRET_KEY": config('BMI_SECRET_KEY'),
         },
-        "IDPAY": {
-            "MERCHANT_CODE": "<YOUR MERCHANT CODE>",
-            "METHOD": "GET",  # GET or POST
-            "X_SANDBOX": 0
-        },
-        "PAYV1": {
-            "MERCHANT_CODE": "<YOUR MERCHANT CODE>",
-            "X_SANDBOX": 1,  # 0 disable, 1 active
-        },
-   },
-   'IS_SAMPLE_FORM_ENABLE': True, # اختیاری و پیش فرض غیر فعال است
-   'DEFAULT': 'ZARINPAL',
-   'CURRENCY': 'IRT', # اختیاری
-   'TRACKING_CODE_QUERY_PARAM': 'tc', # اختیاری
-   'TRACKING_CODE_LENGTH': 16, # اختیاری
-   'SETTING_VALUE_READER_CLASS': 'azbankgateways.readers.DefaultReader', # اختیاری
-   'BANK_PRIORITIES': [
-       'ZARINPAL',
-       'IDPAY',
-       'PAYV1',
-       # and so on ...
-   ], # اختیاری
-   'IS_SAFE_GET_GATEWAY_PAYMENT': False, #اختیاری، بهتر است True بزارید.
-   'CUSTOM_APP': None, # اختیاری 
+    },
+    'IS_SAMPLE_FORM_ENABLE': True,
+    'DEFAULT': 'BMI',
+    'CURRENCY': 'IRT',
+    'TRACKING_CODE_QUERY_PARAM': 'tc',
+    'TRACKING_CODE_LENGTH': 16,
+    'SETTING_VALUE_READER_CLASS': 'azbankgateways.readers.DefaultReader',
+    'BANK_PRIORITIES': [
+        'BMI',
+    ],
+    'IS_SAFE_GET_GATEWAY_PAYMENT': False,
+    'CUSTOM_APP': None,
 }
 
-
-
-
-
-# SMTP 
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'  # یا هاست SMTP دیگری که استفاده می‌کنید
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'ansarialireza@mail.ir'  # ایمیل شما
-# EMAIL_HOST_PASSWORD = 'Ansari1999'  # رمز عبور ایمیل شما
+# Email Settings
+EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
+EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='your_email@example.com')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='your_email_password')
 EMAIL_FILE_PATH = 'tmp/app-messages' 
 
-
-# REST Framework
+# REST Framework Settings (if needed)
 # REST_FRAMEWORK = {
 #     'DEFAULT_AUTHENTICATION_CLASSES': [
 #         'rest_framework.authentication.SessionAuthentication',
@@ -231,7 +201,7 @@ EMAIL_FILE_PATH = 'tmp/app-messages'
 #     ],
 # }
 
-# Swagger
+# Swagger Settings
 SWAGGER_SETTINGS = {
     'USE_SESSION_AUTH': False, 
     'LOGIN_URL': 'rest_framework:login',
@@ -247,6 +217,6 @@ SWAGGER_SETTINGS = {
     'DEFAULT_MODEL_RENDERING': 'example',
 }
 
-
-SMS_API_KEY = 'your_api_key_here'
+# SMS API Configuration
+SMS_API_KEY = config('SMS_API_KEY', default='your_api_key_here')
 SMS_API_URL = 'https://api.kavenegar.com/v1/{api_key}/sms/send.json'
