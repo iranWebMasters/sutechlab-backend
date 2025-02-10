@@ -137,7 +137,7 @@
                 <td>{{ order.user.profile.postal_code }}</td>
             </tr>
             <tr>
-                <th>ایمیل / وب‌سایت:</th>
+                <th>ایمیل:</th>
                 <td>{{ order.user.email }}</td>
             </tr>
         </table>
@@ -157,9 +157,9 @@
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ test.test.name_fa }}</td>
-                <td>{{ test.sample_name }}</td>
-                <td>{{ test.sample_count }}</td>
-                <td>{{ test.parameters }}</td>
+                <td>{{ test.user_sample.sample_type }}</td>
+                <td>{{ test.user_sample.sample_count }}</td>
+                <td>{{ test.get_parameter_values_dict }}</td> 
                 <td>{{ test.repeat_count_test }}</td>
                 <td>{{ test.unit }}</td>
             </tr>
@@ -176,7 +176,7 @@
         </div>
 
         <div class="footer">
-            <p>متقاضی گرامی، لطفاً این رسید را به همراه فرم درخواست و نمونه‌ها به واحد پذیرش مرکز خدمات آزمایشگاهی دانشگاه شیراز پس از ثبت اولیه درخواست خود ارائه دهید.</p>
+            <p>متقاضی گرامی، لطفاً این رسید را به همراه  نمونه‌ها به واحد پذیرش مرکز خدمات آزمایشگاهی دانشگاه شیراز پس از ثبت اولیه درخواست خود ارائه دهید.</p>
             <p>آدرس: {{ contact.address }}</p>
             <p>کد پستی: {{ contact.postal_code }}</p>
         </div>
