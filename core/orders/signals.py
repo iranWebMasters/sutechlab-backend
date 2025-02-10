@@ -5,20 +5,20 @@ from notifications.services import send_email_notification, send_sms_notificatio
 from .invoices import generate_invoice
 from .models import Order
 
-@receiver(post_save, sender=Order)
-def create_invoice(sender, instance, created, **kwargs):
-    if not created and instance.is_complete and not instance.invoice_pdf:
-        pdf_file_path = generate_invoice(instance)
-        instance.invoice_pdf = pdf_file_path
-        instance.save()
+# @receiver(post_save, sender=Order)
+# def create_invoice(sender, instance, created, **kwargs):
+#     if not created and instance.is_complete and not instance.invoice_pdf:
+#         pdf_file_path = generate_invoice(instance)
+#         instance.invoice_pdf = pdf_file_path
+#         instance.save()
 
-@receiver(post_save, sender=Order)
-def update_invoice(sender, instance, created, **kwargs):
-    if not created and instance.is_complete:
-        if not instance.invoice_pdf:
-            pdf_file_path = generate_invoice(instance)
-            instance.invoice_pdf = pdf_file_path 
-            instance.save(update_fields=['invoice_pdf'])
+# @receiver(post_save, sender=Order)
+# def update_invoice(sender, instance, created, **kwargs):
+#     if not created and instance.is_complete:
+#         if not instance.invoice_pdf:
+#             pdf_file_path = generate_invoice(instance)
+#             instance.invoice_pdf = pdf_file_path 
+#             instance.save(update_fields=['invoice_pdf'])
 
 
 

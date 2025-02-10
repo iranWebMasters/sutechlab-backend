@@ -68,7 +68,7 @@
                                 <a href="{% url 'userpanel:delete_request' order.id %}" class="item-delete margin-left-10" title="حذف"></a>
                             </td>
                             <td>
-                                <a href="{% url 'userpanel:download_invoice' order.id %}" class="item-download" title="دانلود پیش فاکتور">
+                                <a href="{% url 'orders:preinvoice_detail' order.order_code %}" class="item-download" title="دانلود پیش فاکتور">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="download-icon">
                                         <path d="M12 17l-5-5h3V3h4v9h3l-5 5zm0 4c-4.418 0-8-3.582-8-8h2c0 3.313 2.687 6 6 6s6-2.687 6-6h2c0 4.418-3.582 8-8 8z"/>
                                     </svg>

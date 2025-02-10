@@ -1,0 +1,206 @@
+{% load custom_filters %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <base href="{% static '/' %}" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        @font-face {
+            font-family: 'Vazir';
+            src: url('fonts/Vazir.ttf');
+        }
+        
+        body {
+            font-family: 'Vazir', Arial, sans-serif;
+            margin: 0; /* حذف حاشیه */
+            padding: 10px; /* تنظیم padding */
+            direction: rtl;
+            line-height: 1.4; /* کاهش فاصله بین خطوط */
+            font-size: 12px; /* کاهش اندازه فونت */
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 10px; /* کاهش فاصله */
+        }
+        
+        .logo {
+            width: 80px; /* کاهش اندازه لوگو */
+            height: auto;
+            float: right; /* انتقال لوگو به سمت راست */
+        }
+        
+        .request-info {
+            display: flex;
+            justify-content: space-between; /* فاصله بین شماره درخواست و تاریخ */
+            margin-bottom: 10px; /* کاهش فاصله */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 5px 0; /* کاهش فاصله */
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 5px; /* کاهش padding */
+            text-align: right;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        .section-title {
+            background-color: #808080;
+            color: white;
+            padding: 5px 10px;
+            margin: 10px 0; /* کاهش فاصله */
+        }
+        
+        .checkbox-group {
+            margin: 10px 0; /* کاهش فاصله */
+        }
+        
+        .checkbox-group label {
+            display: block;
+            margin: 2px 0; /* کاهش فاصله */
+        }
+        
+        .footer {
+            margin-top: 20px; /* کاهش فاصله */
+            font-size: 0.9em;
+            border-top: 1px solid #ddd;
+            padding-top: 5px; /* کاهش padding */
+        }
+
+        .button-group {
+            text-align: center;
+            margin: 20px 0; /* فاصله برای دکمه‌ها */
+            position: fixed; /* دکمه‌ها را در پایین صفحه ثابت می‌کند */
+            bottom: 10px; /* فاصله از پایین صفحه */
+            left: 50%; /* مرکز کردن */
+            transform: translateX(-50%); /* مرکز کردن */
+        }
+
+        .button {
+            background-color: #4CAF50; /* رنگ دکمه */
+            color: white;
+            padding: 8px 15px; /* کاهش padding */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            text-decoration: none; /* حذف خط زیر */
+            display: inline-block; /* برای استفاده از margin */
+            font-size: 12px; /* کاهش اندازه فونت */
+        }
+
+        .button:hover {
+            background-color: #45a049; /* رنگ دکمه در حالت hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="{% static 'images/pdf_logo.png' %}" alt="لوگوی دانشگاه" class="logo">
+        <h2>رسید درخواست اولیه</h2>
+        <h3>دانشگاه شیراز</h3>
+    </div>
+
+    <div id="content">
+        <div class="request-info">
+            <div class="request-box">
+                <span>تاریخ صدور درخواست: {{ order.created_at|to_jalali }}</span>
+            </div>
+            <div class="request-box">
+                <span>شماره درخواست: {{ order.order_code }}</span>
+            </div>
+        </div>
+
+        <div class="section-title">اطلاعات متقاضی</div>
+        <table>
+            <tr>
+                <th>نام و نام خانوادگی:</th>
+                <td>{{ order.user.profile.first_name }} {{ order.user.profile.last_name }}</td>
+                <th>تلفن:</th>
+                <td>{{ order.user.profile.phone_number }}</td>
+            </tr>
+            <tr>
+                <th>کد ملی:</th>
+                <td>{{ order.user.profile.national_id }}</td>
+                <th>کد پستی:</th>
+                <td>{{ order.user.profile.postal_code }}</td>
+            </tr>
+            <tr>
+                <th>ایمیل / وب‌سایت:</th>
+                <td>{{ order.user.email }}</td>
+            </tr>
+        </table>
+
+        <div class="section-title">جزئیات درخواست</div>
+        <table>
+            <tr>
+                <th>ردیف</th>
+                <th>نام آزمون</th>
+                <th>نام نمونه</th>
+                <th>تعداد نمونه</th>
+                <th>پارامترها</th>
+                <th>تعداد تکرار / مقدار</th>
+                <th>واحد</th>
+            </tr>
+            {% for test in order.test_info.all %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ test.test.name_fa }}</td>
+                <td>{{ test.sample_name }}</td>
+                <td>{{ test.sample_count }}</td>
+                <td>{{ test.parameters }}</td>
+                <td>{{ test.repeat_count_test }}</td>
+                <td>{{ test.unit }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <p>توضیحات درخواست: {{ order.description }}</p>
+
+        <div class="checkbox-group">
+            <label><input type="checkbox" {% if order.is_faculty %}checked{% endif %}> من عضو هیئت علمی دانشگاه شیراز هستم</label>
+            <label><input type="checkbox" {% if order.is_student %}checked{% endif %}> من دانشجوی فارغ‌التحصیل دانشگاه شیراز هستم</label>
+            <label><input type="checkbox" {% if order.is_staff %}checked{% endif %}> من دانشجو یا کارمند دانشگاه شیراز هستم</label>
+            <label><input type="checkbox" {% if order.has_discount %}checked{% endif %}> من برای دریافت تخفیف از آزمایشگاه مرکزی دانشگاه درخواست داده‌ام</label>
+        </div>
+
+        <div class="footer">
+            <p>متقاضی گرامی، لطفاً این رسید را به همراه فرم درخواست و نمونه‌ها به واحد پذیرش مرکز خدمات آزمایشگاهی دانشگاه شیراز پس از ثبت اولیه درخواست خود ارائه دهید.</p>
+            <p>آدرس: {{ contact.address }}</p>
+            <p>کد پستی: {{ contact.postal_code }}</p>
+        </div>
+    </div>
+
+    <div class="button-group">
+        <button class="button" id="download-pdf">گرفتن خروجی PDF</button>
+        <a href="{% url 'userpanel:index' %}" class="button">بازگشت به خانه</a>
+    </div>
+
+    <script>
+        document.getElementById('download-pdf').addEventListener('click', function() {
+            const element = document.getElementById('content');
+            html2pdf()
+                .from(element)
+                .set({
+                    margin: 0.5, // حاشیه PDF
+                    filename: 'request_receipt.pdf',
+                    image: { type: 'jpeg', quality: 1 }, // کیفیت تصویر
+                    html2canvas: { scale: 2 }, // افزایش کیفیت خروجی
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } // تنظیمات PDF
+                })
+                .save();
+        });
+    </script>
+</body>
+</html>

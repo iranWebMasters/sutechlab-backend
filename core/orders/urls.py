@@ -21,4 +21,6 @@ urlpatterns = [
     path('discount-info/<int:order_code>/', DiscountInfoFormView.as_view(), name='discount_info'),
     path('confirm_cancel/<int:order_code>/',UserOrderCancelView.as_view(),name='confirm_cancel'),
 
+    path('invoice/<int:order_code>/', PreinvoiceDetailView.as_view(), name='preinvoice_detail'),
+
 ]
