@@ -2,7 +2,6 @@ version: "3.9"
 
 services:
 
-
   postgres:
     container_name: postgres
     image: postgres:latest
@@ -29,18 +28,9 @@ services:
       - ./pytest.ini:/app/pytest.ini
       - static_volume:/app/static
       - media_volume:/app/media
-    environment:
-      - SECRET_KEY=${SECRET_KEY}
-      - DEBUG=${DEBUG}
-      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
-      - DATABASE_NAME=${DATABASE_NAME}
-      - DATABASE_USER=${DATABASE_USER}
-      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
-      - DATABASE_HOST=postgres
-      - DATABASE_PORT=5432
-      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+    env_file: 
+      - .env  # Load environment variables from .env file
     depends_on:
-      # - redis
       - postgres 
     networks:
       - my_network
@@ -59,7 +49,6 @@ services:
       - /etc/letsencrypt/live/centlab.sutech.ac.ir:/etc/letsencrypt/live/centlab.sutech.ac.ir:ro
       - /etc/letsencrypt/archive:/etc/letsencrypt/archive:ro
     depends_on:
-      # - redis
       - backend
     networks:
       - my_network

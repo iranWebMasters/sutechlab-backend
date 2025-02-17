@@ -74,24 +74,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-# Database Configuration
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',  # Use PostgreSQL
-#         'NAME': config('DATABASE_NAME'),  # Read DATABASE_NAME from environment
-#         'USER': config('DATABASE_USER'),  # Read DATABASE_USER from environment
-#         'PASSWORD': config('DATABASE_PASSWORD'),  # Read DATABASE_PASSWORD from environment
-#         'HOST': config('DATABASE_HOST', default='localhost'),  # Read DATABASE_HOST from environment
-#         'PORT': config('DATABASE_PORT', default='5432'),  # Read DATABASE_PORT from environment
-#     }
-# }
-
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',  # Use PostgreSQL
+        'NAME': config('DATABASE_NAME'),  # Read DATABASE_NAME from environment
+        'USER': config('DATABASE_USER'),  # Read DATABASE_USER from environment
+        'PASSWORD': config('DATABASE_PASSWORD'),  # Read DATABASE_PASSWORD from environment
+        'HOST': config('DATABASE_HOST', default='localhost'),  # Read DATABASE_HOST from environment
+        'PORT': config('DATABASE_PORT', default='5432'),  # Read DATABASE_PORT from environment
     }
 }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 
 # Password Validators
 AUTH_PASSWORD_VALIDATORS = [
