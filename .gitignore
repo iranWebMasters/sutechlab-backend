@@ -159,3 +159,4 @@ cython_debug/
 
 api-list
 *.sqlite3
+*.pdf

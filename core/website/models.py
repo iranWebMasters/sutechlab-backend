@@ -34,13 +34,13 @@ class Contact(models.Model):
     instagram = models.CharField(max_length=255, verbose_name="instagram ID", blank=True, null=True)
     whatsapp = models.CharField(max_length=255, verbose_name="whatsapp ", blank=True, null=True)
     workingHour = models.ForeignKey(WorkingHour, on_delete=models.CASCADE, blank=True, null=True, verbose_name="ساعت کاری")
-
+    postal_code = models.CharField(max_length=10, verbose_name="کد پستی", blank=True, null=True)
     class Meta:
         verbose_name = "اطلاعات تماس"
         verbose_name_plural = "اطلاعات تماس"
 
     def __str__(self):
-        return f"{self.name} - {self.email}"
+        return f"{self.email}"
 
 
 class ContactUs(models.Model):

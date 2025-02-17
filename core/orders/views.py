@@ -8,10 +8,11 @@ from django.contrib import messages
 from django.http import JsonResponse
 from services.models import Test
 from django.views import View
-from accounts.models import Profile, User
 import logging
 import jdatetime
 import json
+from accounts.models import Profile, User
+from website.models import Contact
 from .forms import *
 
 class MultiStepOrderView(LoginRequiredMixin, View):
@@ -370,3 +371,22 @@ class UserOrderCancelView(View):
         DiscountInfo.objects.filter(order=order).delete()
         order.delete()
         return redirect(self.success_url)
+    
+class PreinvoiceDetailView(View):
+    template_name = 'orders/pre_invoice.html'
+    context_object_name = 'invoice'
+
+    def dispatch(self, request, *args, **kwargs):
+        order_code = self.kwargs.get('order_code')
+        self.order = get_object_or_404(Order, order_code=order_code)
+        return super().dispatch(request, *args, **kwargs)
+
+
+    def get(self, request, *args, **kwargs):
+        contact_info = Contact.objects.first()
+        context = {
+            'order': self.order,
+            'experiment': self.order.experiment,
+            'contact': contact_info,
+        }
+        return render(request, self.template_name, context)
