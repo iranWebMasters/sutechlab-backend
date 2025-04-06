@@ -45,8 +45,6 @@ services:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - static_volume:/home/app/static
       - media_volume:/home/app/media
-      - /etc/letsencrypt/live/centlab.sutech.ac.ir:/etc/letsencrypt/live/centlab.sutech.ac.ir:ro
-      - /etc/letsencrypt/archive:/etc/letsencrypt/archive:ro
     depends_on:
       - backend
     networks:
