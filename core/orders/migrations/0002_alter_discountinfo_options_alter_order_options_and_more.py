@@ -7,66 +7,72 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('orders', '0001_initial'),
+        ("orders", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='discountinfo',
+            name="discountinfo",
             options={},
         ),
         migrations.AlterModelOptions(
-            name='order',
+            name="order",
             options={},
         ),
         migrations.AlterModelOptions(
-            name='sampleinfo',
+            name="sampleinfo",
             options={},
         ),
         migrations.AlterModelOptions(
-            name='testinfo',
+            name="testinfo",
             options={},
         ),
         migrations.RemoveField(
-            model_name='sampleinfo',
-            name='additional_info',
+            model_name="sampleinfo",
+            name="additional_info",
         ),
         migrations.RemoveField(
-            model_name='sampleinfo',
-            name='expiration_date',
+            model_name="sampleinfo",
+            name="expiration_date",
         ),
         migrations.RemoveField(
-            model_name='sampleinfo',
-            name='is_perishable',
+            model_name="sampleinfo",
+            name="is_perishable",
         ),
         migrations.RemoveField(
-            model_name='sampleinfo',
-            name='sample_return',
+            model_name="sampleinfo",
+            name="sample_return",
         ),
         migrations.RemoveField(
-            model_name='sampleinfo',
-            name='storage_duration',
+            model_name="sampleinfo",
+            name="storage_duration",
         ),
         migrations.RemoveField(
-            model_name='sampleinfo',
-            name='storage_duration_unit',
+            model_name="sampleinfo",
+            name="storage_duration_unit",
         ),
         migrations.RemoveField(
-            model_name='testinfo',
-            name='created_at',
+            model_name="testinfo",
+            name="created_at",
         ),
         migrations.RemoveField(
-            model_name='testinfo',
-            name='updated_at',
+            model_name="testinfo",
+            name="updated_at",
         ),
         migrations.AddField(
-            model_name='order',
-            name='invoice_pdf',
-            field=models.FileField(blank=True, null=True, upload_to='invoices/', verbose_name='پیش فاکتور'),
+            model_name="order",
+            name="invoice_pdf",
+            field=models.FileField(
+                blank=True, null=True, upload_to="invoices/", verbose_name="پیش فاکتور"
+            ),
         ),
         migrations.AlterField(
-            model_name='discountinfo',
-            name='order',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='discount_info', to='orders.order'),
+            model_name="discountinfo",
+            name="order",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="discount_info",
+                to="orders.order",
+            ),
         ),
     ]

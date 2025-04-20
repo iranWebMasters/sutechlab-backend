@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from taggit.managers import TaggableManager
 from django_jalali.db import models as jmodels
+
 # from ckeditor.fields import RichTextField
 from django.contrib.auth import get_user_model
 
@@ -14,14 +15,16 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
     class Meta:
         verbose_name = "دسته بندی"
         verbose_name_plural = "دسته بندی ها"
 
+
 class Post(models.Model):
     DISPLAY_CHOICES = (
-        ('show', 'نمایش در صفحه اصلی'),
-        ('hide', 'عدم نمایش در صفحه اصلی'),
+        ("show", "نمایش در صفحه اصلی"),
+        ("hide", "عدم نمایش در صفحه اصلی"),
     )
 
     title = models.CharField("عنوان", max_length=255)
@@ -32,24 +35,28 @@ class Post(models.Model):
     status = models.BooleanField("نمایش در سایت", default=True)
     created_date = jmodels.jDateField("تاریخ ایجاد", auto_now_add=True)
     updated_date = jmodels.jDateField("تاریخ بروزرسانی", auto_now=True)
-    author = models.ForeignKey('accounts.Profile', on_delete=models.SET_NULL, null=True, verbose_name="نویسنده")
+    author = models.ForeignKey(
+        "accounts.Profile", on_delete=models.SET_NULL, null=True, verbose_name="نویسنده"
+    )
     counted_views = models.IntegerField("تعداد بازدیدها", default=0)
     counted_comment = models.IntegerField("تعداد نظرات", default=0)
     category = models.ManyToManyField(Category, verbose_name="دسته‌بندی")
-    image = models.ImageField("تصویر", upload_to='post_images/')
-    display_option = models.CharField("گزینه نمایش",max_length=4,choices=DISPLAY_CHOICES,default='show')
-
+    image = models.ImageField("تصویر", upload_to="post_images/")
+    display_option = models.CharField(
+        "گزینه نمایش", max_length=4, choices=DISPLAY_CHOICES, default="show"
+    )
 
     class Meta:
-        ordering = ['-created_date']
+        ordering = ["-created_date"]
         verbose_name = "پست"
         verbose_name_plural = "پست‌ها"
 
     def __str__(self):
         return "{}-{}".format(self.title, self.id)
-    
+
     def get_absolute_url(self):
-        return reverse('blog:single', kwargs={'pid': self.id})
+        return reverse("blog:single", kwargs={"pid": self.id})
+
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name="پست")
@@ -66,4 +73,4 @@ class Comment(models.Model):
         verbose_name_plural = "نظرات"
 
     def __str__(self):
-        return f'{self.name} - {self.phone_number}'
+        return f"{self.name} - {self.phone_number}"

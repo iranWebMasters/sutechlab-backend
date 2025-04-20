@@ -1,38 +1,53 @@
 from django.contrib import admin
 from .models import *
 
+
 class ContactAdmin(admin.ModelAdmin):
-    list_display = ('address', 'mobile_phone', 'landline_phone', 'email', 'workingHour') # اضافه شده
+    list_display = (
+        "address",
+        "mobile_phone",
+        "landline_phone",
+        "email",
+        "workingHour",
+    )  # اضافه شده
 
 
 class WorkingHourAdmin(admin.ModelAdmin):
-    list_display = ('start_day','end_day', 'start_time', 'end_time')
+    list_display = ("start_day", "end_day", "start_time", "end_time")
+
 
 class ContactUsAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'phone', 'created_date')
-    search_fields = ('name', 'email', 'phone', 'message')
-    list_filter = ('created_date',)
+    list_display = ("name", "email", "phone", "created_date")
+    search_fields = ("name", "email", "phone", "message")
+    list_filter = ("created_date",)
+
 
 class NewsletterAdmin(admin.ModelAdmin):
-    list_display = ('email',)
-    search_fields = ('email',)
+    list_display = ("email",)
+    search_fields = ("email",)
 
 
 class HomePageAdmin(admin.ModelAdmin):
-    filter_horizontal = ('banner',)
+    filter_horizontal = ("banner",)
+
 
 class AboutUsAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'title',)
-    search_fields = ('title', 'content')
-    readonly_fields = ('__str__',)
-    summernote_fields = ('content',)
+    list_display = (
+        "__str__",
+        "title",
+    )
+    search_fields = ("title", "content")
+    readonly_fields = ("__str__",)
+    summernote_fields = ("content",)
+
 
 class BannersUsAdmin(admin.ModelAdmin):
     pass
 
+
 class HyperlinkAdmin(admin.ModelAdmin):
-    list_display = ('title', 'url')
-    search_fields = ('title',)
+    list_display = ("title", "url")
+    search_fields = ("title",)
 
 
 admin.site.register(Hyperlink, HyperlinkAdmin)

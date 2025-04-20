@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('website', '0002_hyperlink'),
+        ("website", "0002_hyperlink"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='hyperlink',
-            name='display_option',
+            model_name="hyperlink",
+            name="display_option",
             field=models.BooleanField(default=True),
         ),
     ]

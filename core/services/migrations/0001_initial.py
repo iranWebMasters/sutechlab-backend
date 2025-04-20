@@ -9,135 +9,391 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('accounts', '0001_initial'),
-        ('devices', '0001_initial'),
+        ("accounts", "0001_initial"),
+        ("devices", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Faculty',
+            name="Faculty",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255, verbose_name='نام دانشکده')),
-                ('location', models.CharField(choices=[('SD', 'صدرا'), ('SH', 'شیراز')], max_length=2, verbose_name='مکان')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255, verbose_name="نام دانشکده")),
+                (
+                    "location",
+                    models.CharField(
+                        choices=[("SD", "صدرا"), ("SH", "شیراز")],
+                        max_length=2,
+                        verbose_name="مکان",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'دانشکده',
-                'verbose_name_plural': 'دانشکده\u200cها',
+                "verbose_name": "دانشکده",
+                "verbose_name_plural": "دانشکده\u200cها",
             },
         ),
         migrations.CreateModel(
-            name='ParameterValue',
+            name="ParameterValue",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255, verbose_name='نام مقدار')),
-                ('default_value', models.CharField(max_length=255, verbose_name='مقدار پیش فرض')),
-                ('min_value', models.FloatField(blank=True, null=True, verbose_name='حداقل مقدار')),
-                ('max_value', models.FloatField(blank=True, null=True, verbose_name='حداکثر مقدار')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255, verbose_name="نام مقدار")),
+                (
+                    "default_value",
+                    models.CharField(max_length=255, verbose_name="مقدار پیش فرض"),
+                ),
+                (
+                    "min_value",
+                    models.FloatField(
+                        blank=True, null=True, verbose_name="حداقل مقدار"
+                    ),
+                ),
+                (
+                    "max_value",
+                    models.FloatField(
+                        blank=True, null=True, verbose_name="حداکثر مقدار"
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'مقدار پارامتر',
-                'verbose_name_plural': 'مقادیر پارامترها',
+                "verbose_name": "مقدار پارامتر",
+                "verbose_name_plural": "مقادیر پارامترها",
             },
         ),
         migrations.CreateModel(
-            name='Sample',
+            name="Sample",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('type', models.CharField(max_length=100, verbose_name='نوع نمونه')),
-                ('description', models.TextField(blank=True, null=True, verbose_name='توصیف نمونه')),
-                ('is_returnable', models.BooleanField(default=False, verbose_name='نمونه برگشت پذیر است؟')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("type", models.CharField(max_length=100, verbose_name="نوع نمونه")),
+                (
+                    "description",
+                    models.TextField(blank=True, null=True, verbose_name="توصیف نمونه"),
+                ),
+                (
+                    "is_returnable",
+                    models.BooleanField(
+                        default=False, verbose_name="نمونه برگشت پذیر است؟"
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'نمونه',
-                'verbose_name_plural': 'نمونه\u200cها',
+                "verbose_name": "نمونه",
+                "verbose_name_plural": "نمونه\u200cها",
             },
         ),
         migrations.CreateModel(
-            name='UnitAmount',
+            name="UnitAmount",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('amount', models.CharField(max_length=50, verbose_name='مقدار')),
-                ('unit', models.CharField(max_length=50, verbose_name='واحد اندازه\u200cگیری')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("amount", models.CharField(max_length=50, verbose_name="مقدار")),
+                (
+                    "unit",
+                    models.CharField(
+                        max_length=50, verbose_name="واحد اندازه\u200cگیری"
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'مقدار واحد',
-                'verbose_name_plural': 'مقادیر واحد',
+                "verbose_name": "مقدار واحد",
+                "verbose_name_plural": "مقادیر واحد",
             },
         ),
         migrations.CreateModel(
-            name='UnitPrice',
+            name="UnitPrice",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('unit_price', models.DecimalField(decimal_places=0, max_digits=15, verbose_name='مبلغ واحد')),
-                ('currency', models.CharField(choices=[('IRR', 'ریال'), ('Toman', 'تومان')], default='IRR', max_length=5, verbose_name='واحد پول')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "unit_price",
+                    models.DecimalField(
+                        decimal_places=0, max_digits=15, verbose_name="مبلغ واحد"
+                    ),
+                ),
+                (
+                    "currency",
+                    models.CharField(
+                        choices=[("IRR", "ریال"), ("Toman", "تومان")],
+                        default="IRR",
+                        max_length=5,
+                        verbose_name="واحد پول",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'قیمت واحد',
-                'verbose_name_plural': 'قیمت\u200cهای واحد',
+                "verbose_name": "قیمت واحد",
+                "verbose_name_plural": "قیمت\u200cهای واحد",
             },
         ),
         migrations.CreateModel(
-            name='Laboratory',
+            name="Laboratory",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255, verbose_name='نام آزمایشگاه')),
-                ('faculty', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='experiments', to='services.faculty', verbose_name='دانشکده')),
-                ('technical_manager', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='managed_laboratories', to='accounts.profile', verbose_name='مدیر فنی')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(max_length=255, verbose_name="نام آزمایشگاه"),
+                ),
+                (
+                    "faculty",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="experiments",
+                        to="services.faculty",
+                        verbose_name="دانشکده",
+                    ),
+                ),
+                (
+                    "technical_manager",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="managed_laboratories",
+                        to="accounts.profile",
+                        verbose_name="مدیر فنی",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'آزمایشگاه',
-                'verbose_name_plural': 'آزمایشگاه\u200cها',
+                "verbose_name": "آزمایشگاه",
+                "verbose_name_plural": "آزمایشگاه\u200cها",
             },
         ),
         migrations.CreateModel(
-            name='Parameters',
+            name="Parameters",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255, verbose_name='نام پارامتر')),
-                ('unit', models.CharField(max_length=50, verbose_name='واحد اندازه\u200cگیری')),
-                ('values', models.ManyToManyField(related_name='parameters', to='services.parametervalue', verbose_name='مقادیر')),
-                ('unit_amount', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='parameters', to='services.unitamount', verbose_name='مقدار واحد')),
-                ('unit_price', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='parameters', to='services.unitprice', verbose_name='مبلغ واحد')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255, verbose_name="نام پارامتر")),
+                (
+                    "unit",
+                    models.CharField(
+                        max_length=50, verbose_name="واحد اندازه\u200cگیری"
+                    ),
+                ),
+                (
+                    "values",
+                    models.ManyToManyField(
+                        related_name="parameters",
+                        to="services.parametervalue",
+                        verbose_name="مقادیر",
+                    ),
+                ),
+                (
+                    "unit_amount",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="parameters",
+                        to="services.unitamount",
+                        verbose_name="مقدار واحد",
+                    ),
+                ),
+                (
+                    "unit_price",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="parameters",
+                        to="services.unitprice",
+                        verbose_name="مبلغ واحد",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'پارامتر',
-                'verbose_name_plural': 'پارامترها',
+                "verbose_name": "پارامتر",
+                "verbose_name_plural": "پارامترها",
             },
         ),
         migrations.CreateModel(
-            name='Test',
+            name="Test",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name_fa', models.CharField(max_length=255, verbose_name='نام فارسی آزمون')),
-                ('name_en', models.CharField(blank=True, max_length=255, null=True, verbose_name='نام انگلیسی آزمون')),
-                ('operating_range', models.TextField(blank=True, null=True, verbose_name='گستره کاری')),
-                ('description', models.TextField(blank=True, null=True, verbose_name='توصیف آزمون')),
-                ('parameters', models.ManyToManyField(related_name='standards', to='services.parameters', verbose_name='پارامترها')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name_fa",
+                    models.CharField(max_length=255, verbose_name="نام فارسی آزمون"),
+                ),
+                (
+                    "name_en",
+                    models.CharField(
+                        blank=True,
+                        max_length=255,
+                        null=True,
+                        verbose_name="نام انگلیسی آزمون",
+                    ),
+                ),
+                (
+                    "operating_range",
+                    models.TextField(blank=True, null=True, verbose_name="گستره کاری"),
+                ),
+                (
+                    "description",
+                    models.TextField(blank=True, null=True, verbose_name="توصیف آزمون"),
+                ),
+                (
+                    "parameters",
+                    models.ManyToManyField(
+                        related_name="standards",
+                        to="services.parameters",
+                        verbose_name="پارامترها",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'آزمون',
-                'verbose_name_plural': 'آزمون\u200cها',
+                "verbose_name": "آزمون",
+                "verbose_name_plural": "آزمون\u200cها",
             },
         ),
         migrations.CreateModel(
-            name='Experiment',
+            name="Experiment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('test_name', models.CharField(max_length=255, verbose_name='نام آزمون')),
-                ('iso_17025', models.CharField(choices=[('has', 'دارد'), ('has_not', 'ندارد')], default='has_not', max_length=7, verbose_name='ISO 17025')),
-                ('status', models.CharField(choices=[('active', 'فعال'), ('inactive', 'غیرفعال')], default='active', max_length=8, verbose_name='وضعیت')),
-                ('created_date', models.DateField(auto_now_add=True, verbose_name='تاریخ ایجاد')),
-                ('updated_date', models.DateField(auto_now=True, verbose_name='تاریخ به\u200cروزرسانی')),
-                ('device', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='experiments', to='devices.device', verbose_name='دستگاه')),
-                ('operator', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='experiments', to='accounts.profile', verbose_name='اپراتور')),
-                ('laboratory', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='experiments', to='services.laboratory', verbose_name='آزمایشگاه')),
-                ('samples', models.ManyToManyField(related_name='experiments', to='services.sample', verbose_name='نمونه\u200cها')),
-                ('tests', models.ManyToManyField(related_name='samples', to='services.test', verbose_name='آزمون\u200cها')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "test_name",
+                    models.CharField(max_length=255, verbose_name="نام آزمون"),
+                ),
+                (
+                    "iso_17025",
+                    models.CharField(
+                        choices=[("has", "دارد"), ("has_not", "ندارد")],
+                        default="has_not",
+                        max_length=7,
+                        verbose_name="ISO 17025",
+                    ),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[("active", "فعال"), ("inactive", "غیرفعال")],
+                        default="active",
+                        max_length=8,
+                        verbose_name="وضعیت",
+                    ),
+                ),
+                (
+                    "created_date",
+                    models.DateField(auto_now_add=True, verbose_name="تاریخ ایجاد"),
+                ),
+                (
+                    "updated_date",
+                    models.DateField(
+                        auto_now=True, verbose_name="تاریخ به\u200cروزرسانی"
+                    ),
+                ),
+                (
+                    "device",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="experiments",
+                        to="devices.device",
+                        verbose_name="دستگاه",
+                    ),
+                ),
+                (
+                    "operator",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="experiments",
+                        to="accounts.profile",
+                        verbose_name="اپراتور",
+                    ),
+                ),
+                (
+                    "laboratory",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="experiments",
+                        to="services.laboratory",
+                        verbose_name="آزمایشگاه",
+                    ),
+                ),
+                (
+                    "samples",
+                    models.ManyToManyField(
+                        related_name="experiments",
+                        to="services.sample",
+                        verbose_name="نمونه\u200cها",
+                    ),
+                ),
+                (
+                    "tests",
+                    models.ManyToManyField(
+                        related_name="samples",
+                        to="services.test",
+                        verbose_name="آزمون\u200cها",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'آزمایش',
-                'verbose_name_plural': 'آزمایش\u200cها',
+                "verbose_name": "آزمایش",
+                "verbose_name_plural": "آزمایش\u200cها",
             },
         ),
     ]

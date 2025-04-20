@@ -5,46 +5,76 @@ from django_jalali.admin.filters import JDateFieldListFilter
 
 
 class PostAdmin(admin.ModelAdmin):
-    date_hierarchy = 'created_date'
-    empty_value_display = '-empty-'
-    list_display = ('title', 'author', 'counted_views', 'status','display_option',
-                    'published_date', 'created_date')
+    date_hierarchy = "created_date"
+    empty_value_display = "-empty-"
+    list_display = (
+        "title",
+        "author",
+        "counted_views",
+        "status",
+        "display_option",
+        "published_date",
+        "created_date",
+    )
     # list_filter = ('status', 'author')
-    list_filter = ('status', 'author', ('created_date', JDateFieldListFilter))
-    search_fields = ['title', 'content']
-    filter_horizontal = ('category',)
-    readonly_fields = ('counted_comment',)
-    exclude = ('counted_views',)
+    list_filter = ("status", "author", ("created_date", JDateFieldListFilter))
+    search_fields = ["title", "content"]
+    filter_horizontal = ("category",)
+    readonly_fields = ("counted_comment",)
+    exclude = ("counted_views",)
     prepopulated_fields = {"slug": ("title", "author")}
-    list_editable = ('display_option',)  # Make these fields editable in the list view
+    list_editable = ("display_option",)  # Make these fields editable in the list view
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'phone_number', 'post', 'approved', 'created_date', 'updated_date')
-    list_filter = ('approved', 'created_date', 'updated_date')
-    search_fields = ('name', 'phone_number', 'message')
-    list_editable = ('approved',)
-    date_hierarchy = 'created_date'
-    readonly_fields = ('created_date', 'updated_date')
+    list_display = (
+        "name",
+        "phone_number",
+        "post",
+        "approved",
+        "created_date",
+        "updated_date",
+    )
+    list_filter = ("approved", "created_date", "updated_date")
+    search_fields = ("name", "phone_number", "message")
+    list_editable = ("approved",)
+    date_hierarchy = "created_date"
+    readonly_fields = ("created_date", "updated_date")
 
     fieldsets = (
-        ('Comment Details', {
-            'fields': ('name', 'email', 'phone_number', 'message', 'post'),  # Include 'post' in the fields
-            'classes': ('wide',),
-        }),
-        ('Approval', {
-            'fields': ('approved',),
-        }),
-        ('Dates', {
-            'fields': ('created_date', 'updated_date'),
-            'classes': ('collapse', 'wide'),
-        }),
+        (
+            "Comment Details",
+            {
+                "fields": (
+                    "name",
+                    "email",
+                    "phone_number",
+                    "message",
+                    "post",
+                ),  # Include 'post' in the fields
+                "classes": ("wide",),
+            },
+        ),
+        (
+            "Approval",
+            {
+                "fields": ("approved",),
+            },
+        ),
+        (
+            "Dates",
+            {
+                "fields": ("created_date", "updated_date"),
+                "classes": ("collapse", "wide"),
+            },
+        ),
     )
 
     # Customize the display name for the 'post' field
     def post(self, obj):
         return obj.post.title
-    post.short_description = 'Post Title'
+
+    post.short_description = "Post Title"
 
     # Override the 'save_model' method to automatically set the author
     def save_model(self, request, obj, form, change):

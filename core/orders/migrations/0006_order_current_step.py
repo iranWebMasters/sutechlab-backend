@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('orders', '0005_alter_order_tracking_code'),
+        ("orders", "0005_alter_order_tracking_code"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order',
-            name='current_step',
-            field=models.PositiveIntegerField(default=1, verbose_name='مرحله جاری'),
+            model_name="order",
+            name="current_step",
+            field=models.PositiveIntegerField(default=1, verbose_name="مرحله جاری"),
         ),
     ]

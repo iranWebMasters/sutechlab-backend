@@ -6,18 +6,36 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('orders', '0002_alter_discountinfo_options_alter_order_options_and_more'),
+        ("orders", "0002_alter_discountinfo_options_alter_order_options_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order',
-            name='final_price',
-            field=models.DecimalField(blank=True, decimal_places=0, default=0, max_digits=10, null=True, verbose_name='قیمت نهایی'),
+            model_name="order",
+            name="final_price",
+            field=models.DecimalField(
+                blank=True,
+                decimal_places=0,
+                default=0,
+                max_digits=10,
+                null=True,
+                verbose_name="قیمت نهایی",
+            ),
         ),
         migrations.AlterField(
-            model_name='order',
-            name='status',
-            field=models.CharField(choices=[('pending', 'در حال بررسی'), ('successful', 'پرداخت موفق'), ('failed', 'پرداخت ناموفق'), ('canceled', 'لغو شده'), ('ready_for_payment', 'آماده پرداخت')], default='pending', max_length=20, verbose_name='وضعیت'),
+            model_name="order",
+            name="status",
+            field=models.CharField(
+                choices=[
+                    ("pending", "در حال بررسی"),
+                    ("successful", "پرداخت موفق"),
+                    ("failed", "پرداخت ناموفق"),
+                    ("canceled", "لغو شده"),
+                    ("ready_for_payment", "آماده پرداخت"),
+                ],
+                default="pending",
+                max_length=20,
+                verbose_name="وضعیت",
+            ),
         ),
     ]

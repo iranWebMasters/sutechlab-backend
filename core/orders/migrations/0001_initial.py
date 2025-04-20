@@ -10,87 +10,335 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('services', '0001_initial'),
+        ("services", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Order',
+            name="Order",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('description', models.TextField(blank=True, null=True, verbose_name='توضیحات')),
-                ('status', models.CharField(choices=[('pending', 'در حال بررسی'), ('successful', 'پرداخت موفق'), ('failed', 'پرداخت ناموفق'), ('canceled', 'لغو شده')], default='pending', max_length=20, verbose_name='وضعیت')),
-                ('is_complete', models.BooleanField(default=False, verbose_name='تکمیل شده')),
-                ('order_code', models.CharField(blank=True, max_length=255, unique=True, verbose_name='کد سفارش')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')),
-                ('experiment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='services.experiment', verbose_name='آزمایش')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='کاربر')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "description",
+                    models.TextField(blank=True, null=True, verbose_name="توضیحات"),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("pending", "در حال بررسی"),
+                            ("successful", "پرداخت موفق"),
+                            ("failed", "پرداخت ناموفق"),
+                            ("canceled", "لغو شده"),
+                        ],
+                        default="pending",
+                        max_length=20,
+                        verbose_name="وضعیت",
+                    ),
+                ),
+                (
+                    "is_complete",
+                    models.BooleanField(default=False, verbose_name="تکمیل شده"),
+                ),
+                (
+                    "order_code",
+                    models.CharField(
+                        blank=True, max_length=255, unique=True, verbose_name="کد سفارش"
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ایجاد"),
+                ),
+                (
+                    "experiment",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="services.experiment",
+                        verbose_name="آزمایش",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="کاربر",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'درخواست',
-                'verbose_name_plural': 'درخواست\u200cها',
+                "verbose_name": "درخواست",
+                "verbose_name_plural": "درخواست\u200cها",
             },
         ),
         migrations.CreateModel(
-            name='DiscountInfo',
+            name="DiscountInfo",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('send_cost', models.BooleanField(default=False, verbose_name='تمایل به پرداخت هزینه ارسال')),
-                ('is_faculty_member', models.BooleanField(default=False, verbose_name='آیا کاربر عضو هیات علمی است؟')),
-                ('is_student_or_staff', models.BooleanField(default=False, verbose_name='آیا کاربر دانشجو یا کارکنان دانشگاه است؟')),
-                ('is_affiliated_with_institution', models.BooleanField(default=False, verbose_name='آیا کاربر متقاضی استفاده از تخفیف نهادهای طرف قرارداد است؟')),
-                ('contract_party_file', models.FileField(blank=True, null=True, upload_to='contract_party_files/', verbose_name='فایل نهاد تخفیف')),
-                ('has_labs_net_grant', models.BooleanField(default=False, verbose_name='آیا کاربر دارای گرنت شبکه آزمایشگاهی است؟')),
-                ('labs_net_file', models.FileField(blank=True, null=True, upload_to='labs_net_files/', verbose_name='فایل گرنت شبکه آزمایشگاهی')),
-                ('has_research_grant', models.BooleanField(default=False, verbose_name='آیا کاربر دارای گرنت پژوهشی است؟')),
-                ('research_grant_withdrawal_amount', models.PositiveIntegerField(blank=True, null=True, verbose_name='میزان استفاده از گرنت پژوهشی')),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='discount_info', to='orders.order')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "send_cost",
+                    models.BooleanField(
+                        default=False, verbose_name="تمایل به پرداخت هزینه ارسال"
+                    ),
+                ),
+                (
+                    "is_faculty_member",
+                    models.BooleanField(
+                        default=False, verbose_name="آیا کاربر عضو هیات علمی است؟"
+                    ),
+                ),
+                (
+                    "is_student_or_staff",
+                    models.BooleanField(
+                        default=False,
+                        verbose_name="آیا کاربر دانشجو یا کارکنان دانشگاه است؟",
+                    ),
+                ),
+                (
+                    "is_affiliated_with_institution",
+                    models.BooleanField(
+                        default=False,
+                        verbose_name="آیا کاربر متقاضی استفاده از تخفیف نهادهای طرف قرارداد است؟",
+                    ),
+                ),
+                (
+                    "contract_party_file",
+                    models.FileField(
+                        blank=True,
+                        null=True,
+                        upload_to="contract_party_files/",
+                        verbose_name="فایل نهاد تخفیف",
+                    ),
+                ),
+                (
+                    "has_labs_net_grant",
+                    models.BooleanField(
+                        default=False,
+                        verbose_name="آیا کاربر دارای گرنت شبکه آزمایشگاهی است؟",
+                    ),
+                ),
+                (
+                    "labs_net_file",
+                    models.FileField(
+                        blank=True,
+                        null=True,
+                        upload_to="labs_net_files/",
+                        verbose_name="فایل گرنت شبکه آزمایشگاهی",
+                    ),
+                ),
+                (
+                    "has_research_grant",
+                    models.BooleanField(
+                        default=False, verbose_name="آیا کاربر دارای گرنت پژوهشی است؟"
+                    ),
+                ),
+                (
+                    "research_grant_withdrawal_amount",
+                    models.PositiveIntegerField(
+                        blank=True,
+                        null=True,
+                        verbose_name="میزان استفاده از گرنت پژوهشی",
+                    ),
+                ),
+                (
+                    "order",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="discount_info",
+                        to="orders.order",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'اطلاعات تخفیف',
-                'verbose_name_plural': 'اطلاعات تخفیف\u200cها',
+                "verbose_name": "اطلاعات تخفیف",
+                "verbose_name_plural": "اطلاعات تخفیف\u200cها",
             },
         ),
         migrations.CreateModel(
-            name='SampleInfo',
+            name="SampleInfo",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('sample_type', models.CharField(max_length=50, verbose_name='نوع نمونه')),
-                ('customer_sample_name', models.CharField(max_length=255, verbose_name='نام نمونه مشتری')),
-                ('sample_count', models.PositiveIntegerField(verbose_name='تعداد نمونه')),
-                ('additional_info', models.TextField(blank=True, null=True, verbose_name='توضیحات اضافی')),
-                ('is_perishable', models.BooleanField(blank=True, default=False, null=True, verbose_name='نمونه فاسدشدنی است')),
-                ('expiration_date', models.DateField(blank=True, null=True, verbose_name='تاریخ انقضا')),
-                ('sample_return', models.BooleanField(blank=True, default=False, null=True, verbose_name='نمونه برگشت داده شده بشود')),
-                ('storage_duration', models.PositiveIntegerField(blank=True, null=True, verbose_name='مدت زمان نگهداری (به روز)')),
-                ('storage_duration_unit', models.CharField(blank=True, max_length=32, null=True, verbose_name='واحد مدت زمان نگهداری')),
-                ('storage_conditions', models.TextField(blank=True, null=True, verbose_name='شرایط نگهداری')),
-                ('sample_description', models.TextField(blank=True, null=True, verbose_name='توضیحات نمونه')),
-                ('file_upload', models.FileField(blank=True, null=True, upload_to='sample_files/', verbose_name='فایل تکمیلی نمونه')),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sample_info', to='orders.order')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "sample_type",
+                    models.CharField(max_length=50, verbose_name="نوع نمونه"),
+                ),
+                (
+                    "customer_sample_name",
+                    models.CharField(max_length=255, verbose_name="نام نمونه مشتری"),
+                ),
+                (
+                    "sample_count",
+                    models.PositiveIntegerField(verbose_name="تعداد نمونه"),
+                ),
+                (
+                    "additional_info",
+                    models.TextField(
+                        blank=True, null=True, verbose_name="توضیحات اضافی"
+                    ),
+                ),
+                (
+                    "is_perishable",
+                    models.BooleanField(
+                        blank=True,
+                        default=False,
+                        null=True,
+                        verbose_name="نمونه فاسدشدنی است",
+                    ),
+                ),
+                (
+                    "expiration_date",
+                    models.DateField(blank=True, null=True, verbose_name="تاریخ انقضا"),
+                ),
+                (
+                    "sample_return",
+                    models.BooleanField(
+                        blank=True,
+                        default=False,
+                        null=True,
+                        verbose_name="نمونه برگشت داده شده بشود",
+                    ),
+                ),
+                (
+                    "storage_duration",
+                    models.PositiveIntegerField(
+                        blank=True, null=True, verbose_name="مدت زمان نگهداری (به روز)"
+                    ),
+                ),
+                (
+                    "storage_duration_unit",
+                    models.CharField(
+                        blank=True,
+                        max_length=32,
+                        null=True,
+                        verbose_name="واحد مدت زمان نگهداری",
+                    ),
+                ),
+                (
+                    "storage_conditions",
+                    models.TextField(
+                        blank=True, null=True, verbose_name="شرایط نگهداری"
+                    ),
+                ),
+                (
+                    "sample_description",
+                    models.TextField(
+                        blank=True, null=True, verbose_name="توضیحات نمونه"
+                    ),
+                ),
+                (
+                    "file_upload",
+                    models.FileField(
+                        blank=True,
+                        null=True,
+                        upload_to="sample_files/",
+                        verbose_name="فایل تکمیلی نمونه",
+                    ),
+                ),
+                (
+                    "order",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="sample_info",
+                        to="orders.order",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'اطلاعات نمونه',
-                'verbose_name_plural': 'اطلاعات نمونه\u200cها',
+                "verbose_name": "اطلاعات نمونه",
+                "verbose_name_plural": "اطلاعات نمونه\u200cها",
             },
         ),
         migrations.CreateModel(
-            name='TestInfo',
+            name="TestInfo",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('repeat_count_test', models.PositiveIntegerField(verbose_name='تعداد تکرار آزمون')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='تاریخ به\u200cروزرسانی')),
-                ('parameter_values', models.JSONField(verbose_name='مقادیر پارامتر')),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='test_info', to='orders.order')),
-                ('parameter', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='services.parameters', verbose_name='پارامتر')),
-                ('test', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='services.test', verbose_name='عنوان آزمایش')),
-                ('user_sample', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='orders.sampleinfo', verbose_name='شناسه نمونه آزمایش')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "repeat_count_test",
+                    models.PositiveIntegerField(verbose_name="تعداد تکرار آزمون"),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ایجاد"),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(
+                        auto_now=True, verbose_name="تاریخ به\u200cروزرسانی"
+                    ),
+                ),
+                ("parameter_values", models.JSONField(verbose_name="مقادیر پارامتر")),
+                (
+                    "order",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="test_info",
+                        to="orders.order",
+                    ),
+                ),
+                (
+                    "parameter",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="services.parameters",
+                        verbose_name="پارامتر",
+                    ),
+                ),
+                (
+                    "test",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="services.test",
+                        verbose_name="عنوان آزمایش",
+                    ),
+                ),
+                (
+                    "user_sample",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="orders.sampleinfo",
+                        verbose_name="شناسه نمونه آزمایش",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'اطلاعات آزمایش',
-                'verbose_name_plural': 'اطلاعات آزمایش\u200cها',
+                "verbose_name": "اطلاعات آزمایش",
+                "verbose_name_plural": "اطلاعات آزمایش\u200cها",
             },
         ),
     ]
