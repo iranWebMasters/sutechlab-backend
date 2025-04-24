@@ -14,5 +14,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+    - name: Setup docker-compose
+      run: docker-compose up -d
+    - name: run tests
+      run: docker exec backend sh -c "flake8 && pytest ."
