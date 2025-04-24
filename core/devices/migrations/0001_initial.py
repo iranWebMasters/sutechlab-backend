@@ -7,29 +7,101 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Device',
+            name="Device",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255, verbose_name='نام دستگاه')),
-                ('english_name', models.CharField(blank=True, max_length=255, null=True, verbose_name='نام انگلیسی دستگاه')),
-                ('model', models.CharField(blank=True, max_length=255, null=True, verbose_name='مدل دستگاه')),
-                ('manufacturer', models.CharField(blank=True, max_length=255, null=True, verbose_name='شرکت سازنده')),
-                ('country', models.CharField(blank=True, max_length=255, null=True, verbose_name='کشور سازنده')),
-                ('capabilities', models.TextField(blank=True, max_length=255, null=True, verbose_name='قابلیت ها')),
-                ('description', models.TextField(blank=True, null=True, verbose_name='توضیحات')),
-                ('image', models.ImageField(upload_to='services_images/', verbose_name='تصویر')),
-                ('status', models.CharField(choices=[('ready', 'آماده سرویس دهی'), ('in_progress', 'در حال راه اندازی'), ('out_of_service', 'خارج از سرویس')], default='ready', max_length=20, verbose_name='وضعیت')),
-                ('display_option', models.CharField(choices=[('show', 'نمایش در صفحه اصلی'), ('hide', 'عدم نمایش در صفحه اصلی')], default='show', max_length=4, verbose_name='گزینه نمایش')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255, verbose_name="نام دستگاه")),
+                (
+                    "english_name",
+                    models.CharField(
+                        blank=True,
+                        max_length=255,
+                        null=True,
+                        verbose_name="نام انگلیسی دستگاه",
+                    ),
+                ),
+                (
+                    "model",
+                    models.CharField(
+                        blank=True, max_length=255, null=True, verbose_name="مدل دستگاه"
+                    ),
+                ),
+                (
+                    "manufacturer",
+                    models.CharField(
+                        blank=True,
+                        max_length=255,
+                        null=True,
+                        verbose_name="شرکت سازنده",
+                    ),
+                ),
+                (
+                    "country",
+                    models.CharField(
+                        blank=True,
+                        max_length=255,
+                        null=True,
+                        verbose_name="کشور سازنده",
+                    ),
+                ),
+                (
+                    "capabilities",
+                    models.TextField(
+                        blank=True, max_length=255, null=True, verbose_name="قابلیت ها"
+                    ),
+                ),
+                (
+                    "description",
+                    models.TextField(blank=True, null=True, verbose_name="توضیحات"),
+                ),
+                (
+                    "image",
+                    models.ImageField(
+                        upload_to="services_images/", verbose_name="تصویر"
+                    ),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("ready", "آماده سرویس دهی"),
+                            ("in_progress", "در حال راه اندازی"),
+                            ("out_of_service", "خارج از سرویس"),
+                        ],
+                        default="ready",
+                        max_length=20,
+                        verbose_name="وضعیت",
+                    ),
+                ),
+                (
+                    "display_option",
+                    models.CharField(
+                        choices=[
+                            ("show", "نمایش در صفحه اصلی"),
+                            ("hide", "عدم نمایش در صفحه اصلی"),
+                        ],
+                        default="show",
+                        max_length=4,
+                        verbose_name="گزینه نمایش",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'دستگاه',
-                'verbose_name_plural': 'دستگاه ها',
-                'ordering': ['model'],
+                "verbose_name": "دستگاه",
+                "verbose_name_plural": "دستگاه ها",
+                "ordering": ["model"],
             },
         ),
     ]

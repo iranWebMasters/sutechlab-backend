@@ -1,11 +1,15 @@
 from django.urls import path
 from .views import *
 
-app_name = 'devices'
+app_name = "devices"
 
 urlpatterns = [
-    path('', DevicesListView.as_view(), name='index'),
-    path('<int:pk>/', DevicesDetailView.as_view(), name='single'),
-    path('search/', DevicesSearchView.as_view(), name='search'),
-    path('devices/experiments/<int:device_id>/', DevicesExperimentListView.as_view(), name='experiments'),
+    path("", DevicesListView.as_view(), name="index"),
+    path("<int:pk>/", DevicesDetailView.as_view(), name="single"),
+    path("search/", DevicesSearchView.as_view(), name="search"),
+    path(
+        "devices/experiments/<int:device_id>/",
+        DevicesExperimentListView.as_view(),
+        name="experiments",
+    ),
 ]

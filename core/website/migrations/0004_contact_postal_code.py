@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('website', '0003_hyperlink_display_option'),
+        ("website", "0003_hyperlink_display_option"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='contact',
-            name='postal_code',
-            field=models.CharField(blank=True, max_length=10, null=True, verbose_name='کد پستی'),
+            model_name="contact",
+            name="postal_code",
+            field=models.CharField(
+                blank=True, max_length=10, null=True, verbose_name="کد پستی"
+            ),
         ),
     ]
