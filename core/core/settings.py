@@ -162,9 +162,6 @@ SESSION_COOKIE_AGE = config(
     "SESSION_COOKIE_AGE", default=1209600, cast=int
 )  # 2 weeks in seconds
 
-# CSRF Trusted Origins
-CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", default="").split(",")
-
 # Registration URL Redirects
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
