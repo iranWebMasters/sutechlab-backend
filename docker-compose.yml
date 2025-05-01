@@ -15,7 +15,6 @@ services:
       - my_network
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./postgres-init:/docker-entrypoint-initdb.d
 
   backend:
     build: .
