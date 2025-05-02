@@ -152,8 +152,6 @@ cython_debug/
 #.idea/
 
 # Images
-/media
-/core/media
 .prettierrc.json
 
 
