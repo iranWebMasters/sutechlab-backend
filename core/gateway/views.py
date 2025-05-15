@@ -32,18 +32,12 @@ class GoToGatewayView(View):
             bank.set_amount(payment.amount)
             print(payment.amount)
             # bank.set_client_callback_url(reverse('gateway:callback'))
-            # bank.set_client_callback_url(
-                # reverse("gateway:callback", kwargs={"payment_id": payment.id})
-            # )
             bank.set_client_callback_url(
-                request.build_absolute_uri(
-                    reverse("gateway:callback", kwargs={"payment_id": payment.id})
-                ).replace("http://", "https://")
+                reverse("gateway:callback", kwargs={"payment_id": payment.id})
             )
 
-
             bank.set_mobile_number(user_mobile_number)
-
+ 
             bank_record = bank.ready()
 
             # Update the payment status to 'pending'

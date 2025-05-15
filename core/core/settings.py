@@ -164,6 +164,7 @@ SESSION_COOKIE_AGE = config(
 CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='').split(',')
 
 # Add SECURE_PROXY_SSL_HEADER setting
+USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Registration URL Redirects
