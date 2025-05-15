@@ -32,9 +32,14 @@ class GoToGatewayView(View):
             bank.set_amount(payment.amount)
             print(payment.amount)
             # bank.set_client_callback_url(reverse('gateway:callback'))
-            bank.set_client_callback_url(
-                reverse("gateway:callback", kwargs={"payment_id": payment.id})
-            )
+            # bank.set_client_callback_url(
+            #     reverse("gateway:callback", kwargs={"payment_id": payment.id})
+            # )
+            # آدرس استاتیک مورد نظر
+            static_callback_url = "http://centlab.sutech.ac.ir/bankgateways/callback/?bank_type=BMI&identifier=1"
+
+            # تنظیم URL به عنوان callback
+            bank.set_client_callback_url(static_callback_url)
 
             bank.set_mobile_number(user_mobile_number)
  
