@@ -176,24 +176,20 @@ AUTH_USER_MODEL = "accounts.User"
 # Bank Payment Gateway Configuration
 AZ_IRANIAN_BANK_GATEWAYS = {
     "GATEWAYS": {
-        # "BMI": {
-        #     "MERCHANT_CODE": config("BMI_MERCHANT_CODE"),
-        #     "TERMINAL_CODE": config("BMI_TERMINAL_CODE"),
-        #     "SECRET_KEY": config("BMI_SECRET_KEY"),
-        # },
-        'ZARINPAL': {
-           'MERCHANT_CODE': '0dbb3d9d-41f7-4776-b97d-545e81377eda',
-           'SANDBOX': 1,  # 0 disable, 1 active
-       }
+        "BMI": {
+            "MERCHANT_CODE": config("BMI_MERCHANT_CODE"),
+            "TERMINAL_CODE": config("BMI_TERMINAL_CODE"),
+            "SECRET_KEY": config("BMI_SECRET_KEY"),
+        },
     },
     "IS_SAMPLE_FORM_ENABLE": True,
-    "DEFAULT": "ZARINPAL",
+    "DEFAULT": "BMI",
     "CURRENCY": "IRT",
     "TRACKING_CODE_QUERY_PARAM": "tc",
     "TRACKING_CODE_LENGTH": 16,
     "SETTING_VALUE_READER_CLASS": "azbankgateways.readers.DefaultReader",
     "BANK_PRIORITIES": [
-        "ZARINPAL",
+        "BMI",
     ],
     "IS_SAFE_GET_GATEWAY_PAYMENT": False,
     "CUSTOM_APP": None,
