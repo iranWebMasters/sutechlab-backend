@@ -20,15 +20,13 @@ services:
     build: .
     container_name: backend
     command: >
-      sh -c "python manage.py makemigrations &&
-             python manage.py migrate &&
-             python manage.py collectstatic --noinput &&
-             gunicorn core.wsgi:application --bind 0.0.0.0:8000"
+          sh -c "/init.sh"
     volumes:
       - ./core:/app
       - ./pytest.ini:/app/pytest.ini
       - static_volume:/app/static
       - media_volume:/app/media
+      - ./init.sh:/init.sh
     env_file: 
       - .env  # Load environment variables from .env file
     depends_on:

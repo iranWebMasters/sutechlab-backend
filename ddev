@@ -1,0 +1,48 @@
+
+# Django Secret Key and Debug Settings
+SECRET_KEY=aethaethnaetzdjkflvjaeddfbknlknlr  
+DEBUG=True
+ALLOWED_HOSTS=centlab.sutech.ac.ir,www.centlab.sutech.ac.ir,5.190.154.153
+
+# Database Configuration
+DATABASE_NAME=SutechLab
+DATABASE_USER=SutechLab
+DATABASE_PASSWORD=Ansari2024@2456!@$%^^&*
+DATABASE_HOST=postgres  
+DATABASE_PORT=5432  
+
+# Celery Configuration
+CELERY_BROKER_URL=redis://localhost:6379/0  
+
+# Email Settings for Sending Emails
+EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend  
+EMAIL_HOST=smtp.gmail.com  
+EMAIL_PORT=587  
+EMAIL_USE_TLS=True  
+EMAIL_HOST_USER=your_email@example.com  
+EMAIL_HOST_PASSWORD=your_email_password  
+
+# Bank Payment Gateway Configuration
+BMI_MERCHANT_CODE=000000140342908 
+BMI_TERMINAL_CODE=24104074  
+BMI_SECRET_KEY=+iYVEIFe/Z8Q6jCWAdiFktnA7AHNphJZ
+
+# Security Settings
+SECURE_REFERRER_POLICY=strict-origin-when-cross-origin
+SECURE_BROWSER_XSS_FILTER=True
+X_FRAME_OPTIONS=SAMEORIGIN
+SECURE_CONTENT_TYPE_NOSNIFF=True
+SECURE_HSTS_SECONDS=31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS=True
+SECURE_HSTS_PRELOAD=True
+SECURE_SSL_REDIRECT=False
+CSRF_COOKIE_SECURE=True
+CSRF_USE_SESSIONS=True
+CSRF_COOKIE_HTTPONLY=True
+SESSION_COOKIE_SECURE=True
+SESSION_COOKIE_SAMESITE=Lax
+SESSION_EXPIRE_AT_BROWSER_CLOSE=False
+SESSION_COOKIE_AGE=1209600
+# CSRF Trusted Origins
+CSRF_TRUSTED_ORIGINS=https://centlab.sutech.ac.ir,https://www.centlab.sutech.ac.ir
+SECURE_PROXY_SSL_HEADER=('HTTP_X_FORWARDED_PROTO', 'https')
