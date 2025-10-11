@@ -6,12 +6,14 @@
 
 <div class="about about-1 pt-100">
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-lg-6 col-md-12 col-sm-12 col-12">
+    <div class="row" style="height: 22rem;">
+      <div class="col-lg-6 col-md-12 col-sm-12 col-12" style="height: 100%;">
         <div
           class="about-img-area-3"
-          style='background-image: url("{{home.aboutـbanner.url}}")'
-        >
+          style="background-image: url('/media/banners/banner3.jpg'); 
+                  background-size: cover; 
+                  background-position: center; 
+                  height: 100%;">
           <!-- <div class="about-img-list">
 <ul>
 <li><strong>%100</strong> شرکت مورد اعتماد</li>
@@ -22,13 +24,18 @@
 </div> -->
         </div>
       </div>
-      <div class="col-lg-6 col-md-12 col-sm-12 col-12">
-        <div class="about-text-area pl-20">
+      <div class="col-lg-6 col-md-12 col-sm-12 col-12" style="height: 100%;">
+        <div class="about-text-area pl-20" style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
           <div class="default-section-title">
             <h6>درباره ما</h6>
             <h3>{{home.aboutـtitle}}</h3>
           </div>
-          <p>{{home.about_text|safe|truncatechars:1100}}</p>
+          <p
+            style="max-height: 8rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;"
+            >{{home.about_text|safe|truncatechars:1100}}</p>
           <a
             class="default-button default-button-4"
             href="{% url 'website:about' %}"

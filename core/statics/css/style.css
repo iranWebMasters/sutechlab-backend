@@ -154,10 +154,15 @@ Topbar Area CSS
 =================================================*/
 .topbar {
   font-family: var(--fontFamily2);
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid var(--borderColor);
+  background-color: var(--whiteColor);
   padding: 10px 0px;
   position: relative;
   z-index: 9;
+}
+
+.header-area{
+  background-color: var(--whiteColor);
 }
 
 .topbar-left-side ul {
@@ -471,6 +476,7 @@ padding: 12px 0 0 15px;
 /* Fix for box sizing on Foundation Framework etc. */
 .main-nav {
   background-color: transparent;
+  border-bottom: 1px solid var(--borderColor);
 }
 
 .main-nav nav ul {
@@ -1053,12 +1059,12 @@ Default Button Area CSS
 Default Section Title Area CSS
 =================================================*/
 .default-section-title h6 {
-  position: relative;
-  padding-right: 45px;
-  display: inline-block;
-  color: var(--blackColor);
-  font-size: var(--fontSize);
-  font-family: var(--fontFamily);
+    position: relative;
+    padding-right: 45px;
+    display: inline-block;
+    color: var(--blackColor);
+    font-size: var(--fontSize);
+    font-family: var(--fontFamily);
 }
 
 .default-section-title h6::before {
@@ -1841,6 +1847,11 @@ Index 01 Pricing Plan Area CSS
 /*================================================
 Index 01 Blog Area CSS
 =================================================*/
+
+/* .blog{
+  background-color: var(--whiteColor);
+} */
+
 .blog-card {
   margin-top: 30px;
 }

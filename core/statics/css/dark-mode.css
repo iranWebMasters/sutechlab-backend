@@ -80,6 +80,7 @@
   --blackColor: #242424;
   --secondColor: #2e2f46;
   --paragraphColor: #666666;
+  --borderColor:#d4d4d4;
 }
 
 .theme-light .white-logo {
@@ -95,6 +96,8 @@
   --blackColor: #ffffff;
   --secondColor: #676cda;
   --paragraphColor: #d1d1d1;
+  --borderColor:#484848;
+
   --boxShadow:  rgba(0, 0, 0, 0.1) 0px 0px 16px;
   /*================================================
     Form Select Area CSS
@@ -131,12 +134,13 @@
     =================================================*/
 }
 
-.theme-dark .bg-000000 {
-  background-color: #000000;
-}
-
-.theme-dark .bg-f9faff {
-  background-color: #000000;
+.theme-dark body,
+.theme-dark .service, 
+.theme-dark .blog, 
+.theme-dark .partner, 
+.theme-dark .about,
+.theme-dark .swiper-container{
+  background-color: #242325;
 }
 
 .theme-dark .white-logo {
