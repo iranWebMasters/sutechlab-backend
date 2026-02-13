@@ -2,7 +2,7 @@
 # Django Secret Key and Debug Settings
 SECRET_KEY=aethaethnaetzdjkflvjaeddfbknlknlr  
 DEBUG=True
-ALLOWED_HOSTS=centlab.sutech.ac.ir,www.centlab.sutech.ac.ir,5.190.154.153
+ALLOWED_HOSTS=centlab.sutech.ac.ir,www.centlab.sutech.ac.ir,5.190.154.153,localhost,
 
 # Database Configuration
 DATABASE_NAME=SutechLab
