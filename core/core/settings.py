@@ -177,9 +177,9 @@ AUTH_USER_MODEL = "accounts.User"
 AZ_IRANIAN_BANK_GATEWAYS = {
     "GATEWAYS": {
         "BMI": {
-            "MERCHANT_CODE": config("BMI_MERCHANT_CODE"),
-            "TERMINAL_CODE": config("BMI_TERMINAL_CODE"),
-            "SECRET_KEY": config("BMI_SECRET_KEY"),
+            "MERCHANT_CODE": config("BMI_MERCHANT_CODE", default="000000130342908"),
+            "TERMINAL_CODE": config("BMI_TERMINAL_CODE", default="14104074"),
+            "SECRET_KEY": config("BMI_SECRET_KEY", default="Z8Q6jCWAdi«ktnA7AHNphJZ"),
         },
     },
     "IS_SAMPLE_FORM_ENABLE": True,
