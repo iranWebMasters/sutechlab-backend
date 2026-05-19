@@ -29,7 +29,7 @@ def handle_order_notifications(sender, instance, created, **kwargs):
     if created:
         subject = "سفارش جدید شما ثبت شد"
         message = f"سفارش شما با کد {instance.order_code} با موفقیت ثبت شد."
-        send_email_notification(instance.user, subject, message)
+        # send_email_notification(instance.user, subject, message)
         send_sms_notification(instance.user, message)
         create_panel_notification(instance.user, "سفارش جدید", message)
     else:
